@@ -7,7 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
-@interface TTViewController : UIViewController
+#import "TTTabBarView.h"
+
+#define kNumberOfDemoViewControllers 2
+#define kColorsMultiple 4
+
+@interface TTViewController : UIViewController<TTTabBarViewDataSource, TTTabBarViewDelegate>
+
+//@property (weak, nonatomic) UIBarButtonItem *doneBarButtonItem;
+
+-(IBAction) addViewToBarButton:(id)sender;
+-(IBAction) lockScreen:(id)sender;
 
 @end

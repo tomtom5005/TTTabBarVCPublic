@@ -18,6 +18,21 @@
 		E2031058166ABB0B004D313F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E2031057166ABB0B004D313F /* Default-568h@2x.png */; };
 		E203105B166ABB0B004D313F /* TTViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E203105A166ABB0B004D313F /* TTViewController.m */; };
 		E203105E166ABB0B004D313F /* TTViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E203105C166ABB0B004D313F /* TTViewController.xib */; };
+		E2031066166ABB23004D313F /* TTTabBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = E2031065166ABB23004D313F /* TTTabBarView.m */; };
+		E2031069166ABB3B004D313F /* TTTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = E2031068166ABB3B004D313F /* TTTabView.m */; };
+		E203106C166ABB53004D313F /* TTTabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E203106B166ABB53004D313F /* TTTabItem.m */; };
+		E203108E166C0CBF004D313F /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = E203108D166C0CBF004D313F /* lock.png */; };
+		E244FEE6167E5A5100B24FAB /* TTCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E244FEE4167E5A5100B24FAB /* TTCubeViewController.m */; };
+		E26E22B7167FA9FA0072CAD6 /* TTFoldTransitionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = E26E22B6167FA9FA0072CAD6 /* TTFoldTransitionsView.m */; };
+		E26E22CC1680A4FA0072CAD6 /* UIView+FoldTransitionFromViewToView.m in Sources */ = {isa = PBXBuildFile; fileRef = E26E22CB1680A4FA0072CAD6 /* UIView+FoldTransitionFromViewToView.m */; };
+		E26E22D11680ACD80072CAD6 /* UIView+CreateLayerImage.m in Sources */ = {isa = PBXBuildFile; fileRef = E26E22D01680ACD70072CAD6 /* UIView+CreateLayerImage.m */; };
+		E26E22D71680B83C0072CAD6 /* UIImage+TopAndBottomHalfImages.m in Sources */ = {isa = PBXBuildFile; fileRef = E26E22D61680B83C0072CAD6 /* UIImage+TopAndBottomHalfImages.m */; };
+		E26E22DA1680C4D30072CAD6 /* CALayer+LayerWithImage.m in Sources */ = {isa = PBXBuildFile; fileRef = E26E22D91680C4D30072CAD6 /* CALayer+LayerWithImage.m */; };
+		E26E22DF16811ECF0072CAD6 /* TTFoldTransitionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E26E22DD16811ECE0072CAD6 /* TTFoldTransitionsViewController.m */; };
+		E26E22E016811ECF0072CAD6 /* TTFoldTransitionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E26E22DE16811ECE0072CAD6 /* TTFoldTransitionsViewController.xib */; };
+		E281FA7B166FF8320021C45B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E281FA7A166FF8320021C45B /* QuartzCore.framework */; };
+		E281FA8216701B930021C45B /* UIView+Highlight.m in Sources */ = {isa = PBXBuildFile; fileRef = E281FA8116701B930021C45B /* UIView+Highlight.m */; };
+		E2B0F5021674DC47005DF920 /* TTColorPatchView.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B0F5011674DC47005DF920 /* TTColorPatchView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +52,36 @@
 		E2031059166ABB0B004D313F /* TTViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTViewController.h; sourceTree = "<group>"; };
 		E203105A166ABB0B004D313F /* TTViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTViewController.m; sourceTree = "<group>"; };
 		E203105D166ABB0B004D313F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TTViewController.xib; sourceTree = "<group>"; };
+		E2031064166ABB23004D313F /* TTTabBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTabBarView.h; sourceTree = "<group>"; };
+		E2031065166ABB23004D313F /* TTTabBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTabBarView.m; sourceTree = "<group>"; };
+		E2031067166ABB3B004D313F /* TTTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTabView.h; sourceTree = "<group>"; };
+		E2031068166ABB3B004D313F /* TTTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTabView.m; sourceTree = "<group>"; };
+		E203106A166ABB53004D313F /* TTTabItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTabItem.h; sourceTree = "<group>"; };
+		E203106B166ABB53004D313F /* TTTabItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTabItem.m; sourceTree = "<group>"; };
+		E203108D166C0CBF004D313F /* lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lock.png; sourceTree = "<group>"; };
+		E20338BF1683D0D6007FB036 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		E244FEE3167E5A5100B24FAB /* TTCubeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTCubeViewController.h; sourceTree = "<group>"; };
+		E244FEE4167E5A5100B24FAB /* TTCubeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTCubeViewController.m; sourceTree = "<group>"; };
+		E26E22B5167FA9FA0072CAD6 /* TTFoldTransitionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTFoldTransitionsView.h; sourceTree = "<group>"; };
+		E26E22B6167FA9FA0072CAD6 /* TTFoldTransitionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTFoldTransitionsView.m; sourceTree = "<group>"; };
+		E26E22CA1680A4FA0072CAD6 /* UIView+FoldTransitionFromViewToView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FoldTransitionFromViewToView.h"; sourceTree = "<group>"; };
+		E26E22CB1680A4FA0072CAD6 /* UIView+FoldTransitionFromViewToView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FoldTransitionFromViewToView.m"; sourceTree = "<group>"; };
+		E26E22CF1680ACD70072CAD6 /* UIView+CreateLayerImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+CreateLayerImage.h"; sourceTree = "<group>"; };
+		E26E22D01680ACD70072CAD6 /* UIView+CreateLayerImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+CreateLayerImage.m"; sourceTree = "<group>"; };
+		E26E22D51680B83C0072CAD6 /* UIImage+TopAndBottomHalfImages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+TopAndBottomHalfImages.h"; sourceTree = "<group>"; };
+		E26E22D61680B83C0072CAD6 /* UIImage+TopAndBottomHalfImages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+TopAndBottomHalfImages.m"; sourceTree = "<group>"; };
+		E26E22D81680C4D30072CAD6 /* CALayer+LayerWithImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+LayerWithImage.h"; sourceTree = "<group>"; };
+		E26E22D91680C4D30072CAD6 /* CALayer+LayerWithImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+LayerWithImage.m"; sourceTree = "<group>"; };
+		E26E22DC16811ECE0072CAD6 /* TTFoldTransitionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTFoldTransitionsViewController.h; sourceTree = "<group>"; };
+		E26E22DD16811ECE0072CAD6 /* TTFoldTransitionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTFoldTransitionsViewController.m; sourceTree = "<group>"; };
+		E26E22DE16811ECE0072CAD6 /* TTFoldTransitionsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTFoldTransitionsViewController.xib; sourceTree = "<group>"; };
+		E281FA7A166FF8320021C45B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		E281FA8016701B930021C45B /* UIView+Highlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Highlight.h"; sourceTree = "<group>"; };
+		E281FA8116701B930021C45B /* UIView+Highlight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Highlight.m"; sourceTree = "<group>"; };
+		E281FA83167140130021C45B /* CoreGraphicsFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreGraphicsFunctions.h; sourceTree = "<group>"; };
+		E281FA84167140130021C45B /* CoreGraphicsFunctions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreGraphicsFunctions.m; sourceTree = "<group>"; };
+		E2B0F5001674DC47005DF920 /* TTColorPatchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTColorPatchView.h; sourceTree = "<group>"; };
+		E2B0F5011674DC47005DF920 /* TTColorPatchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTColorPatchView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E281FA7B166FF8320021C45B /* QuartzCore.framework in Frameworks */,
 				E2031042166ABB0B004D313F /* UIKit.framework in Frameworks */,
 				E2031044166ABB0B004D313F /* Foundation.framework in Frameworks */,
 				E2031046166ABB0B004D313F /* CoreGraphics.framework in Frameworks */,
@@ -74,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				E2031041166ABB0B004D313F /* UIKit.framework */,
+				E281FA7A166FF8320021C45B /* QuartzCore.framework */,
 				E2031043166ABB0B004D313F /* Foundation.framework */,
 				E2031045166ABB0B004D313F /* CoreGraphics.framework */,
 			);
@@ -84,10 +131,31 @@
 			isa = PBXGroup;
 			children = (
 				E2031050166ABB0B004D313F /* TTAppDelegate.h */,
+				E20338BF1683D0D6007FB036 /* Constants.h */,
 				E2031051166ABB0B004D313F /* TTAppDelegate.m */,
+				E281FA83167140130021C45B /* CoreGraphicsFunctions.h */,
+				E281FA84167140130021C45B /* CoreGraphicsFunctions.m */,
+				E26E22DB1680D9B10072CAD6 /* FoldTransitionFromViewToView */,
+				E281FA8016701B930021C45B /* UIView+Highlight.h */,
+				E281FA8116701B930021C45B /* UIView+Highlight.m */,
 				E2031059166ABB0B004D313F /* TTViewController.h */,
 				E203105A166ABB0B004D313F /* TTViewController.m */,
 				E203105C166ABB0B004D313F /* TTViewController.xib */,
+				E244FEE3167E5A5100B24FAB /* TTCubeViewController.h */,
+				E244FEE4167E5A5100B24FAB /* TTCubeViewController.m */,
+				E26E22B5167FA9FA0072CAD6 /* TTFoldTransitionsView.h */,
+				E26E22B6167FA9FA0072CAD6 /* TTFoldTransitionsView.m */,
+				E26E22DC16811ECE0072CAD6 /* TTFoldTransitionsViewController.h */,
+				E26E22DD16811ECE0072CAD6 /* TTFoldTransitionsViewController.m */,
+				E26E22DE16811ECE0072CAD6 /* TTFoldTransitionsViewController.xib */,
+				E2B0F5001674DC47005DF920 /* TTColorPatchView.h */,
+				E2B0F5011674DC47005DF920 /* TTColorPatchView.m */,
+				E2031064166ABB23004D313F /* TTTabBarView.h */,
+				E2031065166ABB23004D313F /* TTTabBarView.m */,
+				E2031067166ABB3B004D313F /* TTTabView.h */,
+				E2031068166ABB3B004D313F /* TTTabView.m */,
+				E203106A166ABB53004D313F /* TTTabItem.h */,
+				E203106B166ABB53004D313F /* TTTabItem.m */,
 				E2031048166ABB0B004D313F /* Supporting Files */,
 			);
 			path = TTTabBarViewController;
@@ -103,8 +171,24 @@
 				E2031053166ABB0B004D313F /* Default.png */,
 				E2031055166ABB0B004D313F /* Default@2x.png */,
 				E2031057166ABB0B004D313F /* Default-568h@2x.png */,
+				E203108D166C0CBF004D313F /* lock.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E26E22DB1680D9B10072CAD6 /* FoldTransitionFromViewToView */ = {
+			isa = PBXGroup;
+			children = (
+				E26E22CA1680A4FA0072CAD6 /* UIView+FoldTransitionFromViewToView.h */,
+				E26E22CB1680A4FA0072CAD6 /* UIView+FoldTransitionFromViewToView.m */,
+				E26E22CF1680ACD70072CAD6 /* UIView+CreateLayerImage.h */,
+				E26E22D01680ACD70072CAD6 /* UIView+CreateLayerImage.m */,
+				E26E22D51680B83C0072CAD6 /* UIImage+TopAndBottomHalfImages.h */,
+				E26E22D61680B83C0072CAD6 /* UIImage+TopAndBottomHalfImages.m */,
+				E26E22D81680C4D30072CAD6 /* CALayer+LayerWithImage.h */,
+				E26E22D91680C4D30072CAD6 /* CALayer+LayerWithImage.m */,
+			);
+			name = FoldTransitionFromViewToView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -164,6 +248,8 @@
 				E2031056166ABB0B004D313F /* Default@2x.png in Resources */,
 				E2031058166ABB0B004D313F /* Default-568h@2x.png in Resources */,
 				E203105E166ABB0B004D313F /* TTViewController.xib in Resources */,
+				E203108E166C0CBF004D313F /* lock.png in Resources */,
+				E26E22E016811ECF0072CAD6 /* TTFoldTransitionsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +263,18 @@
 				E203104E166ABB0B004D313F /* main.m in Sources */,
 				E2031052166ABB0B004D313F /* TTAppDelegate.m in Sources */,
 				E203105B166ABB0B004D313F /* TTViewController.m in Sources */,
+				E2031066166ABB23004D313F /* TTTabBarView.m in Sources */,
+				E2031069166ABB3B004D313F /* TTTabView.m in Sources */,
+				E203106C166ABB53004D313F /* TTTabItem.m in Sources */,
+				E281FA8216701B930021C45B /* UIView+Highlight.m in Sources */,
+				E2B0F5021674DC47005DF920 /* TTColorPatchView.m in Sources */,
+				E244FEE6167E5A5100B24FAB /* TTCubeViewController.m in Sources */,
+				E26E22B7167FA9FA0072CAD6 /* TTFoldTransitionsView.m in Sources */,
+				E26E22CC1680A4FA0072CAD6 /* UIView+FoldTransitionFromViewToView.m in Sources */,
+				E26E22D11680ACD80072CAD6 /* UIView+CreateLayerImage.m in Sources */,
+				E26E22D71680B83C0072CAD6 /* UIImage+TopAndBottomHalfImages.m in Sources */,
+				E26E22DA1680C4D30072CAD6 /* CALayer+LayerWithImage.m in Sources */,
+				E26E22DF16811ECF0072CAD6 /* TTFoldTransitionsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,6 +392,7 @@
 				E2031063166ABB0B004D313F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

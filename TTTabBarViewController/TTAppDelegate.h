@@ -13,7 +13,7 @@
 @interface TTAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
+@property (strong, nonatomic) NSArray *colors;
 @property (strong, nonatomic) TTViewController *viewController;
 
 @end
