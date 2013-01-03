@@ -18,7 +18,7 @@
 
 //@property (weak, nonatomic) UIBarButtonItem *doneBarButtonItem;
 
--(IBAction) addViewToBarButton:(id)sender;
+-(IBAction) addViewToBarButton:(id)sender;  //suck
 -(IBAction) lockScreen:(id)sender;
 
 @end

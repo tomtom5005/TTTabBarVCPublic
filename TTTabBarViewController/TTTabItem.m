@@ -21,10 +21,12 @@
            tabColor:(UIColor*)color
           textColor:(UIColor *)txtColor
        tabViewStyle:(TTTabViewStyle) style
+tabOrientation:(TTTabViewOrientation)orientation
 {
     if(self=[super init])
     {
         _tabViewStyle = style;
+        _tabOrientation = orientation;
         CGSize textSize = [title sizeWithFont:[UIFont systemFontOfSize:kTabFontSize]];
         CGFloat height = textSize.height>kMinTabHeight? textSize.height : kMinTabHeight;
         CGFloat width = textSize.width>kMinTabWidth? textSize.width : kMinTabWidth;
@@ -42,33 +44,45 @@
             CGFloat grayScale;
             CGFloat a;
             BOOL grayConverted = [_tabColor getWhite:&grayScale alpha:&a];
-
-             CGFloat r;
-             CGFloat g;
-             CGFloat b;
-             BOOL rgbConverted = [_tabColor getRed:&r green:&g blue:&b alpha:&a];
-             if (rgbConverted)
-             {
-                 CGFloat grayValue = 0.21*r + 0.71*g + 0.07*b;
-             if(grayValue<.5)
-                 _textColor = [UIColor whiteColor];
-             else
-                 _textColor = [UIColor darkTextColor];
-             }
-             else if (grayConverted)
-             {
-                 if(grayScale<.5)
-                     _textColor = [UIColor whiteColor];
-                 else
-                     _textColor = [UIColor darkTextColor];
-             }
-             else{
-                 _textColor = [UIColor darkTextColor];}
+            
+            CGFloat r;
+            CGFloat g;
+            CGFloat b;
+            BOOL rgbConverted = [_tabColor getRed:&r green:&g blue:&b alpha:&a];
+            if (rgbConverted)
+            {
+                CGFloat grayValue = 0.21*r + 0.71*g + 0.07*b;
+                if(grayValue<.5)
+                    _textColor = [UIColor whiteColor];
+                else
+                    _textColor = [UIColor darkTextColor];
+            }
+            else if (grayConverted)
+            {
+                if(grayScale<.5)
+                    _textColor = [UIColor whiteColor];
+                else
+                    _textColor = [UIColor darkTextColor];
+            }
+            else{
+                _textColor = [UIColor darkTextColor];}
             
         }
         _tabTitle=title;
     }
     return self;
+}
+
+-(id) initWithTitle:(NSString *)title
+           tabColor:(UIColor*)color
+          textColor:(UIColor *)txtColor
+       tabViewStyle:(TTTabViewStyle) style
+{
+        return [self initWithTitle:title
+                          tabColor:color
+                         textColor:txtColor
+                      tabViewStyle:style
+                    tabOrientation:TTTabViewOrientationDown];
 }
 
 -(id) initWithTitle:(NSString *)title

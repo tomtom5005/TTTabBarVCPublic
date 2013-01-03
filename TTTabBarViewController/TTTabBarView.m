@@ -11,6 +11,9 @@
 #import "CoreGraphicsFunctions.h"
 
 @interface TTTabBarView ()
+{
+    CGFloat tabY, viewY, slideBarY,tabScrollY;
+}
 
 @property (nonatomic, strong) UIScrollView *tabsScrollView;
 @property (nonatomic, strong) UIView *tabsView;
@@ -42,10 +45,22 @@
            delegate:(NSObject<TTTabBarViewDelegate> *)del
          dataSource:(NSObject<TTTabBarViewDataSource> *)source
 {
+    return [self initWithFrame:frame
+                tabBarPosition:TTTabBarPositionBottom
+                      delegate:del
+                    dataSource:source];
+}
+
+- (id)initWithFrame:(CGRect)frame
+     tabBarPosition:(TTTabBarPosition)position
+           delegate:(NSObject<TTTabBarViewDelegate> *)del
+         dataSource:(NSObject<TTTabBarViewDataSource> *)source
+{
     self = [super initWithFrame:frame];
     if (self) {
         self.delegate = del;
         self.dataSource = source;
+        self.tabBarPosition = position;
         [self makeSubviews];
     }
     return self;
@@ -60,35 +75,55 @@
     self.containerView.autoresizesSubviews=YES;
 
     [self addSubview:_containerView];
+        
+    switch (_tabBarPosition) {
+        case TTTabBarPositionBottom:
+            tabY = self.bounds.size.height-kTabBarHeight-kTabSlideBarHeight;
+            viewY = 0.0;
+            slideBarY = 0.0;
+            tabScrollY = kTabSlideBarHeight;
+            break;
+            
+        case TTTabBarPositionTop:
+            tabY = 0.0;
+            viewY = kTabBarHeight+kTabSlideBarHeight;
+            slideBarY = kTabBarHeight;
+            tabScrollY = 0.0;
+            break;
+            
+        default:
+            break;
+    }
     self.tabsScrollView = [[UIScrollView alloc]
                            initWithFrame:CGRectMake(0,
-                                                    kTabSlideBarHeight,
+                                                    tabScrollY,
                                                     self.bounds.size.width,
                                                     kTabBarHeight)];
-    self.tabsScrollView.showsHorizontalScrollIndicator = YES;
+    self.tabsScrollView.showsHorizontalScrollIndicator = NO;
     self.tabsScrollView.alwaysBounceHorizontal = YES;
-    self.tabsScrollView.backgroundColor = [UIColor clearColor];
+    self.tabsScrollView.backgroundColor = [UIColor blackColor];
     self.tabsScrollView.delegate=self;
     [self.tabsScrollView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin];
-    
-    self.tabSlideBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, kTabSlideBarHeight)];
+
+    self.tabSlideBar = [[UIView alloc] initWithFrame:CGRectMake(0, slideBarY, self.bounds.size.width, kTabSlideBarHeight)];
     [self.tabSlideBar setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin];
+
     self.tabContainerView = [[UIView alloc]
                              initWithFrame:CGRectMake(0,
-                                                      self.bounds.size.height-kTabBarHeight-kTabSlideBarHeight,
+                                                      tabY,
                                                       self.bounds.size.width,
                                                       kTabBarHeight+kTabSlideBarHeight)];
-    self.tabsScrollView.backgroundColor = [UIColor blackColor];
     [self.tabContainerView addSubview:self.tabSlideBar];
     [self.tabContainerView addSubview:self.tabsScrollView];
+    self.tabContainerView.backgroundColor = [UIColor blackColor];
     [self.tabContainerView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|
      UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin];
     
     self.selectedViewContainerView.autoresizesSubviews=YES;
-    self.selectedViewContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
+    self.selectedViewContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, viewY,
                                                                               self.bounds.size.width,
                                                                               self.bounds.size.height-kTabBarHeight-kTabSlideBarHeight)];
-    
+    _selectedViewContainerView.backgroundColor = [UIColor clearColor];
     [self.containerView addSubview:self.tabContainerView];
     [self.containerView addSubview:self.selectedViewContainerView];
 
@@ -137,21 +172,23 @@
     NSMutableArray *views = nil;
     if([self.dataSource respondsToSelector:@selector(tabBarView:viewForIndex:)])
     {
-        CGFloat tabX = kInterTabPadding;
+        CGFloat x = kInterTabPadding;
         NSInteger numberOfTabs = [self.delegate numberOfTabsForTabBarView:self];
         views = [[NSMutableArray alloc]initWithCapacity:numberOfTabs];
         for(int i=0; i<numberOfTabs; i++)
         {
             TTTabItem *tab = [self.dataSource tabBarView:self tabItemForIndex:i];
-            CGFloat maxHeight = kTabBarHeight-kTabSlideBarHeight;
+            CGFloat maxHeight = kTabBarHeight;
             CGFloat tabHeight = tab.tabSize.height>maxHeight ? maxHeight : tab.tabSize.height;
-            TTTabView *tabView = [[TTTabView alloc] initWithFrame:CGRectMake(tabX,
-                                                                             0,
+            CGFloat y = self.tabBarPosition == TTTabBarPositionBottom? 0.0: maxHeight-tabHeight;
+
+            TTTabView *tabView = [[TTTabView alloc] initWithFrame:CGRectMake(x,
+                                                                             y,
                                                                              tab.tabSize.width,
                                                                              tabHeight)];
             tabView.delegate = self;
             [tabView configureWithTabItem:tab];
-            tabX+=tabView.bounds.size.width+kInterTabPadding;
+            x+=tabView.bounds.size.width+kInterTabPadding;
             [views addObject:tabView ];
             [tabsView addSubview:tabView];
         }
@@ -234,9 +271,7 @@
 
 
 -(void) didSelectTabView:(TTTabView *)tabView
-{
-    //change the form tab bar color to the tab color
-    //get the view controller and place it's view in display
+{    
     if( ! self.tabsScrollView.decelerating)
     {
         //then the tabView was selected with a tap gesture not by the end of a horizontol scroll
@@ -259,7 +294,9 @@
        //                                   self.highlight.bounds.size.height);
        // [tabView addSubview:self.highlight];
         
-        //[tabView underline];
+        TTTabView *oldTabView = [self.tabViews objectAtIndex:self.selectedTabIndex];
+        [oldTabView removeUnderline];
+        [tabView underline];
         self.selectedTabIndex = tabIndexSelected;
         [self didSelectTabItem:tabView.tabItem];
     }
@@ -301,6 +338,7 @@
     {
         newView.alpha=1;
         self.tabSlideBar.backgroundColor=item.tabColor;
+        [[self.tabViews objectAtIndex:0] underline];
     }
     self.selectedView = newView;
     
@@ -319,10 +357,10 @@
     
 -(void) sizeSelectedViewContainer
 {
-    self.selectedViewContainerView.frame = CGRectMake(0,0,
+    self.selectedViewContainerView.frame = CGRectMake(0,viewY,
                                        self.containerView.bounds.size.width,
                                        self.containerView.bounds.size.height -self.tabContainerView.bounds.size.height);
-    self.selectedView.frame = self.selectedViewContainerView.frame;
+    self.selectedView.frame = self.selectedViewContainerView.bounds;
     
     self.selectedViewContainerView.autoresizesSubviews=YES;
 }
@@ -342,11 +380,16 @@
         adjustment = centerTabView.center.x-CGRectGetMidX(self.tabsScrollView.frame)- scrollOffset.x;
         *targetContentOffset = CGPointMake(scrollOffset.x+adjustment,
                                            scrollOffset.y);
-        //self.selectedTabIndex = [self.tabViews indexOfObject:centerTabView];
         [self didSelectTabView:centerTabView];
+        self.tabViewScrollViewDeceleratedTo = centerTabView;
     }
 }
-
+/*
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self didSelectTabView:self.tabViewScrollViewDeceleratedTo];
+}
+*/
 #pragma mark - SITabView delegate method
 
 -(void) tabViewDidRecieveTapGesture:(TTTabView *)tabView

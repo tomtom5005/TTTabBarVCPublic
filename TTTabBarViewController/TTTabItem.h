@@ -16,7 +16,7 @@
 #define kHeightPadding 3
 #define kWidthPadding 4
 #define kDefaultTabBarHeight 60
-#define kLargeTabExtraWidth 82   //the amount of extra width required to be able to draw large tabs
+#define kLargeTabExtraWidth 100   //the amount of extra width required to be able to draw large tabs
 #define kMinTabHeight 24
 #define kMinTabWidth 40
 
@@ -30,6 +30,7 @@
 //YOU WANT TEXT
 
 typedef enum{TTTabViewStyleCustom, TTTabViewStyleSmallTab, TTTabViewStyleLargeTab}TTTabViewStyle;
+typedef enum{TTTabViewOrientationUp, TTTabViewOrientationDown}TTTabViewOrientation;
 
 @interface TTTabItem : NSObject
 
@@ -41,8 +42,15 @@ typedef enum{TTTabViewStyleCustom, TTTabViewStyleSmallTab, TTTabViewStyleLargeTa
 @property (nonatomic, weak) TTTabView *tabView;
 @property (nonatomic, weak) UIView *view;
 @property (assign) TTTabViewStyle tabViewStyle;
+@property (assign) TTTabViewOrientation tabOrientation;
 
 //designated initializer;
+-(id) initWithTitle:(NSString *)title
+           tabColor:(UIColor*)color
+          textColor:(UIColor *)txtColor
+       tabViewStyle:(TTTabViewStyle) style
+     tabOrientation:(TTTabViewOrientation)orientation;
+
 -(id) initWithTitle:(NSString *)title
            tabColor:(UIColor*)color
           textColor:(UIColor *)txtColor

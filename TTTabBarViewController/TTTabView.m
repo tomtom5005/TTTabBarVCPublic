@@ -10,7 +10,9 @@
 #import "TTTabItem.h"
 
 @interface TTTabView()
-
+{
+    CALayer *underlineLayer;
+}
 @property (strong, nonatomic) UILabel *label;
 @property (strong, nonatomic) UIImageView *imageView;
 
@@ -32,7 +34,7 @@
         _label.backgroundColor = [UIColor clearColor];
         _label.minimumFontSize = kMininumFontSize;
         _label.adjustsFontSizeToFitWidth = YES;
-        _label.font = [UIFont systemFontOfSize:kFontSize];
+        _label.font = [UIFont boldSystemFontOfSize:kFontSize];
         [self addSubview:_label];
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         [self addGestureRecognizer:tapGesture];
@@ -95,52 +97,88 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     if(self.tabItem.tabViewStyle != TTTabViewStyleCustom)
     {
+        //CGContextSaveGState(context);
+        
         UIBezierPath *path;
+        CGFloat height;
+        CGFloat width;
+
         switch (self.tabItem.tabViewStyle)
         {
             case TTTabViewStyleSmallTab:
+                height = self.bounds.size.height;
+                width = self.bounds.size.width;
                 path=[UIBezierPath bezierPathWithRoundedRect:self.bounds
                                            byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight
-                                                 cornerRadii:CGSizeMake(12, 12)];
+                                                 cornerRadii:CGSizeMake(8,8)];
+                
+                CGContextSetShadowWithColor(context, CGSizeMake(2,2), 2.0, [UIColor colorWithRed:105.0/255.0
+                                                                                           green:105.0/255.0
+                                                                                            blue:141.0/255.0
+                                                                                           alpha:7].CGColor);
                 break;
             case TTTabViewStyleLargeTab:
             {
-                CGFloat height = self.bounds.size.height - kShadowOffset;
-                CGFloat width = self.bounds.size.width - kShadowOffset;
+                height = self.bounds.size.height - kShadowOffset;
+                width = self.bounds.size.width - kShadowOffset;
                 path = [UIBezierPath bezierPath];
                 [path moveToPoint:self.bounds.origin];
-                [path addCurveToPoint:CGPointMake(kLargeTabExtraWidth/3, height/2)
-                        controlPoint1:CGPointMake(-kLargeTabExtraWidth/4, self.bounds.origin.y)
-                        controlPoint2:CGPointMake(kLargeTabExtraWidth/3, self.bounds.origin.y)];
-                [path addLineToPoint:CGPointMake(kLargeTabExtraWidth/3 , height-8)];
-                [path addArcWithCenter:CGPointMake( (kLargeTabExtraWidth/3)+8, height-8) radius:8 startAngle:M_PI endAngle:M_PI_2 clockwise:NO];
-                                [path addLineToPoint:CGPointMake(width-(kLargeTabExtraWidth/3)-8, height)];
-                [path addArcWithCenter:CGPointMake(width-(kLargeTabExtraWidth/3)-8, height-8) radius:8 startAngle:3*M_PI_2 endAngle:2*M_PI clockwise:NO];
-                [path addLineToPoint:CGPointMake(width- kLargeTabExtraWidth/3,height/2)];
+                [path addCurveToPoint:CGPointMake(kLargeTabExtraWidth/4, height/2)
+                        controlPoint1:CGPointMake(-kLargeTabExtraWidth/5, self.bounds.origin.y)
+                        controlPoint2:CGPointMake(kLargeTabExtraWidth/4, self.bounds.origin.y)];
+                [path addLineToPoint:CGPointMake(kLargeTabExtraWidth/4 , height-8)];
+                [path addArcWithCenter:CGPointMake( (kLargeTabExtraWidth/4)+8, height-8) radius:8 startAngle:M_PI endAngle:M_PI_2 clockwise:NO];
+                                [path addLineToPoint:CGPointMake(width-(kLargeTabExtraWidth/4)-8, height)];
+                [path addArcWithCenter:CGPointMake(width-(kLargeTabExtraWidth/4)-8, height-8) radius:8 startAngle:3*M_PI_2 endAngle:2*M_PI clockwise:NO];
+                [path addLineToPoint:CGPointMake(width- kLargeTabExtraWidth/4,height/2)];
                 [path addCurveToPoint:CGPointMake(width, self.bounds.origin.y)
-                        controlPoint1:CGPointMake(width-kLargeTabExtraWidth/3, self.bounds.origin.y)
-                        controlPoint2:CGPointMake(width+kLargeTabExtraWidth/4, self.bounds.origin.y)];
+                        controlPoint1:CGPointMake(width-kLargeTabExtraWidth/4, self.bounds.origin.y)
+                        controlPoint2:CGPointMake(width+kLargeTabExtraWidth/5, self.bounds.origin.y)];
 
                 [path addLineToPoint:self.bounds.origin];
                 [path closePath];
+                
+                CGContextSetShadowWithColor(context, CGSizeMake(2,2), 2.0, [UIColor colorWithRed:105.0/255.0
+                                                                                           green:105.0/255.0
+                                                                                            blue:141.0/255.0
+                                                                                           alpha:7].CGColor);
                 break;
             }
             default:
                 break;
         }
-        [self.tabItem.tabColor setFill];
-        
-        //[path addClip];
-        //CGContextSaveGState(context);
-        CGContextSetShadowWithColor(context, CGSizeMake(2,2), 2.0, [UIColor colorWithRed:95.0/255.0
-                                                                                    green:92.0/255.0
-                                                                                     blue:141.0/255.0
-                                                                                alpha:7].CGColor);
+        if (_tabItem.tabOrientation == TTTabViewOrientationUp) {
+            //transform
+            CGContextTranslateCTM (context, width,height+kShadowOffset);
+            CGContextRotateCTM(context, M_PI);
+        }
+                [self.tabItem.tabColor setFill];
         [path fill];
+
 
        // CGContextRestoreGState(context);
     }
 }
+
+-(void)underline
+{
+    if(! underlineLayer)
+    {
+        CGSize textSize = [_tabItem.tabTitle sizeWithFont:_label.font];
+        CALayer *layer = [CALayer layer];
+        layer.bounds = CGRectMake(0,0,textSize.width,2);
+        layer.position = CGPointMake(CGRectGetMidX(_label.bounds), (CGRectGetMaxY(_label.bounds) - 5.0f) );
+        layer.backgroundColor = _tabItem.textColor.CGColor;
+        underlineLayer = layer;
+    }
+    [self.label.layer addSublayer:underlineLayer];
+}
+
+-(void)removeUnderline
+{
+    [underlineLayer removeFromSuperlayer];
+}
+
 
 -(void) handleTap:(UITapGestureRecognizer *)sender
 {

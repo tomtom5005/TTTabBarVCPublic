@@ -48,12 +48,15 @@
     TTAppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
     NSArray *colors = appDelegate.colors;
     NSUInteger cnt = kColorsMultiple *[colors count] + kNumberOfDemoViewControllers;
-    defaultTabColor = [UIColor colorWithRed:40.0f/255.0f green:60.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
+    defaultTabColor = [UIColor colorWithRed:80.0f/255.0f green:90.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
 
-   tabBarView = [[TTTabBarView alloc] initWithFrame:self.containerView.bounds
-                                                          delegate:self
-                                                        dataSource:self];
+    tabBarView = [[TTTabBarView alloc] initWithFrame:self.containerView.bounds
+                                      tabBarPosition:TTTabBarPositionTop
+                                            delegate:self
+                                          dataSource:self];
+    
     [self.containerView addSubview:tabBarView];
+    //self.containerView.backgroundColor = [UIColor purpleColor];
     self.toolBar.tintColor = [UIColor colorWithWhite:.4 alpha:1];
     
 	//now we will do somthing bogus but it is just to create viewControllers and tabs for the tab view controller
@@ -72,7 +75,7 @@
         for (int i = 0; i<[colors count]; i++)
         {
             UIViewController *vc = [[UIViewController alloc] initWithNibName:nil bundle:nil];
-            UIView *v = [[UIView alloc] initWithFrame:tabBarView.selectedViewContainerView.frame];
+            UIView *v = [[UIView alloc] initWithFrame:tabBarView.selectedViewContainerView.bounds];
             UIImageView *imgView = [[UIImageView alloc] initWithImage:self.greyGradientImage];
             [v addSubview:imgView];
             
@@ -86,7 +89,7 @@
             colorPatch.backgroundColor = [UIColor clearColor];
             [v addSubview:colorPatch];
             CGFloat x = tabBarView.selectedViewContainerView.frame.origin.x;
-            CGFloat y = tabBarView.selectedViewContainerView.frame.origin.y + tabBarView.selectedViewContainerView.bounds.size.height - 50;
+            CGFloat y = colorPatch.frame.origin.y + colorPatch.bounds.size.height + 60;
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(x,y,
                                                                        tabBarView.selectedViewContainerView.bounds.size.width,
                                                                        30)];
@@ -100,10 +103,11 @@
             label.text = [NSString stringWithFormat:@"%@ %d",NSLocalizedString(@"View #",@"View #"),viewNumber];
             [v addSubview:label];
             vc.view = v;
-            
             [viewControllers addObject:vc];
+            
             NSString *title = [NSString stringWithFormat:@"View %d",viewNumber];
-            TTTabItem *tab = [[TTTabItem alloc] initWithTitle:title tabColor:colors[i] textColor:nil tabViewStyle:TTTabViewStyleLargeTab];
+            TTTabViewOrientation orientation = tabBarView.tabBarPosition == TTTabBarPositionBottom ? TTTabViewOrientationDown : TTTabViewOrientationUp;
+            TTTabItem *tab = [[TTTabItem alloc] initWithTitle:title tabColor:colors[i] textColor:nil tabViewStyle:TTTabViewStyleLargeTab tabOrientation:orientation];
             [tabItems addObject:tab];
         }
     }
@@ -162,7 +166,7 @@
 
 -(IBAction) addViewToBarButton:(id)sender
 {
-    // add view to button
+    // add view to button - suck animation
 }
 
 -(IBAction) lockScreen:(id)sender
@@ -187,10 +191,13 @@
               withTabText: (NSString *)tabText
 {
     [viewControllers addObject:VC];
+    TTTabViewOrientation orientation = tabBarView.tabBarPosition == TTTabBarPositionBottom ? TTTabViewOrientationDown : TTTabViewOrientationUp;
+
     TTTabItem *VCTab = [[TTTabItem alloc] initWithTitle:tabText
                                                tabColor:defaultTabColor
                                               textColor:nil
-                                           tabViewStyle:TTTabViewStyleLargeTab];
+                                           tabViewStyle:TTTabViewStyleLargeTab
+                                         tabOrientation:orientation];
     [tabItems addObject:VCTab];
 }
 
@@ -198,7 +205,7 @@
 {
     if(!_cubeVC){
         TTCubeViewController *vc = [[TTCubeViewController alloc] init];
-        UIView *v = [[UIView alloc] initWithFrame:tabBarView.selectedViewContainerView.frame];
+        UIView *v = [[UIView alloc] initWithFrame:tabBarView.selectedViewContainerView.bounds];
         vc.view = v;
         [vc setUp];
         self.cubeVC = vc;
@@ -214,7 +221,7 @@
         self.foldTransitionsVC = [[TTFoldTransitionsViewController alloc] init];
         NSString *title = NSLocalizedString(@"Fold Transitions",@"Fold Transitions");
         
-        UIView *v = [[UIView alloc] initWithFrame:tabBarView.selectedViewContainerView.frame];
+        UIView *v = [[UIView alloc] initWithFrame:tabBarView.selectedViewContainerView.bounds];
         self.foldTransitionsVC.view = v;
         [_foldTransitionsVC setUp];
         [self addViewController:self.foldTransitionsVC
@@ -240,9 +247,6 @@
 {
     return tabItems[index];
 }
-
-
-
 
 
 @end

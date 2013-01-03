@@ -37,10 +37,18 @@ typedef enum {TTTabBarTypeStandardTabs, TTTabBarTypeLargeTabs, TTTabBarTypeCusto
 @property (weak, nonatomic) id dataSource;
 @property (assign) TTTabBarPosition tabBarPosition;
 @property (assign) TTTabBarType tabBarType;
+@property (strong, nonatomic) TTTabView *tabViewScrollViewDeceleratedTo;
+
+//designated init
+- (id)initWithFrame:(CGRect)frame
+     tabBarPosition:(TTTabBarPosition)position
+           delegate:(id)del
+         dataSource:(id)source;
 
 - (id)initWithFrame:(CGRect)frame
-    delegate:(id)del
+           delegate:(id)del
          dataSource:(id)source;
+
 -(void) reloadData;
 @end
 

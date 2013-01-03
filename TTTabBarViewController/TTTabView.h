@@ -25,6 +25,8 @@
 @property (nonatomic, strong) TTTabItem *tabItem;
 @property (nonatomic, weak) id delegate;
 
+-(void)underline;
+-(void)removeUnderline;
 @end
 
 @protocol TTTabViewDelegate <NSObject>

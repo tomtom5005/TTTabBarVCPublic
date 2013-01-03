@@ -40,13 +40,13 @@
     }
     return self;
 }
-
+/*
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self setUp];
 }
-
+*/
 -(void) setUp
 {
     appDelegate = [[UIApplication sharedApplication] delegate];

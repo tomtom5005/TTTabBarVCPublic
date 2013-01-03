@@ -82,11 +82,6 @@
     UISwipeGestureRecognizer *swipeDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeDown:)];
     swipeDown.direction = UISwipeGestureRecognizerDirectionDown;
 	[self addGestureRecognizer:swipeDown];
-    /*
-    CATransform3D initialTransform = self.layer.sublayerTransform;
-	initialTransform.m34 = -1.0 /kPerspectiveZ;
-	self.layer.sublayerTransform = initialTransform;
-     */
 }
 
 -(NSUInteger) numberOfViews
