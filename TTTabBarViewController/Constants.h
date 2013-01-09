@@ -7,3 +7,9 @@
 //
 
 #define kPerspectiveZ 850
+#define kLandscapeKeyboardHeight 352
+#define kPortraitKeyboardHeight 264
+// In the real world the following would be loaded from a url
+#define kMinPinLength 6
+#define kPatternGridSize 4
+#define kMinPatternLength 6

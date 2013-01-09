@@ -10,14 +10,18 @@
 #import "TTFoldTransitionsView.h"
 #import "TTColorPatchView.h"
 #import "TTAppDelegate.h"
+#import "TTTabBarView.h"
 
 @interface TTFoldTransitionsViewController ()
 {
     NSMutableDictionary *foldTransitionsViews;
     TTAppDelegate *appDelegate;
+    CALayer *gradientLayer;
+    UIImage *landscapeGradientImg;
+    UIImage *portraitGradientImg;
 }
 @property (nonatomic, weak) UIImage *blueGradientImage; //special getter
-@property (nonatomic, weak) IBOutlet TTFoldTransitionsView * foldTransitionsView;
+@property (nonatomic, weak) TTFoldTransitionsView * foldTransitionsView;
 
 -(TTColorPatchView *) colorPatchViewForColor:(UIColor *)color;
 -(TTColorPatchView *) colorPatchViewForColorAtIndex:(NSUInteger)index;
@@ -47,13 +51,28 @@
     [self setUp];
 }
 */
+-(void) dealloc
+{
+    NSNotificationCenter *ns = [NSNotificationCenter defaultCenter];
+    [ns removeObserver:self];
+}
+
+-(void) viewWillLayoutSubviews
+{
+    CGFloat x = CGRectGetMidX(self.view.bounds);
+    CGFloat y = CGRectGetMidY(self.view.bounds);
+    self.foldTransitionsView.center = CGPointMake(x,y);
+    gradientLayer.bounds = self.view.bounds;
+    gradientLayer.position = CGPointMake(x,y);
+    gradientLayer.contents = (__bridge id) self.blueGradientImage.CGImage;
+}
+
 -(void) setUp
 {
     appDelegate = [[UIApplication sharedApplication] delegate];
-    CALayer *gradientLayer = [CALayer layer];
+    gradientLayer = [CALayer layer];
     gradientLayer.frame = self.view.frame;
     gradientLayer.contents = (__bridge id) self.blueGradientImage.CGImage;
-    gradientLayer.backgroundColor = [UIColor blackColor].CGColor;
     [self.view.layer addSublayer:gradientLayer];
     CGRect frame = CGRectMake ((self.view.bounds.size.width-kFoldTransitionsViewWidth)/2,
                                (self.view.bounds.size.height-kFoldTransitionsViewHeight)/2,
@@ -63,8 +82,12 @@
     TTFoldTransitionsView *tView = [[TTFoldTransitionsView alloc] initWithFrame:frame dataSource:self];
     self.foldTransitionsView = tView;
     self.foldTransitionsView.delegate=self;
-    self.foldTransitionsView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.foldTransitionsView];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(viewWillAppearInTabBarView:)
+               name:TTTabBarViewSelectedViewWillChangeToViewNotification
+             object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -77,11 +100,28 @@
 
 #pragma mark - accessors
 
-
 -(UIImage *) blueGradientImage
 {
-    if( ! _blueGradientImage)
+    BOOL imageCreated = NO;
+    switch (self.interfaceOrientation)
     {
+        case UIInterfaceOrientationLandscapeLeft:
+        case UIInterfaceOrientationLandscapeRight:
+            if (landscapeGradientImg) {
+                imageCreated = YES;
+                _blueGradientImage = landscapeGradientImg;
+            }
+            break;
+        case UIInterfaceOrientationPortrait:
+        case UIInterfaceOrientationPortraitUpsideDown:
+            if (portraitGradientImg) {
+                imageCreated = YES;
+                _blueGradientImage = portraitGradientImg;
+            }
+            break;
+    }
+    if( ! imageCreated)
+    {        
         CGFloat colors[13] = {20.0/255.0, 33.0/255.0, 104.0/255.0, 0.8,
             33.0/255.0, 47.0/255.0, 114.0/255.0, 1.0,
             48.0/255, 61.0/255, 114.0/255.0, 1.0,};
@@ -90,7 +130,7 @@
         CGGradientRef blueGradient = CGGradientCreateWithColorComponents(colorSpace, colors, locations, 2);
         CGColorSpaceRelease(colorSpace);
         
-        //create a grey gardient for the views background
+        //create a blue gradient for the views background
         UIGraphicsBeginImageContext(self.view.bounds.size);
         
         CGContextRef ctx = UIGraphicsGetCurrentContext();
@@ -100,12 +140,22 @@
                                        CGRectGetMaxY(self.view.bounds));
         CGContextDrawLinearGradient(ctx, blueGradient, startPoint, endPoint, 0);
         _blueGradientImage = UIGraphicsGetImageFromCurrentImageContext();
-        
+        switch (self.interfaceOrientation)
+        {
+            case UIInterfaceOrientationLandscapeLeft:
+            case UIInterfaceOrientationLandscapeRight:
+                landscapeGradientImg = _blueGradientImage;
+                break;
+            case UIInterfaceOrientationPortrait:
+            case UIInterfaceOrientationPortraitUpsideDown:
+                portraitGradientImg = _blueGradientImage;
+                break;
+        }
         UIGraphicsEndImageContext();
-        
     }
     return _blueGradientImage;
 }
+
 
 #pragma mark - other TTFoldTransitionsViewController methods
 
@@ -135,6 +185,17 @@
     return colorPatch;
 }
 
+#pragma mark - TTTabBarView Notification Methods
+
+-(void) viewWillAppearInTabBarView:(NSNotification *)note
+{
+    if(self.view == note.userInfo[@"View"])
+    {
+        TTTabBarView *tabBarView = (TTTabBarView *)note.object;
+        self.view.frame = tabBarView.selectedViewContainerView.bounds;
+        [self.view setNeedsLayout];
+    }
+}
 
 #pragma mark - TTFoldTransitionsView Data Source methods
 

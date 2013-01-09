@@ -10,6 +10,10 @@
 #import "TTTabItem.h"
 #import "CoreGraphicsFunctions.h"
 
+NSString *const TTTabBarViewSelectedTabDidChangeFromTabAtIndexNotification = @"TTTabBarViewSelectedTabDidChangeFromTabAtIndexNotification";
+NSString *const TTTabBarViewSelectedViewWillChangeToViewNotification = @"TTTabBarViewSelectedViewWillChangeToViewNotification";
+NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification = @"TTTabBarViewSelectedViewDidChangeToViewNotification";
+
 @interface TTTabBarView ()
 {
     CGFloat tabY, viewY, slideBarY,tabScrollY;
@@ -71,9 +75,8 @@
     self.highlight = nil;
     self.containerView =[[UIView alloc] initWithFrame:self.bounds];
     [self.containerView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight|
-     UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
+                                            UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
     self.containerView.autoresizesSubviews=YES;
-
     [self addSubview:_containerView];
         
     switch (_tabBarPosition) {
@@ -115,9 +118,8 @@
                                                       kTabBarHeight+kTabSlideBarHeight)];
     [self.tabContainerView addSubview:self.tabSlideBar];
     [self.tabContainerView addSubview:self.tabsScrollView];
-    self.tabContainerView.backgroundColor = [UIColor blackColor];
-    [self.tabContainerView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|
-     UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin];
+    [self.tabContainerView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight |
+                            UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin];
     
     self.selectedViewContainerView.autoresizesSubviews=YES;
     self.selectedViewContainerView = [[UIView alloc] initWithFrame:CGRectMake(0, viewY,
@@ -207,10 +209,7 @@
     CGFloat maxCenterX = self.tabsView.bounds.size.width-midWay;;
     centerX = maxCenterX<centerX ? maxCenterX : centerX;
     
-    //CGFloat centerY = 1;
-    //CGPoint centerPt = CGPointMake(centerX, centerY);
     TTTabView *centerTabView = nil;
-   // CGFloat deltaX=2*midWay;
     for (TTTabView *tv in self.tabViews)
     {
         if(CGRectGetMaxX(tv.frame) >centerX)
@@ -307,7 +306,10 @@
 {
     if([_delegate respondsToSelector:@selector(tabBarView:selectedTabDidChangeFromTabAtIndex:)])
         [_delegate tabBarView:self selectedTabDidChangeFromTabAtIndex:self.selectedTabIndex];
-    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc postNotificationName:TTTabBarViewSelectedTabDidChangeFromTabAtIndexNotification
+                  object:self
+                    userInfo:@{@"Index" : [NSNumber numberWithInteger:self.selectedTabIndex]}];
     
     UIView * newView = [self.dataSource tabBarView:self viewForIndex:self.selectedTabIndex];
     [newView setAlpha: 0];
@@ -316,7 +318,10 @@
     
     if([self.delegate respondsToSelector:@selector(tabBarView:selectedViewWillChangeToView:)])
         [self.delegate tabBarView:self selectedViewWillChangeToView:newView];
-    
+    [nc postNotificationName:TTTabBarViewSelectedViewWillChangeToViewNotification
+                  object:self
+                userInfo:@{@"View" : newView}];
+
     //TODO: In the animation block,or before it,we should add a highlight glow like on pivotal
     //tracker start tracking button for the selected tab. We would just leaving glowing as long
     //as tab is selected tab Also we will need to change
@@ -344,6 +349,9 @@
     
     if([_delegate respondsToSelector:@selector(tabBarView:selectedViewDidChangeToView:)])
         [_delegate tabBarView:self selectedViewDidChangeToView:newView];
+    [nc postNotificationName:TTTabBarViewSelectedViewDidChangeToViewNotification
+                      object:self
+                    userInfo:@{@"View" : newView}];
 }
 
     

@@ -7,6 +7,7 @@
 //
 
 #import "TTCubeViewController.h"
+#import "TTTabBarView.h"
 
 @interface TTCubeViewController ()
 {
@@ -39,17 +40,38 @@
     return self;
 }
 
+-(void) dealloc
+{
+    NSNotificationCenter *ns = [NSNotificationCenter defaultCenter];
+    [ns removeObserver:self];
+}
+
+-(void) viewWillLayoutSubviews
+{
+    containerLayer.frame = self.view.bounds;
+    CGFloat centerX = CGRectGetMidX(containerLayer.bounds);
+    CGFloat centerY = CGRectGetMidY(containerLayer.bounds);
+    back.position = CGPointMake(centerX, centerY);
+    front.position = CGPointMake(centerX, centerY + kBoxSideWidth/2);
+    left.position = CGPointMake(centerX-kBoxSideWidth/2, centerY);
+    right.position = CGPointMake(centerX + kBoxSideWidth/2, centerY);
+    bottom.position = CGPointMake(centerX, centerY + kBoxSideWidth/2);
+    top.position = CGPointMake(centerX, centerY - kBoxSideWidth/2);
+}
+
 - (void)setUp
 {
-    self.containerView = [[UIView alloc] initWithFrame:self.view.bounds];
-    [self.view addSubview:_containerView];
+    //self.view.autoresizesSubviews = YES;
     
+    self.containerView = [[UIView alloc] initWithFrame:self.view.bounds];
+    self.containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight |
+                                            UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
+    [self.view addSubview:_containerView];
     UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
 	[self.containerView addGestureRecognizer:pan];
 	
 	UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
     tap.numberOfTapsRequired = 1;
-
 	[self.containerView addGestureRecognizer:tap];
 	
 	UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTap:)];
@@ -63,10 +85,6 @@
 	initialTransform.m34 = -1.0 /kPerspectiveZ;
 	containerLayer.sublayerTransform = initialTransform;
     
-    //first create six sublayers and add them to the views sublayer
-    CGFloat centerX = CGRectGetMidX(containerLayer.bounds);
-    CGFloat centerY = CGRectGetMidY(containerLayer.bounds);
-    
     UIColor *borderColor = [UIColor whiteColor];
     CGRect sideBounds = CGRectMake(0,0,
                                    kBoxSideWidth,
@@ -76,7 +94,6 @@
     back.backgroundColor = [UIColor redColor].CGColor;
     back.borderColor = borderColor.CGColor;
     back.borderWidth = 4.0;
-    back.position = CGPointMake(centerX, centerY);
     [containerLayer addSublayer:back];
     
     front =[CALayer layer];
@@ -85,7 +102,6 @@
     front.borderColor = borderColor.CGColor;
     front.borderWidth = 4.0;
     front.anchorPoint = CGPointMake(0.5, 1.0);
-    front.position = CGPointMake(centerX, centerY + kBoxSideWidth/2);
     front.zPosition = 1;
     [containerLayer addSublayer:front];
     
@@ -96,8 +112,6 @@
     left.borderColor = borderColor.CGColor;
     left.borderWidth = 4.0;
     left.anchorPoint = CGPointMake(1.0, 0.5);
-    left.position = CGPointMake(centerX-kBoxSideWidth/2, centerY);
-    
     [containerLayer addSublayer:left];
     
     right =[CALayer layer];
@@ -106,7 +120,6 @@
     right.borderColor = borderColor.CGColor;
     right.borderWidth = 4.0;
     right.anchorPoint = CGPointMake(0.0, 0.5);
-    right.position = CGPointMake(centerX + kBoxSideWidth/2, centerY);
     [containerLayer addSublayer:right];
     
     bottom =[CALayer layer];
@@ -115,7 +128,6 @@
     bottom.borderColor = borderColor.CGColor;
     bottom.borderWidth = 4.0;
     bottom.anchorPoint = CGPointMake(0.5, 0.0);
-    bottom.position = CGPointMake(centerX, centerY + kBoxSideWidth/2);
     [containerLayer addSublayer:bottom];
     
     top =[CALayer layer];
@@ -124,8 +136,6 @@
     top.borderColor = borderColor.CGColor;
     top.borderWidth = 4.0;
     top.anchorPoint = CGPointMake(0.5, 1.0);
-    top.position = CGPointMake(centerX, centerY - kBoxSideWidth/2);
-
     [containerLayer addSublayer:top];
      
     [self.containerView.layer addSublayer:containerLayer];
@@ -135,11 +145,12 @@
     [self performSelector:@selector(makeBox) withObject:nil afterDelay:0.5];
     cubeExists=YES;
     boxClosed = YES;
-}
-
--(IBAction) animateCube:(id)sender
-{
     
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(viewWillAppearInTabBarView:)
+               name:TTTabBarViewSelectedViewWillChangeToViewNotification
+             object:nil];
+
 }
 
 -(void) doubleTap:(UITapGestureRecognizer *)gesture
@@ -229,6 +240,19 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark - TTTabBarView Notification Methods
+
+-(void) viewWillAppearInTabBarView:(NSNotification *)note
+{
+    if(self.view == note.userInfo[@"View"])
+    {
+        TTTabBarView *tabBarView = (TTTabBarView *)note.object;
+        self.view.frame = tabBarView.selectedViewContainerView.bounds;
+        [self.view setNeedsLayout];
+    }
 }
 
 @end

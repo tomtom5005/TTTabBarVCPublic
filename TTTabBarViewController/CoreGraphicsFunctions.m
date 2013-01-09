@@ -1,11 +1,9 @@
 //
 //  CoreGraphicsFunctions.m
-//  Shareable-Ink
 //
 //  Created by Thomas Thompson on 10/29/12.
-//  Copyright (c) 2012 Shareable Ink. All rights reserved.
+//  Copyright (c) 2012 Thomas Thompson. All rights reserved.
 //
-
 
 
 #import "CoreGraphicsFunctions.h"
@@ -27,7 +25,7 @@ CGMutablePathRef roundCornersOfRect(CGRect rect, CGFloat radius) {
     return path;
 }
 
-void fillRectWithGradient(CGContextRef context, CGRect rect, CGColorRef startColor, CGColorRef  endColor, SIGradientDirection gradientDirection)
+void fillRectWithGradient(CGContextRef context, CGRect rect, CGColorRef startColor, CGColorRef  endColor, TTGradientDirection gradientDirection)
 {
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGFloat locations[] = { 0.0, 1.0 };
@@ -37,12 +35,12 @@ void fillRectWithGradient(CGContextRef context, CGRect rect, CGColorRef startCol
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef) colors, locations);
     CGPoint startPoint;
     CGPoint endPoint;
-    if (gradientDirection == SIGradientDirectionBottomToTop)
+    if (gradientDirection == TTGradientDirectionBottomToTop)
     {
         startPoint = CGPointMake(CGRectGetMidX(rect), CGRectGetMinY(rect));
         endPoint = CGPointMake(CGRectGetMidX(rect), CGRectGetMaxY(rect));
     }
-    else    //left to right gradient (SIGradientDirectionLeftToRight)
+    else    //left to right gradient (TTGradientDirectionLeftToRight)
     {
         startPoint = CGPointMake(CGRectGetMidY(rect), CGRectGetMinX(rect));
         endPoint = CGPointMake(CGRectGetMidY(rect), CGRectGetMaxX(rect));
@@ -57,31 +55,31 @@ void fillRectWithGradient(CGContextRef context, CGRect rect, CGColorRef startCol
 }
 
 
-void fillRectWithGradientAndAddSheen(CGContextRef context, CGRect rect, CGColorRef startColor, CGColorRef endColor, SIGradientDirection gradientDirection, SIRectHalf sheenSide)
+void fillRectWithGradientAndAddSheen(CGContextRef context, CGRect rect, CGColorRef startColor, CGColorRef endColor, TTGradientDirection gradientDirection, TTRectHalf sheenSide)
 {
     fillRectWithGradient(context, rect, startColor, endColor,gradientDirection);
     addSheenToRect(context, rect, sheenSide);
 }
 
 
-void addSheenToRect(CGContextRef context, CGRect rect, SIRectHalf sheenSide)
+void addSheenToRect(CGContextRef context, CGRect rect, TTRectHalf sheenSide)
 {
     CGColorRef sheenColor1 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.35].CGColor;
     CGColorRef sheenColor2 = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.1].CGColor;
     
     CGRect rectHalf;
-    SIGradientDirection gradientDirection;
+    TTGradientDirection gradientDirection;
     switch (sheenSide)
     {
-        case SIRectHalfLeft:
+        case TTRectHalfLeft:
             rectHalf = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width/2, rect.size.height);
-            gradientDirection = SIGradientDirectionLeftToRight;
+            gradientDirection = TTGradientDirectionLeftToRight;
             break;
             
-        case SIRectHalfRight:
+        case TTRectHalfRight:
         {
             rectHalf = CGRectMake(CGRectGetMidX(rect), rect.origin.y, rect.size.width/2, rect.size.height);
-            gradientDirection = SIGradientDirectionLeftToRight;
+            gradientDirection = TTGradientDirectionLeftToRight;
             //reverse colors
             CGColorRef temp = sheenColor1;
             sheenColor1 = sheenColor2;
@@ -89,10 +87,10 @@ void addSheenToRect(CGContextRef context, CGRect rect, SIRectHalf sheenSide)
             break;
         }
             
-        case SIRectHalfBottom:
+        case TTRectHalfBottom:
         {
             rectHalf = CGRectMake(rect.origin.x, CGRectGetMidY(rect), rect.size.width, rect.size.height/2);
-            gradientDirection = SIGradientDirectionBottomToTop;
+            gradientDirection = TTGradientDirectionBottomToTop;
             //reverse colors
             CGColorRef temp = sheenColor1;
             sheenColor1 = sheenColor2;
@@ -100,9 +98,9 @@ void addSheenToRect(CGContextRef context, CGRect rect, SIRectHalf sheenSide)
             break;
         }
             
-        case SIRectHalfTop:
+        case TTRectHalfTop:
             rectHalf = CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height/2);
-            gradientDirection = SIGradientDirectionBottomToTop;
+            gradientDirection = TTGradientDirectionBottomToTop;
             break;
             
         default:
@@ -114,7 +112,7 @@ void addSheenToRect(CGContextRef context, CGRect rect, SIRectHalf sheenSide)
 }
 
 
-void fillCircleWithRadialGradient (CGContextRef context, CGPoint center, CGFloat radius, UIColor *outerColor, UIColor *pointColor, SIRadialGradientFocalPoint focus)
+void fillCircleWithRadialGradient (CGContextRef context, CGPoint center, CGFloat radius, UIColor *outerColor, UIColor *pointColor, TTRadialGradientFocalPoint focus)
 {
     //CGRect rect = CGRectMake(center.x-radius, center.y-radius, 2*radius, 2*radius);
     CGPoint endPt;
@@ -125,39 +123,39 @@ void fillCircleWithRadialGradient (CGContextRef context, CGPoint center, CGFloat
      */
     switch (focus)
     {
-        case SIRadialGradientFocalPointCenterLeft:
+        case TTRadialGradientFocalPointCenterLeft:
             endPt = CGPointMake(center.x-(0.5*radius), center.y);
             break;
             
-        case SIRadialGradientFocalPointUpperLeft:
+        case TTRadialGradientFocalPointUpperLeft:
             endPt = CGPointMake(center.x + (0.5*radius)*cos(1.25*M_PI), center.y + (.05*radius*sin(1.25*M_PI)));
             break;
             
-        case SIRadialGradientFocalPointUpperCenter:
+        case TTRadialGradientFocalPointUpperCenter:
             endPt = CGPointMake(center.x, center.y+(0.5*radius));
             break;
             
-        case SIRadialGradientFocalPointUpperRight:
+        case TTRadialGradientFocalPointUpperRight:
             endPt = CGPointMake(center.x + (0.5*radius)*cos(1.75*M_PI), center.y + (.05*radius*sin(1.75*M_PI)));
             break;
             
-        case SIRadialGradientFocalPointCenterRight:
+        case TTRadialGradientFocalPointCenterRight:
             endPt = CGPointMake(center.x-(0.5*radius), center.y);
             break;
             
-        case SIRadialGradientFocalPointLowerRight:
+        case TTRadialGradientFocalPointLowerRight:
             endPt = CGPointMake(center.x+(0.5*radius*cos(.25*M_PI)), center.y+(.05*radius*sin(.25*M_PI)));
             break;
             
-        case SIRadialGradientFocalPointLowerCenter:
+        case TTRadialGradientFocalPointLowerCenter:
             endPt = CGPointMake(center.x, center.y+(0.5*radius));
             break;
             
-        case SIRadialGradientFocalPointLowerLeft:
+        case TTRadialGradientFocalPointLowerLeft:
             CGPointMake(center.x+(0.5*radius*cos(.75*M_PI)), center.y+(.05*radius*sin(.75*M_PI)));
             break;
             
-        case SIRadialGradientFocalPointCenter:
+        case TTRadialGradientFocalPointCenter:
             endPt = CGPointMake(center.x, center.y);
             break;
             

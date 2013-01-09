@@ -13,6 +13,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Constants.h"
 
+NSString *const TTTabBarViewSelectedViewWillChangeToViewNotification; //declared in TTTabBarView
+
 @interface TTCubeViewController : UIViewController
 
 @property (nonatomic, strong)  UIView *containerView;

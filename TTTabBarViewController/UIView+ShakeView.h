@@ -1,0 +1,14 @@
+//
+//  UIView+ShakeView.h
+//  TTTabBarViewController
+//
+//  Created by Thomas Thompson on 1/3/13.
+//  Copyright (c) 2013 Thomas Thompson. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface UIView (ShakeView)
+-(void) shakeViewNTimes:(NSUInteger)numShakes startLeft:(BOOL)startLeft completion:(void(^)(void))completion;
+@end
+

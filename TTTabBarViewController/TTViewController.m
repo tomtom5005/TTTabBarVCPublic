@@ -9,18 +9,17 @@
 #import "TTViewController.h"
 #import "TTTabItem.h"
 #import "TTTabBarView.h"
-#import "TTColorPatchView.h"
 #import "TTCubeViewController.h"
 #import "TTFoldTransitionsViewController.h"
+#import "TTPinCreateViewController.h"
 #import "TTAppDelegate.h"
-
+#import "TTColorPatchViewController.h"
 
 @interface TTViewController ()
 {
     TTTabBarView *tabBarView;
     NSMutableArray * viewControllers;
     NSMutableArray *tabItems;
-    TTColorPatchView *colorPatch;
     UIColor *defaultTabColor;  
 }
 
@@ -33,9 +32,11 @@
 @property (strong, nonatomic) UIImage *greyGradientImage;
 @property (strong, nonatomic) TTCubeViewController *cubeVC;
 @property (strong, nonatomic) TTFoldTransitionsViewController *foldTransitionsVC;
+@property (strong, nonatomic) TTPinCreateViewController *PINCreateVC;;
 
 -(void) setUpCubeViewController;
 -(void) setUpFoldTransitionsViewController;
+-(void) setUpPINCreateViewController;
 -(void) addViewController:(UIViewController *)VC
               withTabText: (NSString *)tabText;
 @end
@@ -51,12 +52,13 @@
     defaultTabColor = [UIColor colorWithRed:80.0f/255.0f green:90.0f/255.0f blue:150.0f/255.0f alpha:1.0f];
 
     tabBarView = [[TTTabBarView alloc] initWithFrame:self.containerView.bounds
-                                      tabBarPosition:TTTabBarPositionTop
+                                      tabBarPosition:TTTabBarPositionBottom
                                             delegate:self
                                           dataSource:self];
+    tabBarView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth |
+                                    UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
     
     [self.containerView addSubview:tabBarView];
-    //self.containerView.backgroundColor = [UIColor purpleColor];
     self.toolBar.tintColor = [UIColor colorWithWhite:.4 alpha:1];
     
 	//now we will do somthing bogus but it is just to create viewControllers and tabs for the tab view controller
@@ -69,41 +71,22 @@
     //create demo view controllers and their tabs
     [self setUpCubeViewController];
     [self setUpFoldTransitionsViewController];
+    [self setUpPINCreateViewController];
     
     for (int j = 0; j<kColorsMultiple; j++)
     {
         for (int i = 0; i<[colors count]; i++)
         {
-            UIViewController *vc = [[UIViewController alloc] initWithNibName:nil bundle:nil];
-            UIView *v = [[UIView alloc] initWithFrame:tabBarView.selectedViewContainerView.bounds];
-            UIImageView *imgView = [[UIImageView alloc] initWithImage:self.greyGradientImage];
-            [v addSubview:imgView];
-            
-            //create a label and a view with rounded croners and a shadow
-            //the most efficient way is to draw a path and a shadow
-            colorPatch = [[TTColorPatchView alloc] initWithFrame:CGRectMake(v.bounds.size.width/3,
-                                                                            v.bounds.size.height/4,
-                                                                            v.bounds.size.width/3,
-                                                                            v.bounds.size.height/3)
-                                                           color:colors[i]];
-            colorPatch.backgroundColor = [UIColor clearColor];
-            [v addSubview:colorPatch];
-            CGFloat x = tabBarView.selectedViewContainerView.frame.origin.x;
-            CGFloat y = colorPatch.frame.origin.y + colorPatch.bounds.size.height + 60;
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(x,y,
-                                                                       tabBarView.selectedViewContainerView.bounds.size.width,
-                                                                       30)];
-            label.backgroundColor = [UIColor clearColor];
-            label.font = [UIFont systemFontOfSize:21];
-            label.textColor = [UIColor blackColor];
-            label.textAlignment = NSTextAlignmentCenter;
-            label.shadowOffset = CGSizeMake(1,1);
-            label.shadowColor = [UIColor colorWithWhite:1 alpha:.5];
             NSInteger viewNumber = i+(j*[colors count]);
-            label.text = [NSString stringWithFormat:@"%@ %d",NSLocalizedString(@"View #",@"View #"),viewNumber];
-            [v addSubview:label];
+            TTColorPatchViewController *vc = [[TTColorPatchViewController alloc] initWithColor:colors[i]];
+            UIView *v = [[UIView alloc] initWithFrame:tabBarView.selectedViewContainerView.bounds];
+            v.backgroundColor = [UIColor purpleColor];
             vc.view = v;
+            [vc setUp];
+            vc.label.text = [NSString stringWithFormat:@"%@ %d",NSLocalizedString(@"View #",@"View #"),viewNumber];
+
             [viewControllers addObject:vc];
+            
             
             NSString *title = [NSString stringWithFormat:@"View %d",viewNumber];
             TTTabViewOrientation orientation = tabBarView.tabBarPosition == TTTabBarPositionBottom ? TTTabViewOrientationDown : TTTabViewOrientationUp;
@@ -153,11 +136,7 @@
 /*
  -(void) viewWillLayoutSubviews
  {
- boxContainerLayer.frame = boxContainerLayer.frame = CGRectMake( (modalView.layer.bounds.size.width - 3*kBoxSideWidth)/2,
- (modalView.layer.bounds.size.height - 3*kBoxSideWidth)/2,
- 3*kBoxSideWidth,
- 3*kBoxSideWidth);
- 
+  
  }
  */
 
@@ -174,22 +153,10 @@
     // lock screen
 }
 
-/*
--(UIBarButtonItem *)doneBarButtonItem
-{
-    static dispatch_once_t onceToken;
-    __block UIBarButtonItem * doneButton;
-    dispatch_once(&onceToken, ^{
-        doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:nil action:nil];
-    });
-    return doneButton;
-}
-*/
-
-
 -(void) addViewController:(UIViewController *)VC
               withTabText: (NSString *)tabText
 {
+    
     [viewControllers addObject:VC];
     TTTabViewOrientation orientation = tabBarView.tabBarPosition == TTTabBarPositionBottom ? TTTabViewOrientationDown : TTTabViewOrientationUp;
 
@@ -206,6 +173,8 @@
     if(!_cubeVC){
         TTCubeViewController *vc = [[TTCubeViewController alloc] init];
         UIView *v = [[UIView alloc] initWithFrame:tabBarView.selectedViewContainerView.bounds];
+        v.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight |
+                                UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
         vc.view = v;
         [vc setUp];
         self.cubeVC = vc;
@@ -222,6 +191,8 @@
         NSString *title = NSLocalizedString(@"Fold Transitions",@"Fold Transitions");
         
         UIView *v = [[UIView alloc] initWithFrame:tabBarView.selectedViewContainerView.bounds];
+        v.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight |
+                                UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
         self.foldTransitionsVC.view = v;
         [_foldTransitionsVC setUp];
         [self addViewController:self.foldTransitionsVC
@@ -229,6 +200,16 @@
     }
 }
 
+-(void) setUpPINCreateViewController
+{
+    self.PINCreateVC = [[TTPinCreateViewController alloc] init];
+    NSString *title = NSLocalizedString(@"Update PIN",@"Update PIN");
+    UIView *v = [[UIView alloc] initWithFrame:tabBarView.selectedViewContainerView.bounds];
+    self.PINCreateVC.view = v;
+    [_PINCreateVC setUp];
+    [self addViewController:self.PINCreateVC
+                withTabText:title];
+}
 
 #pragma mark - TTTabBarView data source methods
 
@@ -247,6 +228,5 @@
 {
     return tabItems[index];
 }
-
 
 @end

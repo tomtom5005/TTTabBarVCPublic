@@ -22,6 +22,25 @@
 		E2031069166ABB3B004D313F /* TTTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = E2031068166ABB3B004D313F /* TTTabView.m */; };
 		E203106C166ABB53004D313F /* TTTabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E203106B166ABB53004D313F /* TTTabItem.m */; };
 		E203108E166C0CBF004D313F /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = E203108D166C0CBF004D313F /* lock.png */; };
+		E20C60171695138200118EA0 /* TTPinCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C60151695138200118EA0 /* TTPinCreateViewController.m */; };
+		E20C60181695138200118EA0 /* TTPinCreateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E20C60161695138200118EA0 /* TTPinCreateViewController.xib */; };
+		E20C601B169513CB00118EA0 /* TTTraceGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C601A169513CB00118EA0 /* TTTraceGridView.m */; };
+		E20C601E1695142E00118EA0 /* TTTraceGridTile.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C601D1695142E00118EA0 /* TTTraceGridTile.m */; };
+		E20C60211695149D00118EA0 /* TTRoundedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C60201695149D00118EA0 /* TTRoundedTextView.m */; };
+		E20C60251695F2C600118EA0 /* TTSelectedTiles.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C60241695F2C600118EA0 /* TTSelectedTiles.m */; };
+		E20C60281695F6B100118EA0 /* UIView+ShakeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C60271695F6B100118EA0 /* UIView+ShakeView.m */; };
+		E20C602C1695FCAA00118EA0 /* UIView+AddBottomToTopLinearGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C602B1695FCAA00118EA0 /* UIView+AddBottomToTopLinearGradient.m */; };
+		E20C602F1695FD0600118EA0 /* UIView+AddTopSheen.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C602E1695FD0600118EA0 /* UIView+AddTopSheen.m */; };
+		E20C60321695FD6C00118EA0 /* UIButton+TTButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C60311695FD6C00118EA0 /* UIButton+TTButton.m */; };
+		E20C603B1695FF2E00118EA0 /* UIView+AddTranslucentColoredOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C603A1695FF2D00118EA0 /* UIView+AddTranslucentColoredOverlay.m */; };
+		E20C60411696016400118EA0 /* UIView+MinimizeToContainOnlyVisibleSubviews.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C60401696016200118EA0 /* UIView+MinimizeToContainOnlyVisibleSubviews.m */; };
+		E20C60441696020700118EA0 /* UIView+MininumRectContainingAllSubviews.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C60431696020600118EA0 /* UIView+MininumRectContainingAllSubviews.m */; };
+		E20C60471696027A00118EA0 /* UIView+ShiftSubviewsDeltaXDeltaY.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C60461696027900118EA0 /* UIView+ShiftSubviewsDeltaXDeltaY.m */; };
+		E20C604D1696242B00118EA0 /* TTTraceLayerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C604C1696242A00118EA0 /* TTTraceLayerDelegate.m */; };
+		E20C60501696255500118EA0 /* TTCircleLayerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C604F1696255500118EA0 /* TTCircleLayerDelegate.m */; };
+		E20C60531696260D00118EA0 /* TTSelectedGridTilesLayerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C60521696260C00118EA0 /* TTSelectedGridTilesLayerDelegate.m */; };
+		E20C605616962B5000118EA0 /* TTTraceGridLayerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C605516962B4F00118EA0 /* TTTraceGridLayerDelegate.m */; };
+		E20C605916963E4E00118EA0 /* TTTraceGridBackgroundDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C605816963E4D00118EA0 /* TTTraceGridBackgroundDelegate.m */; };
 		E244FEE6167E5A5100B24FAB /* TTCubeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E244FEE4167E5A5100B24FAB /* TTCubeViewController.m */; };
 		E26E22B7167FA9FA0072CAD6 /* TTFoldTransitionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = E26E22B6167FA9FA0072CAD6 /* TTFoldTransitionsView.m */; };
 		E26E22CC1680A4FA0072CAD6 /* UIView+FoldTransitionFromViewToView.m in Sources */ = {isa = PBXBuildFile; fileRef = E26E22CB1680A4FA0072CAD6 /* UIView+FoldTransitionFromViewToView.m */; };
@@ -33,6 +52,8 @@
 		E281FA7B166FF8320021C45B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E281FA7A166FF8320021C45B /* QuartzCore.framework */; };
 		E281FA8216701B930021C45B /* UIView+Highlight.m in Sources */ = {isa = PBXBuildFile; fileRef = E281FA8116701B930021C45B /* UIView+Highlight.m */; };
 		E2B0F5021674DC47005DF920 /* TTColorPatchView.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B0F5011674DC47005DF920 /* TTColorPatchView.m */; };
+		E2EA5A93169C7D620012B493 /* TTPinUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = E2EA5A92169C7D620012B493 /* TTPinUtils.m */; };
+		E2EA5A96169CE04A0012B493 /* TTColorPatchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2EA5A95169CE04A0012B493 /* TTColorPatchViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +81,43 @@
 		E203106B166ABB53004D313F /* TTTabItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTabItem.m; sourceTree = "<group>"; };
 		E203108D166C0CBF004D313F /* lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lock.png; sourceTree = "<group>"; };
 		E20338BF1683D0D6007FB036 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		E20C60141695138200118EA0 /* TTPinCreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPinCreateViewController.h; sourceTree = "<group>"; };
+		E20C60151695138200118EA0 /* TTPinCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPinCreateViewController.m; sourceTree = "<group>"; };
+		E20C60161695138200118EA0 /* TTPinCreateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTPinCreateViewController.xib; sourceTree = "<group>"; };
+		E20C6019169513CB00118EA0 /* TTTraceGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTraceGridView.h; sourceTree = "<group>"; };
+		E20C601A169513CB00118EA0 /* TTTraceGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTraceGridView.m; sourceTree = "<group>"; };
+		E20C601C1695142D00118EA0 /* TTTraceGridTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTraceGridTile.h; sourceTree = "<group>"; };
+		E20C601D1695142E00118EA0 /* TTTraceGridTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTraceGridTile.m; sourceTree = "<group>"; };
+		E20C601F1695149D00118EA0 /* TTRoundedTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTRoundedTextView.h; sourceTree = "<group>"; };
+		E20C60201695149D00118EA0 /* TTRoundedTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTRoundedTextView.m; sourceTree = "<group>"; };
+		E20C60231695F2C600118EA0 /* TTSelectedTiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTSelectedTiles.h; sourceTree = "<group>"; };
+		E20C60241695F2C600118EA0 /* TTSelectedTiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTSelectedTiles.m; sourceTree = "<group>"; };
+		E20C60261695F6B000118EA0 /* UIView+ShakeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ShakeView.h"; sourceTree = "<group>"; };
+		E20C60271695F6B100118EA0 /* UIView+ShakeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ShakeView.m"; sourceTree = "<group>"; };
+		E20C602A1695FCAA00118EA0 /* UIView+AddBottomToTopLinearGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+AddBottomToTopLinearGradient.h"; sourceTree = "<group>"; };
+		E20C602B1695FCAA00118EA0 /* UIView+AddBottomToTopLinearGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+AddBottomToTopLinearGradient.m"; sourceTree = "<group>"; };
+		E20C602D1695FD0600118EA0 /* UIView+AddTopSheen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+AddTopSheen.h"; sourceTree = "<group>"; };
+		E20C602E1695FD0600118EA0 /* UIView+AddTopSheen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+AddTopSheen.m"; sourceTree = "<group>"; };
+		E20C60301695FD6B00118EA0 /* UIButton+TTButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+TTButton.h"; sourceTree = "<group>"; };
+		E20C60311695FD6C00118EA0 /* UIButton+TTButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+TTButton.m"; sourceTree = "<group>"; };
+		E20C60391695FF2C00118EA0 /* UIView+AddTranslucentColoredOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+AddTranslucentColoredOverlay.h"; sourceTree = "<group>"; };
+		E20C603A1695FF2D00118EA0 /* UIView+AddTranslucentColoredOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+AddTranslucentColoredOverlay.m"; sourceTree = "<group>"; };
+		E20C603F1696016100118EA0 /* UIView+MinimizeToContainOnlyVisibleSubviews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MinimizeToContainOnlyVisibleSubviews.h"; sourceTree = "<group>"; };
+		E20C60401696016200118EA0 /* UIView+MinimizeToContainOnlyVisibleSubviews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MinimizeToContainOnlyVisibleSubviews.m"; sourceTree = "<group>"; };
+		E20C60421696020600118EA0 /* UIView+MininumRectContainingAllSubviews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MininumRectContainingAllSubviews.h"; sourceTree = "<group>"; };
+		E20C60431696020600118EA0 /* UIView+MininumRectContainingAllSubviews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MininumRectContainingAllSubviews.m"; sourceTree = "<group>"; };
+		E20C60451696027900118EA0 /* UIView+ShiftSubviewsDeltaXDeltaY.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ShiftSubviewsDeltaXDeltaY.h"; sourceTree = "<group>"; };
+		E20C60461696027900118EA0 /* UIView+ShiftSubviewsDeltaXDeltaY.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ShiftSubviewsDeltaXDeltaY.m"; sourceTree = "<group>"; };
+		E20C604B1696242A00118EA0 /* TTTraceLayerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTraceLayerDelegate.h; sourceTree = "<group>"; };
+		E20C604C1696242A00118EA0 /* TTTraceLayerDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTraceLayerDelegate.m; sourceTree = "<group>"; };
+		E20C604E1696255400118EA0 /* TTCircleLayerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTCircleLayerDelegate.h; sourceTree = "<group>"; };
+		E20C604F1696255500118EA0 /* TTCircleLayerDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTCircleLayerDelegate.m; sourceTree = "<group>"; };
+		E20C60511696260A00118EA0 /* TTSelectedGridTilesLayerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTSelectedGridTilesLayerDelegate.h; sourceTree = "<group>"; };
+		E20C60521696260C00118EA0 /* TTSelectedGridTilesLayerDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTSelectedGridTilesLayerDelegate.m; sourceTree = "<group>"; };
+		E20C605416962B4E00118EA0 /* TTTraceGridLayerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTraceGridLayerDelegate.h; sourceTree = "<group>"; };
+		E20C605516962B4F00118EA0 /* TTTraceGridLayerDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTraceGridLayerDelegate.m; sourceTree = "<group>"; };
+		E20C605716963E4B00118EA0 /* TTTraceGridBackgroundDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTraceGridBackgroundDelegate.h; sourceTree = "<group>"; };
+		E20C605816963E4D00118EA0 /* TTTraceGridBackgroundDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTraceGridBackgroundDelegate.m; sourceTree = "<group>"; };
 		E244FEE3167E5A5100B24FAB /* TTCubeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTCubeViewController.h; sourceTree = "<group>"; };
 		E244FEE4167E5A5100B24FAB /* TTCubeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTCubeViewController.m; sourceTree = "<group>"; };
 		E26E22B5167FA9FA0072CAD6 /* TTFoldTransitionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTFoldTransitionsView.h; sourceTree = "<group>"; };
@@ -82,6 +140,10 @@
 		E281FA84167140130021C45B /* CoreGraphicsFunctions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreGraphicsFunctions.m; sourceTree = "<group>"; };
 		E2B0F5001674DC47005DF920 /* TTColorPatchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTColorPatchView.h; sourceTree = "<group>"; };
 		E2B0F5011674DC47005DF920 /* TTColorPatchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTColorPatchView.m; sourceTree = "<group>"; };
+		E2EA5A91169C7D620012B493 /* TTPinUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPinUtils.h; sourceTree = "<group>"; };
+		E2EA5A92169C7D620012B493 /* TTPinUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPinUtils.m; sourceTree = "<group>"; };
+		E2EA5A94169CE04A0012B493 /* TTColorPatchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTColorPatchViewController.h; sourceTree = "<group>"; };
+		E2EA5A95169CE04A0012B493 /* TTColorPatchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTColorPatchViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,17 +192,24 @@
 		E2031047166ABB0B004D313F /* TTTabBarViewController */ = {
 			isa = PBXGroup;
 			children = (
-				E2031050166ABB0B004D313F /* TTAppDelegate.h */,
 				E20338BF1683D0D6007FB036 /* Constants.h */,
-				E2031051166ABB0B004D313F /* TTAppDelegate.m */,
-				E281FA83167140130021C45B /* CoreGraphicsFunctions.h */,
-				E281FA84167140130021C45B /* CoreGraphicsFunctions.m */,
-				E26E22DB1680D9B10072CAD6 /* FoldTransitionFromViewToView */,
+				E20C601F1695149D00118EA0 /* TTRoundedTextView.h */,
+				E20C60201695149D00118EA0 /* TTRoundedTextView.m */,
 				E281FA8016701B930021C45B /* UIView+Highlight.h */,
 				E281FA8116701B930021C45B /* UIView+Highlight.m */,
+				E20C60291695F6F700118EA0 /* Categories */,
+				E2031050166ABB0B004D313F /* TTAppDelegate.h */,
+				E2031051166ABB0B004D313F /* TTAppDelegate.m */,
+				E2EA5A91169C7D620012B493 /* TTPinUtils.h */,
+				E2EA5A92169C7D620012B493 /* TTPinUtils.m */,
+				E281FA83167140130021C45B /* CoreGraphicsFunctions.h */,
+				E281FA84167140130021C45B /* CoreGraphicsFunctions.m */,
+				E26E22DB1680D9B10072CAD6 /* FoldTransitionFromViewToViewCategories */,
 				E2031059166ABB0B004D313F /* TTViewController.h */,
 				E203105A166ABB0B004D313F /* TTViewController.m */,
 				E203105C166ABB0B004D313F /* TTViewController.xib */,
+				E2EA5A94169CE04A0012B493 /* TTColorPatchViewController.h */,
+				E2EA5A95169CE04A0012B493 /* TTColorPatchViewController.m */,
 				E244FEE3167E5A5100B24FAB /* TTCubeViewController.h */,
 				E244FEE4167E5A5100B24FAB /* TTCubeViewController.m */,
 				E26E22B5167FA9FA0072CAD6 /* TTFoldTransitionsView.h */,
@@ -148,14 +217,10 @@
 				E26E22DC16811ECE0072CAD6 /* TTFoldTransitionsViewController.h */,
 				E26E22DD16811ECE0072CAD6 /* TTFoldTransitionsViewController.m */,
 				E26E22DE16811ECE0072CAD6 /* TTFoldTransitionsViewController.xib */,
+				E20C60221695C60C00118EA0 /* TraceGrid */,
 				E2B0F5001674DC47005DF920 /* TTColorPatchView.h */,
 				E2B0F5011674DC47005DF920 /* TTColorPatchView.m */,
-				E2031064166ABB23004D313F /* TTTabBarView.h */,
-				E2031065166ABB23004D313F /* TTTabBarView.m */,
-				E2031067166ABB3B004D313F /* TTTabView.h */,
-				E2031068166ABB3B004D313F /* TTTabView.m */,
-				E203106A166ABB53004D313F /* TTTabItem.h */,
-				E203106B166ABB53004D313F /* TTTabItem.m */,
+				E20C605A1696424700118EA0 /* TabBarView */,
 				E2031048166ABB0B004D313F /* Supporting Files */,
 			);
 			path = TTTabBarViewController;
@@ -176,7 +241,69 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		E26E22DB1680D9B10072CAD6 /* FoldTransitionFromViewToView */ = {
+		E20C60221695C60C00118EA0 /* TraceGrid */ = {
+			isa = PBXGroup;
+			children = (
+				E20C60141695138200118EA0 /* TTPinCreateViewController.h */,
+				E20C60151695138200118EA0 /* TTPinCreateViewController.m */,
+				E20C60161695138200118EA0 /* TTPinCreateViewController.xib */,
+				E20C6019169513CB00118EA0 /* TTTraceGridView.h */,
+				E20C601A169513CB00118EA0 /* TTTraceGridView.m */,
+				E20C604B1696242A00118EA0 /* TTTraceLayerDelegate.h */,
+				E20C604C1696242A00118EA0 /* TTTraceLayerDelegate.m */,
+				E20C604E1696255400118EA0 /* TTCircleLayerDelegate.h */,
+				E20C604F1696255500118EA0 /* TTCircleLayerDelegate.m */,
+				E20C60511696260A00118EA0 /* TTSelectedGridTilesLayerDelegate.h */,
+				E20C60521696260C00118EA0 /* TTSelectedGridTilesLayerDelegate.m */,
+				E20C605416962B4E00118EA0 /* TTTraceGridLayerDelegate.h */,
+				E20C605516962B4F00118EA0 /* TTTraceGridLayerDelegate.m */,
+				E20C605716963E4B00118EA0 /* TTTraceGridBackgroundDelegate.h */,
+				E20C605816963E4D00118EA0 /* TTTraceGridBackgroundDelegate.m */,
+				E20C601C1695142D00118EA0 /* TTTraceGridTile.h */,
+				E20C601D1695142E00118EA0 /* TTTraceGridTile.m */,
+				E20C60231695F2C600118EA0 /* TTSelectedTiles.h */,
+				E20C60241695F2C600118EA0 /* TTSelectedTiles.m */,
+			);
+			name = TraceGrid;
+			sourceTree = "<group>";
+		};
+		E20C60291695F6F700118EA0 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				E20C60261695F6B000118EA0 /* UIView+ShakeView.h */,
+				E20C60271695F6B100118EA0 /* UIView+ShakeView.m */,
+				E20C602A1695FCAA00118EA0 /* UIView+AddBottomToTopLinearGradient.h */,
+				E20C602B1695FCAA00118EA0 /* UIView+AddBottomToTopLinearGradient.m */,
+				E20C602D1695FD0600118EA0 /* UIView+AddTopSheen.h */,
+				E20C602E1695FD0600118EA0 /* UIView+AddTopSheen.m */,
+				E20C60391695FF2C00118EA0 /* UIView+AddTranslucentColoredOverlay.h */,
+				E20C603A1695FF2D00118EA0 /* UIView+AddTranslucentColoredOverlay.m */,
+				E20C603F1696016100118EA0 /* UIView+MinimizeToContainOnlyVisibleSubviews.h */,
+				E20C60401696016200118EA0 /* UIView+MinimizeToContainOnlyVisibleSubviews.m */,
+				E20C60421696020600118EA0 /* UIView+MininumRectContainingAllSubviews.h */,
+				E20C60431696020600118EA0 /* UIView+MininumRectContainingAllSubviews.m */,
+				E20C60451696027900118EA0 /* UIView+ShiftSubviewsDeltaXDeltaY.h */,
+				E20C60461696027900118EA0 /* UIView+ShiftSubviewsDeltaXDeltaY.m */,
+				E20C60301695FD6B00118EA0 /* UIButton+TTButton.h */,
+				E20C60311695FD6C00118EA0 /* UIButton+TTButton.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		E20C605A1696424700118EA0 /* TabBarView */ = {
+			isa = PBXGroup;
+			children = (
+				E2031064166ABB23004D313F /* TTTabBarView.h */,
+				E2031065166ABB23004D313F /* TTTabBarView.m */,
+				E2031067166ABB3B004D313F /* TTTabView.h */,
+				E2031068166ABB3B004D313F /* TTTabView.m */,
+				E203106A166ABB53004D313F /* TTTabItem.h */,
+				E203106B166ABB53004D313F /* TTTabItem.m */,
+			);
+			name = TabBarView;
+			sourceTree = "<group>";
+		};
+		E26E22DB1680D9B10072CAD6 /* FoldTransitionFromViewToViewCategories */ = {
 			isa = PBXGroup;
 			children = (
 				E26E22CA1680A4FA0072CAD6 /* UIView+FoldTransitionFromViewToView.h */,
@@ -188,7 +315,7 @@
 				E26E22D81680C4D30072CAD6 /* CALayer+LayerWithImage.h */,
 				E26E22D91680C4D30072CAD6 /* CALayer+LayerWithImage.m */,
 			);
-			name = FoldTransitionFromViewToView;
+			name = FoldTransitionFromViewToViewCategories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,6 +377,7 @@
 				E203105E166ABB0B004D313F /* TTViewController.xib in Resources */,
 				E203108E166C0CBF004D313F /* lock.png in Resources */,
 				E26E22E016811ECF0072CAD6 /* TTFoldTransitionsViewController.xib in Resources */,
+				E20C60181695138200118EA0 /* TTPinCreateViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +403,26 @@
 				E26E22D71680B83C0072CAD6 /* UIImage+TopAndBottomHalfImages.m in Sources */,
 				E26E22DA1680C4D30072CAD6 /* CALayer+LayerWithImage.m in Sources */,
 				E26E22DF16811ECF0072CAD6 /* TTFoldTransitionsViewController.m in Sources */,
+				E20C60171695138200118EA0 /* TTPinCreateViewController.m in Sources */,
+				E20C601B169513CB00118EA0 /* TTTraceGridView.m in Sources */,
+				E20C601E1695142E00118EA0 /* TTTraceGridTile.m in Sources */,
+				E20C60211695149D00118EA0 /* TTRoundedTextView.m in Sources */,
+				E20C60251695F2C600118EA0 /* TTSelectedTiles.m in Sources */,
+				E20C60281695F6B100118EA0 /* UIView+ShakeView.m in Sources */,
+				E20C602C1695FCAA00118EA0 /* UIView+AddBottomToTopLinearGradient.m in Sources */,
+				E20C602F1695FD0600118EA0 /* UIView+AddTopSheen.m in Sources */,
+				E20C60321695FD6C00118EA0 /* UIButton+TTButton.m in Sources */,
+				E20C603B1695FF2E00118EA0 /* UIView+AddTranslucentColoredOverlay.m in Sources */,
+				E20C60411696016400118EA0 /* UIView+MinimizeToContainOnlyVisibleSubviews.m in Sources */,
+				E20C60441696020700118EA0 /* UIView+MininumRectContainingAllSubviews.m in Sources */,
+				E20C60471696027A00118EA0 /* UIView+ShiftSubviewsDeltaXDeltaY.m in Sources */,
+				E20C604D1696242B00118EA0 /* TTTraceLayerDelegate.m in Sources */,
+				E20C60501696255500118EA0 /* TTCircleLayerDelegate.m in Sources */,
+				E20C60531696260D00118EA0 /* TTSelectedGridTilesLayerDelegate.m in Sources */,
+				E20C605616962B5000118EA0 /* TTTraceGridLayerDelegate.m in Sources */,
+				E20C605916963E4E00118EA0 /* TTTraceGridBackgroundDelegate.m in Sources */,
+				E2EA5A93169C7D620012B493 /* TTPinUtils.m in Sources */,
+				E2EA5A96169CE04A0012B493 /* TTColorPatchViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

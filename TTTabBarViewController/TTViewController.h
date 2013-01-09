@@ -16,7 +16,6 @@
 
 @interface TTViewController : UIViewController<TTTabBarViewDataSource, TTTabBarViewDelegate>
 
-//@property (weak, nonatomic) UIBarButtonItem *doneBarButtonItem;
 
 -(IBAction) addViewToBarButton:(id)sender;  //suck
 -(IBAction) lockScreen:(id)sender;

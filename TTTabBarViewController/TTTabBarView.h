@@ -18,6 +18,10 @@
 typedef enum {TTTabBarPositionTop, TTTabBarPositionBottom} TTTabBarPosition;
 typedef enum {TTTabBarTypeStandardTabs, TTTabBarTypeLargeTabs, TTTabBarTypeCustomTabs} TTTabBarType;
 
+extern NSString *const TTTabBarViewSelectedTabDidChangeFromTabAtIndexNotification; //declared in TTTabBarView
+extern NSString *const TTTabBarViewSelectedViewWillChangeToViewNotification; //declared in TTTabBarView
+extern NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification; //declared in TTTabBarView
+
 @protocol TTTabBarViewDelegate;
 @protocol TTTabBarViewDataSource;
 @class TTTabItem;

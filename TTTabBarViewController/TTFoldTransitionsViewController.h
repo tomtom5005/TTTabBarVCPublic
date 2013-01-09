@@ -12,6 +12,7 @@
 #define kFoldTransitionsViewWidth 320
 #define kFoldTransitionsViewHeight 480
 
+NSString *const TTTabBarViewSelectedViewWillChangeToViewNotification; //declared in TTTabBarView
 
 @interface TTFoldTransitionsViewController : UIViewController <TTFoldTransitionsViewDataSource>
 -(void) setUp;

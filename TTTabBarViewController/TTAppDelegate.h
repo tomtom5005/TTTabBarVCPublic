@@ -15,5 +15,6 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) NSArray *colors;
 @property (strong, nonatomic) TTViewController *viewController;
+@property (strong, nonatomic) NSString *PIN;
 
 @end
