@@ -10,6 +10,7 @@
 #import "TTTabItem.h"
 #import "CoreGraphicsFunctions.h"
 
+//NSNotification names
 NSString *const TTTabBarViewSelectedTabDidChangeFromTabAtIndexNotification = @"TTTabBarViewSelectedTabDidChangeFromTabAtIndexNotification";
 NSString *const TTTabBarViewSelectedViewWillChangeToViewNotification = @"TTTabBarViewSelectedViewWillChangeToViewNotification";
 NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification = @"TTTabBarViewSelectedViewDidChangeToViewNotification";

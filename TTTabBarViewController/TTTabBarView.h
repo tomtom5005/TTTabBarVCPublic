@@ -29,7 +29,6 @@ extern NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification; //de
 @interface TTTabBarView : UIView <UIScrollViewDelegate, TTTabViewDelegate>
 
 @property (strong, nonatomic) NSDictionary *view;
-//@property (strong, nonatomic) NSArray *tabs;    //an array of TTTabItems
 @property (strong, nonatomic) NSArray *tabViews;    //an array of TTTabViews
 @property (assign) NSUInteger selectedTabIndex;
 @property (strong, nonatomic) UIView *selectedViewContainerView;

@@ -14,13 +14,16 @@
 #import "TTPinCreateViewController.h"
 #import "TTAppDelegate.h"
 #import "TTColorPatchViewController.h"
+#import "TTPinConfirmationAlertView.h"
+#import "TTPinUtils.h"
+#import "Constants.h"
 
 @interface TTViewController ()
 {
     TTTabBarView *tabBarView;
     NSMutableArray * viewControllers;
     NSMutableArray *tabItems;
-    UIColor *defaultTabColor;  
+    UIColor *defaultTabColor;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
@@ -33,6 +36,7 @@
 @property (strong, nonatomic) TTCubeViewController *cubeVC;
 @property (strong, nonatomic) TTFoldTransitionsViewController *foldTransitionsVC;
 @property (strong, nonatomic) TTPinCreateViewController *PINCreateVC;;
+@property (strong, nonatomic) TTPinConfirmationAlertView *pinAlert; //special getter
 
 -(void) setUpCubeViewController;
 -(void) setUpFoldTransitionsViewController;
@@ -55,6 +59,7 @@
                                       tabBarPosition:TTTabBarPositionBottom
                                             delegate:self
                                           dataSource:self];
+    
     tabBarView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth |
                                     UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleRightMargin;
     
@@ -141,7 +146,24 @@
  */
 
 
-#pragma mark - TTViewController methods
+#pragma mark - TTViewController accessor method
+-(TTPinConfirmationAlertView *) pinAlert
+{
+    if( ! _pinAlert)
+    {
+        TTPinUtils *pu = [TTPinUtils sharedPinUtils];
+        _pinAlert = [[TTPinConfirmationAlertView alloc] initWithPIN:pu.PIN
+                                                     dismissButtonTitle:NSLocalizedString(@"Dismiss",@"Dismiss" )
+                                                        allowedAttempts:3
+                                                                message:NSLocalizedString(@"Trace your PIN pattern over the matrix to unlock the screen",@"Trace your PIN pattern over the matrix to unlock the screen")
+                                                               gridRows:kPatternGridSize
+                                                            gridColumns:kPatternGridSize
+                                                           delegate:self];
+    }
+    return _pinAlert;
+}
+
+#pragma mark - TTViewController action methods
 
 -(IBAction) addViewToBarButton:(id)sender
 {
@@ -151,7 +173,22 @@
 -(IBAction) lockScreen:(id)sender
 {
     // lock screen
+    TTPinUtils *pu = [TTPinUtils sharedPinUtils];
+    if(pu.PIN)
+    {
+        self.pinAlert.pin = pu.PIN;
+        [_pinAlert show];
+    }else if(tabBarView.selectedView != self.PINCreateVC.view)
+    {
+        self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentViewController:self.PINCreateVC animated:YES completion:^{
+            self.modalTransitionStyle = UIModalTransitionStyleCoverVertical;}];
+    }
+    else
+    {}
 }
+
+#pragma mark - more TTViewController methods
 
 -(void) addViewController:(UIViewController *)VC
               withTabText: (NSString *)tabText
@@ -228,5 +265,32 @@
 {
     return tabItems[index];
 }
+
+#pragma mark - TTPinConfirmationAlertView delegate method
+
+-(void)pinConfirmationAlertWasDismissed:(TTPinConfirmationAlertView *)pinAlert;
+{
+    switch (_pinAlert.dismissalReason) {
+        case TTPinConfirmationAlertDismissalReasonPinMatch:
+            //
+            [pinAlert dismiss];
+            break;
+            
+        case TTPinConfirmationAlertDismissalReasonAllowedAttempsExceeded:
+            //we should log out
+            [pinAlert dismiss];
+            break;
+            
+        case TTPinConfirmationAlertDismissalReasonUserDismissal:
+            //we should log out
+            [pinAlert dismiss];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+
 
 @end

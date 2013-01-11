@@ -52,8 +52,12 @@
 		E281FA7B166FF8320021C45B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E281FA7A166FF8320021C45B /* QuartzCore.framework */; };
 		E281FA8216701B930021C45B /* UIView+Highlight.m in Sources */ = {isa = PBXBuildFile; fileRef = E281FA8116701B930021C45B /* UIView+Highlight.m */; };
 		E2B0F5021674DC47005DF920 /* TTColorPatchView.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B0F5011674DC47005DF920 /* TTColorPatchView.m */; };
+		E2E9651416A075A200465763 /* TTLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2E9651216A075A200465763 /* TTLoginViewController.m */; };
+		E2E9651516A075A200465763 /* TTLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E2E9651316A075A200465763 /* TTLoginViewController.xib */; };
 		E2EA5A93169C7D620012B493 /* TTPinUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = E2EA5A92169C7D620012B493 /* TTPinUtils.m */; };
 		E2EA5A96169CE04A0012B493 /* TTColorPatchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E2EA5A95169CE04A0012B493 /* TTColorPatchViewController.m */; };
+		E2EA5ABC169E06220012B493 /* TTPinConfirmationAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = E2EA5ABB169E06210012B493 /* TTPinConfirmationAlertView.m */; };
+		E2EA5ABF169E07FD0012B493 /* UIView+CenterInView.m in Sources */ = {isa = PBXBuildFile; fileRef = E2EA5ABE169E07FD0012B493 /* UIView+CenterInView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -140,10 +144,17 @@
 		E281FA84167140130021C45B /* CoreGraphicsFunctions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreGraphicsFunctions.m; sourceTree = "<group>"; };
 		E2B0F5001674DC47005DF920 /* TTColorPatchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTColorPatchView.h; sourceTree = "<group>"; };
 		E2B0F5011674DC47005DF920 /* TTColorPatchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTColorPatchView.m; sourceTree = "<group>"; };
+		E2E9651116A075A200465763 /* TTLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTLoginViewController.h; sourceTree = "<group>"; };
+		E2E9651216A075A200465763 /* TTLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTLoginViewController.m; sourceTree = "<group>"; };
+		E2E9651316A075A200465763 /* TTLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTLoginViewController.xib; sourceTree = "<group>"; };
 		E2EA5A91169C7D620012B493 /* TTPinUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPinUtils.h; sourceTree = "<group>"; };
 		E2EA5A92169C7D620012B493 /* TTPinUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPinUtils.m; sourceTree = "<group>"; };
 		E2EA5A94169CE04A0012B493 /* TTColorPatchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTColorPatchViewController.h; sourceTree = "<group>"; };
 		E2EA5A95169CE04A0012B493 /* TTColorPatchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTColorPatchViewController.m; sourceTree = "<group>"; };
+		E2EA5ABA169E06210012B493 /* TTPinConfirmationAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPinConfirmationAlertView.h; sourceTree = "<group>"; };
+		E2EA5ABB169E06210012B493 /* TTPinConfirmationAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPinConfirmationAlertView.m; sourceTree = "<group>"; };
+		E2EA5ABD169E07FD0012B493 /* UIView+CenterInView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+CenterInView.h"; sourceTree = "<group>"; };
+		E2EA5ABE169E07FD0012B493 /* UIView+CenterInView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+CenterInView.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +229,9 @@
 				E26E22DD16811ECE0072CAD6 /* TTFoldTransitionsViewController.m */,
 				E26E22DE16811ECE0072CAD6 /* TTFoldTransitionsViewController.xib */,
 				E20C60221695C60C00118EA0 /* TraceGrid */,
+				E2E9651116A075A200465763 /* TTLoginViewController.h */,
+				E2E9651216A075A200465763 /* TTLoginViewController.m */,
+				E2E9651316A075A200465763 /* TTLoginViewController.xib */,
 				E2B0F5001674DC47005DF920 /* TTColorPatchView.h */,
 				E2B0F5011674DC47005DF920 /* TTColorPatchView.m */,
 				E20C605A1696424700118EA0 /* TabBarView */,
@@ -247,6 +261,8 @@
 				E20C60141695138200118EA0 /* TTPinCreateViewController.h */,
 				E20C60151695138200118EA0 /* TTPinCreateViewController.m */,
 				E20C60161695138200118EA0 /* TTPinCreateViewController.xib */,
+				E2EA5ABA169E06210012B493 /* TTPinConfirmationAlertView.h */,
+				E2EA5ABB169E06210012B493 /* TTPinConfirmationAlertView.m */,
 				E20C6019169513CB00118EA0 /* TTTraceGridView.h */,
 				E20C601A169513CB00118EA0 /* TTTraceGridView.m */,
 				E20C604B1696242A00118EA0 /* TTTraceLayerDelegate.h */,
@@ -284,6 +300,8 @@
 				E20C60431696020600118EA0 /* UIView+MininumRectContainingAllSubviews.m */,
 				E20C60451696027900118EA0 /* UIView+ShiftSubviewsDeltaXDeltaY.h */,
 				E20C60461696027900118EA0 /* UIView+ShiftSubviewsDeltaXDeltaY.m */,
+				E2EA5ABD169E07FD0012B493 /* UIView+CenterInView.h */,
+				E2EA5ABE169E07FD0012B493 /* UIView+CenterInView.m */,
 				E20C60301695FD6B00118EA0 /* UIButton+TTButton.h */,
 				E20C60311695FD6C00118EA0 /* UIButton+TTButton.m */,
 			);
@@ -378,6 +396,7 @@
 				E203108E166C0CBF004D313F /* lock.png in Resources */,
 				E26E22E016811ECF0072CAD6 /* TTFoldTransitionsViewController.xib in Resources */,
 				E20C60181695138200118EA0 /* TTPinCreateViewController.xib in Resources */,
+				E2E9651516A075A200465763 /* TTLoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,6 +442,9 @@
 				E20C605916963E4E00118EA0 /* TTTraceGridBackgroundDelegate.m in Sources */,
 				E2EA5A93169C7D620012B493 /* TTPinUtils.m in Sources */,
 				E2EA5A96169CE04A0012B493 /* TTColorPatchViewController.m in Sources */,
+				E2EA5ABC169E06220012B493 /* TTPinConfirmationAlertView.m in Sources */,
+				E2EA5ABF169E07FD0012B493 /* UIView+CenterInView.m in Sources */,
+				E2E9651416A075A200465763 /* TTLoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

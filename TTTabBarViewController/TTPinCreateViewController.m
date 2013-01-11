@@ -22,6 +22,7 @@
 #import "Constants.h"
 #import "TTPinUtils.h"
 #import "TTTabBarView.h"
+#import "TTPinConfirmationAlertView.h"
 
 @interface TTPinCreateViewController ()
 {
@@ -35,6 +36,7 @@
 
 
 -(void) adjustPINViewForOrientation;
+-(void) dismiss:(id)sender;
 
 @end
 
@@ -62,6 +64,56 @@
 - (id) init
 {
     return [self initWithNibName:@"PINCreateViewController" bundle:nil];
+}
+
+-(void) viewDidLoad
+{
+    [super viewDidLoad];
+    [self setUp];
+}
+
+-(void) viewWillAppear:(BOOL)animated
+{
+    TTPinUtils *pinUtils = [TTPinUtils sharedPinUtils];
+    if( ! pinUtils.PIN)
+    {
+        self.instructionsLabel.text = [NSString stringWithFormat: NSLocalizedString(@"Create desired pattern by tracing over the grid.\nThe Pattern must contain at least %d nodes.  ", @"Create desired pattern by tracing over the grid.\nThe Pattern must contain at least %d nodes.  "),kMinPinLength];
+    }
+    else
+    {
+        self.instructionsLabel.text = [NSString stringWithFormat: NSLocalizedString(@"You already have a valid PIN.\nTo change the pattern trace over the grid.\nThe Pattern must contain at least %d nodes.  ", @"You already have a valid PIN.\nTo change the pattern trace over the grid.\nThe Pattern must contain at least %d nodes.  "),kMinPinLength];
+        
+    }
+    firstPIN = @"";
+    
+    //for reasons having to do with a static variable in the animation routine we need to instantiate
+    //the grid view everytime the view is shown.  We probably could get around this if we used a global
+    //variable instead but it gets a bit messy since that variable would have to be set in a few places
+    //This is tidy, if a bit wasteful of cpu - but we draw it efficiently
+    //
+    TTTraceGridView *tGrid = [[TTTraceGridView alloc]
+                      initWithRows:kPatternGridSize
+                      columns:kPatternGridSize
+                      frame:CGRectMake(0,0,
+                                       300,300)];
+    self.traceGrid = tGrid;
+    CGFloat x = (self.containerView.bounds.size.width - _traceGrid.bounds.size.width)/2;
+    self.traceGrid.frame = CGRectMake(x,0,
+                                      _traceGrid.bounds.size.width,
+                                      _traceGrid.bounds.size.height);
+    self.traceGrid.delegate = self;
+    [self.containerView addSubview:self.traceGrid];
+
+    if(self.presentingViewController)
+    {
+        self.cancelButton.hidden=NO;
+    }
+}
+
+-(void) viewDidAppear:(BOOL)animated
+{
+    int len = kMinPatternLength < 6 ? 6 : kMinPatternLength;
+    [self.traceGrid animateRandomTracePatternsOfLength:len withDelay:0.3];
 }
 
 -(void) setUp
@@ -97,20 +149,40 @@
     iLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Create desired pattern by tracing over the grid.  The pattern must contain at least %d nodes.", @"Create desired pattern by tracing over the grid.  The pattern must contain at least %d nodes."),kMinPatternLength];
     self.instructionsLabel = iLabel;
     [self.containerView addSubview:self.instructionsLabel];
+    
+    UIButton *canButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    canButton.bounds = CGRectMake(0.0,0.0,200.0,46.0);
+    canButton.center = CGPointMake(_instructionsLabel.center.x,
+                                   _instructionsLabel.frame.origin.y + _instructionsLabel.bounds.size.height +50.0);
+    [canButton TTStyleButton];
+    
+    [canButton addBottomToTopLinearGradientBottomColor:[UIColor colorWithRed:220/255 green:30/255 blue:0 alpha:.85] topColor:[UIColor colorWithRed:255/255 green:50/255 blue:45/255 alpha:.85]];
+    [canButton addTopLinearSheen];
+    [canButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+    [canButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    canButton.titleLabel.font = [UIFont boldSystemFontOfSize:23];
+    canButton.titleLabel.minimumScaleFactor = 23.0/13.0;
+    canButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [canButton setTitle: NSLocalizedString(@"Cancel",@"Cancel") forState:UIControlStateNormal];
+    [canButton addTarget:self
+                      action:@selector(dismiss:)
+            forControlEvents:UIControlEventTouchUpInside];
+
+    self.cancelButton = canButton;
+    [self.containerView addSubview:self.cancelButton];
+
+    
     [self.view addSubview:self.containerView];
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(viewWillAppearInTabBarView:)
                name:TTTabBarViewSelectedViewWillChangeToViewNotification
-             object:nil];
-    [nc addObserver:self selector:@selector(viewDidAppearInTabBarView:)
-               name:TTTabBarViewSelectedViewDidChangeToViewNotification
              object:nil];
 }
 
 
 -(void) viewWillLayoutSubviews
 {
-    if(self.containerView)   //if no passwordTextContainerView then viewDidLoad has not completed
+    if(self.containerView)   //if no containerView then viewDidLoad has not completed
     {
         //the self.view bounds are the bounds AFTER the change but the frame is the frame BEFORE
         //the change but with the status bar removed
@@ -158,48 +230,9 @@
 {
     if(self.view == note.userInfo[@"View"])
     {
-        TTPinUtils *pinUtils = [TTPinUtils sharedPinUtils];
-        if( ! pinUtils.PIN)
-        {
-            self.instructionsLabel.text = [NSString stringWithFormat: NSLocalizedString(@"Create desired pattern by tracing over the grid.\nThe Pattern must contain at least %d nodes.  ", @"Create desired pattern by tracing over the grid.\nThe Pattern must contain at least %d nodes.  "),kMinPinLength];
-        }
-        else
-        {
-            self.instructionsLabel.text = [NSString stringWithFormat: NSLocalizedString(@"You already have a valid PIN.\nTo change the pattern trace over the grid.\nThe Pattern must contain at least %d nodes.  ", @"You already have a valid PIN.\nTo change the pattern trace over the grid.\nThe Pattern must contain at least %d nodes.  "),kMinPinLength];
-            
-        }
-        firstPIN = @"";
-        
-        //for reasons having to do with a static variable in the animation routine we need to instantiate
-        //the grid view everytime the view is shown.  We probably could get around this if we used a global
-        //variable instead but it gets a bit messy since that variable would have to be set in a few places
-        //This is tidy, if a bit wasteful of cpu - but we draw it efficiently
-        //
-        self.traceGrid = [[TTTraceGridView alloc]
-                          initWithRows:kPatternGridSize
-                          columns:kPatternGridSize
-                          frame:CGRectMake(0,0,
-                                           300,300)];
-        CGFloat x = (self.containerView.bounds.size.width - _traceGrid.bounds.size.width)/2;
-        self.traceGrid.frame = CGRectMake(x,0,
-                                          _traceGrid.bounds.size.width,
-                                          _traceGrid.bounds.size.height);
-        self.traceGrid.delegate = self;
-        [self.containerView addSubview:self.traceGrid];
-        
         TTTabBarView *tabBarView = (TTTabBarView *)note.object;
         self.view.frame = tabBarView.selectedViewContainerView.bounds;
-        [self.view setNeedsLayout];
-    }
-}
-
-
--(void) viewDidAppearInTabBarView:(NSNotification *)note
-{
-    if(self.view == note.userInfo[@"View"])
-    {
-        int len = kMinPatternLength < 6 ? 6 : kMinPatternLength;
-        [self.traceGrid animateRandomTracePatternsOfLength:len withDelay:0.3];
+        self.cancelButton.hidden = YES;
     }
 }
 
@@ -235,6 +268,9 @@
                     pu.PIN = pin;
                     firstPIN = @"";
                     pin = @"";
+                    if(self.presentingViewController){
+                        [self dismiss:self.traceGrid];
+                    }
                 }
                 else
                 {
@@ -257,6 +293,7 @@
             self.instructionsLabel.text = [NSString stringWithFormat:NSLocalizedString(@"You must include at least %d nodes in your pattern.",@"You must include at least %d nodes in your pattern."),kMinPatternLength];
             [self.traceGrid shakeView];
             pin=@"";
+            firstPIN = @"";
         }
     }
     else //grid >8x8 This will never happen unless the code is broken
@@ -266,6 +303,15 @@
     [traceView resetTracePathWithAnimation:YES];
 }
 
+-(void) dismiss:(id)sender
+{
+    if(self.presentingViewController)
+    {
+        self.presentingViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self dismissViewControllerAnimated:YES completion:^{
+            self.presentingViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;}];
+    }
+}
 
 #pragma mark - accessors
 
@@ -299,7 +345,7 @@
         CGGradientRef blackGradient = CGGradientCreateWithColorComponents(colorSpace, colors, locations, 3);
         CGColorSpaceRelease(colorSpace);
         
-        //create a black gradient for the views background
+        //create a black gradient for the view's background
         UIGraphicsBeginImageContext(self.view.bounds.size);
         
         CGContextRef ctx = UIGraphicsGetCurrentContext();

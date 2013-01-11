@@ -20,9 +20,18 @@
 
 @interface TTPinCreateViewController : UIViewController
 
-@property (strong, nonatomic) TTTraceGridView *traceGrid;
+@property (weak, nonatomic) TTTraceGridView *traceGrid;
+@property (weak, nonatomic) UIButton *cancelButton;
 
 -(void) setUp;
 -(void) viewWillAppearInTabBarView:(NSNotification *)note;
+
+@end
+
+@protocol TTPinCreateViewControllerDelegate <NSObject>
+
+//optional delegate method
+-(void)TTPinCreateViewControllerDidCreatePin:(TTPinCreateViewController *)controller;
+-(void)TTPinCreateViewControllerFailedToCreatePin:(TTPinCreateViewController *)controller;
 
 @end

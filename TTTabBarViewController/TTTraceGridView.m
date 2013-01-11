@@ -422,8 +422,9 @@
         //all adjacent tiles already in pattern
         int r = arc4random() % [tile.adjacentTiles count];
         TTTraceGridTile *recursionTile = [tile.adjacentTiles objectAtIndex:r];
-        [pattern addObject:recursionTile];
-        chosenTile = [self nextTileNotInPatternTiles:pattern fromTile:recursionTile];
+        NSMutableArray *expandedPattern = [NSMutableArray arrayWithArray:pattern];
+        [expandedPattern addObject:recursionTile];
+        chosenTile = [self nextTileNotInPatternTiles:expandedPattern fromTile:recursionTile];
     }
     else if ([usefulTiles count] == 1)
     {
