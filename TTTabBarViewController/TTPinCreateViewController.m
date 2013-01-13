@@ -7,7 +7,7 @@
 //
 
 
-
+#import "TTViewController.h"
 #import "TTTraceGridView.h"
 #import "TTAppDelegate.h"
 #import "TTTraceGridTile.h"
@@ -186,7 +186,7 @@
     {
         //the self.view bounds are the bounds AFTER the change but the frame is the frame BEFORE
         //the change but with the status bar removed
-        [self.containerView mininumizeToContainOnlyVisibleSubviews];
+        [self.containerView minimizeToContainOnlyVisibleSubviews];
         [self adjustPINViewForOrientation];
         CGFloat x = CGRectGetMidX(self.view.bounds);
         CGFloat y = CGRectGetMidY(self.view.bounds);
@@ -308,8 +308,15 @@
     if(self.presentingViewController)
     {
         self.presentingViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        TTViewController *vc;
+        if([self.presentingViewController isKindOfClass:[TTViewController class]]){
+            vc = (TTViewController *)self.presentingViewController;
+        }
         [self dismissViewControllerAnimated:YES completion:^{
-            self.presentingViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;}];
+            if(vc)
+                [vc lockScreen:self];
+            self.presentingViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        }];
     }
 }
 

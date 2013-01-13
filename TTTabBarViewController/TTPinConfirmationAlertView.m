@@ -160,14 +160,6 @@ dismissButtonTitle:(NSString *)title
 }
 
 
--(IBAction)dismissButtonTouched:(id)sender event:(UIEvent *)event
-{
-    self.dismissalReason = TTPinConfirmationAlertDismissalReasonUserDismissal;
-    if([_delegate respondsToSelector:@selector(pinConfirmationAlertWasDismissed:)]){
-        [_delegate pinConfirmationAlertWasDismissed:self];
-    }
-}
-
 -(void) show
 {
     //display alert
@@ -237,6 +229,11 @@ dismissButtonTitle:(NSString *)title
                      completion:^(BOOL finished){
                          [self removeFromSuperview];
                      }];
+    if([_delegate respondsToSelector:@selector(pinConfirmationAlertDidDismissView::)])
+    {
+        [_delegate pinConfirmationAlertDidDismissView:self];
+    }
+
 }
 
 -(void) dismissButtonTouched:(id)sender
@@ -244,10 +241,11 @@ dismissButtonTitle:(NSString *)title
     //typically this is a logout button since the user did not
     //enter the pin correctly but rather hit the dismiss button
     self.dismissalReason = TTPinConfirmationAlertDismissalReasonUserDismissal;
-    if([_delegate respondsToSelector:@selector(pinConfirmationAlertWasDismissed:)])
+    if([_delegate respondsToSelector:@selector(pinConfirmationAlertWillDismissView::)])
     {
-        [_delegate pinConfirmationAlertWasDismissed:self];
+        [_delegate pinConfirmationAlertWillDismissView:self];
     }
+    [self dismiss];
 }
 
 #pragma mark TraceGridView delegate methods
@@ -280,9 +278,10 @@ dismissButtonTitle:(NSString *)title
     if(validPIN)
     {
         self.dismissalReason = TTPinConfirmationAlertDismissalReasonPinMatch;
-        if([_delegate respondsToSelector:@selector(pinConfirmationAlertWasDismissed:)]){
-            [_delegate pinConfirmationAlertWasDismissed:self];
+        if([_delegate respondsToSelector:@selector(pinConfirmationAlertWillDismissView::)]){
+            [_delegate pinConfirmationAlertWillDismissView:self];
         }
+        [self dismiss];
     }
     else
     {
@@ -293,10 +292,10 @@ dismissButtonTitle:(NSString *)title
         else    //too many attempts
         {
             self.dismissalReason = TTPinConfirmationAlertDismissalReasonAllowedAttempsExceeded;
-            if([_delegate respondsToSelector:@selector(pinConfirmationAlertWasDismissed:)]){
-                [_delegate pinConfirmationAlertWasDismissed:self];
+            if([_delegate respondsToSelector:@selector(pinConfirmationAlertWillDismissView::)]){
+                [_delegate pinConfirmationAlertWillDismissView:self];
             }
-            
+            [self dismiss];
         }
     }
     [_traceView resetTracePathWithAnimation:YES];

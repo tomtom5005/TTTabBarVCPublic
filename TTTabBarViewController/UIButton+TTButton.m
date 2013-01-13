@@ -7,7 +7,6 @@
 //
 
 #import "UIButton+TTButton.h"
-
 @implementation UIButton (TTButton)
 
 -(void) TTStyleButton

@@ -49,12 +49,13 @@ dismissButtonTitle:(NSString *)title
          delegate:(id)delegate;
 
 -(void) show;
--(IBAction)dismissButtonTouched:(id)sender event:(UIEvent *)event;
+-(IBAction)dismissButtonTouched:(id)sender;
 -(void) dismiss;
 @end
 
 @protocol TTPinConfirmationAlertDelegate <NSObject>
 
--(void)pinConfirmationAlertWasDismissed:(TTPinConfirmationAlertView *)pinAlert;
+-(void)pinConfirmationAlertWillDismissView:(TTPinConfirmationAlertView *)pinAlert;
+-(void)pinConfirmationAlertDidDismissView:(TTPinConfirmationAlertView *)pinAlert;
 
 @end

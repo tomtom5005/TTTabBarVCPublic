@@ -13,7 +13,7 @@
 @implementation UIView (MinimizeToContainOnlyVisibleSubviews)
 
 
--(void) mininumizeToContainOnlyVisibleSubviews
+-(void) minimizeToContainOnlyVisibleSubviews
 {
     CGFloat deltaX=0;
     CGFloat deltaY=0;

@@ -10,6 +10,6 @@
 
 @interface UIView (MinimizeToContainOnlyVisibleSubviews)
 
--(void) mininumizeToContainOnlyVisibleSubviews;
+-(void) minimizeToContainOnlyVisibleSubviews;
 
 @end

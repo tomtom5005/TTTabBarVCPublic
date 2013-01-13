@@ -55,24 +55,6 @@
     return [self initWithFrame:frame dataSource:nil];
 }
 
-/*
--(id) initWithDataSource:(id)dataSource
-{
-    CGRect rect = CGRectZero;
-    if([dataSource respondsToSelector:@selector(foldTransitionsView:viewForIndex:)])
-    {
-        if([dataSource respondsToSelector:@selector(numberOfViews)]){
-            if ([dataSource numberOfViews] >0){
-                UIView *v = [dataSource foldTransitionsView:self
-                                               viewForIndex:_displayedViewIndex];
-                rect = v.frame;
-            }
-        }
-    }
-    return [self initWithFrame:rect dataSource:dataSource];
-}
-*/
-
 -(void) setUp
 {
     UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUp:)];

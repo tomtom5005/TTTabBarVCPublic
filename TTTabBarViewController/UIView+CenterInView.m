@@ -14,7 +14,7 @@
 
 -(void) centerInView:(UIView *)outerView
 {
-    [self mininumizeToContainOnlyVisibleSubviews];
+    [self minimizeToContainOnlyVisibleSubviews];
     //we cannot use the center properties of the views here
     //if we are in the midst of a rotation
     //or another view transform so

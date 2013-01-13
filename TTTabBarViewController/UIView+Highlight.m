@@ -9,64 +9,81 @@
 #import "UIView+Highlight.h"
 
 // Used to identify the associated highlight view
-static char *HIGHLIGHT_KEY = "HighlightView";
+static char *kHighlightKey = "HighlightLayer";
+
+@interface UIView (HighlightPrivateMethod)
+-(CALayer *)createHighlightLayerWithRadius:(CGFloat)r;
+@end
 
 @implementation UIView (Highlight)
 
 // Get the highlight view attached to this one.
-- (UIView*) highlightView {
-    return objc_getAssociatedObject(self, HIGHLIGHT_KEY);
+- (CALayer*) highlightLayer {
+    return objc_getAssociatedObject(self, kHighlightKey);
 }
 
 // Attach a view to this one, which we'll use as the glowing view.
-- (void) setHighlightView:(UIView*)highlightView {
-    objc_setAssociatedObject(self, HIGHLIGHT_KEY, highlightView, OBJC_ASSOCIATION_RETAIN);
+- (void) setHighlightLayer:(CALayer *)highlightLayer {
+    objc_setAssociatedObject(self, kHighlightKey, highlightLayer, OBJC_ASSOCIATION_RETAIN);
 }
 
 
--(void) showHighlightWithColor:(UIColor *)color alpha:(CGFloat)a
+-(void) showHighlightWithColor:(UIColor *)color alpha:(CGFloat)a radius:(CGFloat)radius
 {
     // If self is already highlighted were done
-    if (! [self highlightView])
+    if (! [self highlightLayer])
     {
-        // The highlight image is taken from the current view's appearance.
-        //essentially we make a mono chromatic image photo copy
-        // As a side effect, if the view's content, size or shape changes,
-        // the highlight won't change its appearance
-        //
-        UIGraphicsBeginImageContext(self.bounds.size);
-        CGContextRef ctx = UIGraphicsGetCurrentContext();
-        UIBezierPath *path = [UIBezierPath bezierPath];
-        CGPoint center = CGPointMake( rint(CGRectGetMidX(self.bounds)), rint(CGRectGetMidX(self.bounds)) );
-        [path addArcWithCenter:center radius:2.0 startAngle:0 endAngle:2*M_PI clockwise:YES];
-        CGContextSetShadowWithColor(ctx, CGSizeMake(self.bounds.size.width/2, self.bounds.size.height/2), 4.0, color.CGColor);
-        [color setFill];
-        
-        //now fill the path with a blend mode that only shows the fill where the there are opaque pixels in the rendered image
-        [path fill];
-        //[path fillWithBlendMode:kCGBlendModeNormal alpha:a];
-        UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-
-        UIGraphicsEndImageContext();
-        
-        // Make the highlight view itself, and position it at the same
-        // point as self. Overlay it over self.
-        UIView* highlightView = [[UIImageView alloc] initWithImage:img];
-               /*
-        // We don't want to show the image, but rather a shadow created by
-        // Core Animation. By setting the shadow to white and the shadow radius to
-        // something large, we get a pleasing glow.
-        highlightView.alpha = a;
-        highlightView.layer.shadowColor = color.CGColor;
-        highlightView.layer.shadowOffset = CGSizeZero;
-        highlightView.layer.shadowRadius = 10;
-        highlightView.layer.shadowOpacity = 1.0;
-*/
-        [self setHighlightView:highlightView];
+        //create glow image
+        CALayer *glowLayer = [self createHighlightLayerWithRadius:radius];
+        [self.layer insertSublayer:glowLayer atIndex:0];
+        [self setHighlightLayer:glowLayer];
     }
-    self.highlightView.center = CGPointMake(CGRectGetMidX(self.bounds),CGRectGetMidY(self.bounds)) ;
-    [self addSubview:self.highlightView];
+    self.highlightLayer.hidden=NO;
+}
 
+-(void) hideHighlightWithColor:(UIColor *)color alpha:(CGFloat)a radius:(CGFloat)radius
+{
+    if ([self highlightLayer])
+        self.highlightLayer.hidden=YES;
+}
+
+-(CALayer *)createHighlightLayerWithRadius:(CGFloat)r
+{
+    //create glow image
+    CALayer *glowLayer = [CALayer layer];
+    glowLayer.backgroundColor = [UIColor clearColor].CGColor;
+    glowLayer.frame = self.frame;
+    CGFloat w = self.bounds.size.width;
+    CGFloat h = self.bounds.size.width;
+    CGFloat maxRadius = w > h ? w : h;
+    r = maxRadius < r ? maxRadius : r;
+    UIGraphicsBeginImageContext(self.bounds.size);
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    UIBezierPath *oval = [UIBezierPath bezierPathWithOvalInRect:self.bounds];
+    CGContextAddPath(ctx,oval.CGPath);
+    CGContextClip(ctx);
+    CGPoint center = CGPointMake( rint(CGRectGetMidX(self.bounds)), rint(CGRectGetMidX(self.bounds)) );
+    NSInteger numLocs = 2;
+    CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
+    CGFloat locations[2] = {0.0,1.0};
+    CGFloat components[] = {1.0, 1.0, 1.0, 0.2,
+        1.0, 1.0, 1.0, 0.0};
+    CGGradientRef gradient = CGGradientCreateWithColorComponents(space,components,locations,numLocs);
+    CGColorSpaceRelease(space);
+    CGContextDrawRadialGradient(ctx,
+                                gradient,
+                                center,
+                                1.0,
+                                center,
+                                r,
+                                kCGGradientDrawsBeforeStartLocation);
+    CGGradientRelease(gradient);
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    glowLayer.contents = (__bridge id)[img CGImage];
+    return glowLayer;
 }
 
 @end

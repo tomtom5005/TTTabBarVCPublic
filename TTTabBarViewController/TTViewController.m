@@ -180,9 +180,8 @@
         [_pinAlert show];
     }else if(tabBarView.selectedView != self.PINCreateVC.view)
     {
-        self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentViewController:self.PINCreateVC animated:YES completion:^{
-            self.modalTransitionStyle = UIModalTransitionStyleCoverVertical;}];
+        }];
     }
     else
     {}
@@ -268,22 +267,19 @@
 
 #pragma mark - TTPinConfirmationAlertView delegate method
 
--(void)pinConfirmationAlertWasDismissed:(TTPinConfirmationAlertView *)pinAlert;
+-(void)pinConfirmationAlertWillDismissView:(TTPinConfirmationAlertView *)pinAlert;
 {
     switch (_pinAlert.dismissalReason) {
         case TTPinConfirmationAlertDismissalReasonPinMatch:
-            //
-            [pinAlert dismiss];
+        
             break;
             
         case TTPinConfirmationAlertDismissalReasonAllowedAttempsExceeded:
             //we should log out
-            [pinAlert dismiss];
             break;
             
         case TTPinConfirmationAlertDismissalReasonUserDismissal:
             //we should log out
-            [pinAlert dismiss];
             break;
             
         default:

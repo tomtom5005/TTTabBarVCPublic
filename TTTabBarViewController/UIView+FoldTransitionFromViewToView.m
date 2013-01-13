@@ -30,23 +30,14 @@
 	initialTransform.m34 = -1.0 /kPerspectiveZ;
 	transformLayer.sublayerTransform = initialTransform;
     
-/*
-    CGRect superTopRect = CGRectMake(0, 0,
-                                superLayer.bounds.size.width,
-                                CGRectGetMidY(superLayer.bounds));
-    CGRect superBottomRect = CGRectMake(0,superTopRect.size.height,
-                                   superLayer.bounds.size.width,
-                                   superLayer.bounds.size.height - superTopRect.size.height);
- */
-   
+
     //create image layers
     UIImage *fromImg = [fromView createLayerImage];
     UIImage *toImg = [toView createLayerImage];
     UIImage *fromTopImg = [fromImg topHalfImage];
     UIImage *fromBottomImg = [fromImg bottomHalfImage];
     UIImage *toTopImg = [toImg topHalfImage];
-    //UIImageView *iv = [[UIImageView alloc] initWithImage:toTopImg];
-    //[fromView addSubview:iv];
+    
     UIImage *toBottomImg = [toImg bottomHalfImage];
     
     CGPoint topAnchorPt = CGPointMake(0.5,0.0);

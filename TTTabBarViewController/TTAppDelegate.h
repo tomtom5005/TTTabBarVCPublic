@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class TTViewController;
+@class TTLoginViewController;
 
 @interface TTAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) NSArray *colors;
-@property (strong, nonatomic) TTViewController *viewController;
+@property (strong, nonatomic) TTLoginViewController *viewController;
 @property (strong, nonatomic) NSString *PIN;
 
 @end

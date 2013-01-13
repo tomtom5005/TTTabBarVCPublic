@@ -12,8 +12,9 @@
 
 @interface UIView (Highlight)
 
-@property (nonatomic, readonly) UIView* highlightView;
+@property (nonatomic, readonly) CALayer* highlightLayer;
 
--(void) showHighlightWithColor:(UIColor *)color alpha:(CGFloat)a;
+-(void) showHighlightWithColor:(UIColor *)color alpha:(CGFloat)a radius:(CGFloat)radius;
+-(CALayer *)createHighlightLayerWithRadius:(CGFloat)r;
 
 @end

@@ -8,7 +8,7 @@
 
 #import "TTAppDelegate.h"
 
-#import "TTViewController.h"
+#import "TTLoginViewController.h"
 
 @implementation TTAppDelegate
 
@@ -18,7 +18,7 @@
     
     self.colors = @[[UIColor redColor], [UIColor yellowColor], [UIColor greenColor], [UIColor blueColor], [UIColor brownColor], [UIColor magentaColor], [UIColor cyanColor], [UIColor orangeColor], [UIColor purpleColor], [UIColor blackColor], [UIColor grayColor], [UIColor whiteColor]];
     
-    self.viewController = [[TTViewController alloc] initWithNibName:@"TTViewController" bundle:nil];
+    self.viewController = [[TTLoginViewController alloc] initWithNibName:@"TTLoginViewController" bundle:nil];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;
