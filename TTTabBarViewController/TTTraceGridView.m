@@ -348,6 +348,9 @@
 
 -(void) animateRandomTracePatternsOfLength:(NSNumber *)length
 {
+    //TODO: replace the timer animation system with a CAGroupAnimation
+    //with beginTimes - the current system can crash if the animations run a bit long
+    //the remove path method can be called prematurely 
     NSInteger len = [length integerValue];
     NSInteger numOfNodes = len>6 ? len : 6;
     int r = arc4random() % [tiles count];
@@ -438,93 +441,6 @@
     return chosenTile ;
 }
 
-
-/*
- - (TraceGridTile *) nextTileFromTile:(TraceGridTile *)tile
- {
- int t = tile.tileNumber;
- int col = t%cols;
- int row = (t-t%cols)/cols;
- NSUInteger count;
- NSUInteger nextTileNumber;
- TraceGridTile * nextTile;
- if(col == 0)    //left col
- {
- if(row ==0) //top left
- {
- NSUInteger choices[] = {t+1,t+cols,(t+cols)+1};
- count = 3;
- int r = arc4random() % count;
- nextTileNumber = choices[r];
- }
- else if (row == rows-1) //bottom left
- {
- NSUInteger choices[] = {t+1,t-cols,(t-cols)+1};
- count = 3;
- int r = arc4random() % count;
- nextTileNumber = choices[r];
- }
- else    //center left tiles
- {
- count = 5;
- NSUInteger choices[] = {t+1,t+cols,(t+cols)+1, t-cols, (t-cols)+1};
- int r = arc4random() % count;
- nextTileNumber = choices[r];
- }
- }
- else if (col == (cols-1) )  //right col
- {
- if(row ==0) //top right
- {
- NSUInteger choices[] = {t-1,t+cols,(t+cols)-1};
- count = 3;
- int r = arc4random() % count;
- nextTileNumber = choices[r];
- }
- else if (row == rows-1) //bottom right
- {
- NSUInteger choices[] = {t-1,t-cols,(t-cols)-1};
- count = 3;
- int r = arc4random() % count;
- nextTileNumber = choices[r];
- }
- else    //center right tiles
- {
- count = 5;
- NSUInteger choices[] = {t-1,t+cols,(t+cols)-1, t-cols, (t-cols)-1};
- int r = arc4random() % count;
- nextTileNumber = choices[r];
- }
- }
- else //central columns
- {
- if(row == 0)    //center cols top row
- {
- NSUInteger choices [] = {t-1, t+1, t+cols, (t+cols)-1, (t+cols) +1};
- count = 5;
- int r = arc4random() % count;
- nextTileNumber = choices[r];
- }
- else if(row == (rows-1) )    //center cols bottom row
- {
- NSUInteger choices [] = {t-1, t+1, t-cols, (t-cols)-1, (t-cols) +1};
- count = 5;
- int r = arc4random() % count;
- nextTileNumber = choices[r];
- }
- else //central tiles
- {
- NSUInteger choices [] = {t-1, t+1, t-cols, t+cols, (t-cols)-1, (t-cols)+1, (t+cols)-1, (t+cols)+1};
- count = 8;
- int r = arc4random() % count;
- nextTileNumber = choices[r];
- }
- }
- 
- nextTile = [tiles objectAtIndex:nextTileNumber];
- return nextTile;
- }
- */
 
 
 - (NSArray *) adjacentTilesToTile:(TTTraceGridTile *)tile

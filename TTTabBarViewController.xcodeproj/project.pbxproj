@@ -212,8 +212,6 @@
 				E20338BF1683D0D6007FB036 /* Constants.h */,
 				E20C601F1695149D00118EA0 /* TTRoundedTextView.h */,
 				E20C60201695149D00118EA0 /* TTRoundedTextView.m */,
-				E281FA8016701B930021C45B /* UIView+Highlight.h */,
-				E281FA8116701B930021C45B /* UIView+Highlight.m */,
 				E20C60291695F6F700118EA0 /* Categories */,
 				E2031050166ABB0B004D313F /* TTAppDelegate.h */,
 				E2031051166ABB0B004D313F /* TTAppDelegate.m */,
@@ -294,6 +292,8 @@
 		E20C60291695F6F700118EA0 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				E281FA8016701B930021C45B /* UIView+Highlight.h */,
+				E281FA8116701B930021C45B /* UIView+Highlight.m */,
 				E20C60261695F6B000118EA0 /* UIView+ShakeView.h */,
 				E20C60271695F6B100118EA0 /* UIView+ShakeView.m */,
 				E20C602A1695FCAA00118EA0 /* UIView+AddBottomToTopLinearGradient.h */,

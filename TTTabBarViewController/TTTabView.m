@@ -151,7 +151,7 @@
                 [self.tabItem.tabColor setFill];
         [path fill];
 
-    }
+    }//custom view
 }
 
 -(void)underline

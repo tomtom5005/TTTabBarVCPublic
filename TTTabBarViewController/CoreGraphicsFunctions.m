@@ -117,10 +117,6 @@ void fillCircleWithRadialGradient (CGContextRef context, CGPoint center, CGFloat
     //CGRect rect = CGRectMake(center.x-radius, center.y-radius, 2*radius, 2*radius);
     CGPoint endPt;
     
-    /*
-     x = cx + r * cos(a)
-     y = cy + r * sin(a)
-     */
     switch (focus)
     {
         case TTRadialGradientFocalPointCenterLeft:
@@ -169,9 +165,6 @@ void fillCircleWithRadialGradient (CGContextRef context, CGPoint center, CGFloat
     
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef) colors, locations);
     CGContextSaveGState(context);
-    // UIBezierPath *clipPath = [UIBezierPath bezierPathWithOvalInRect:rect];
-    // CGContextAddPath(context, clipPath.CGPath);
-    //CGContextClipToRect(context, rect);
     CGContextDrawRadialGradient(context, gradient, center, radius, endPt, 0, kCGGradientDrawsAfterEndLocation);
     CGContextRestoreGState(context);
     

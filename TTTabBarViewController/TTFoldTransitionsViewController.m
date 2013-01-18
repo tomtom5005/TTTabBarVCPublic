@@ -44,13 +44,7 @@
     }
     return self;
 }
-/*
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self setUp];
-}
-*/
+
 -(void) dealloc
 {
     NSNotificationCenter *ns = [NSNotificationCenter defaultCenter];

@@ -93,34 +93,13 @@
          UIInterfaceOrientationLandscapeRight     = UIDeviceOrientationLandscapeLeft
          } UIInterfaceOrientation;
          */
-        //rotateAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
-        //rotateAnimation.valueFunction = [CAValueFunction functionWithName:kCAValueFunctionRotateZ];
 
         orientationChangeObserver = [[NSNotificationCenter defaultCenter]
                                      addObserverForName:UIDeviceOrientationDidChangeNotification
                                      object:nil
                                      queue:nil
                                      usingBlock:^(NSNotification *note){
-                                         /*
-                                          self.layer.transform = rootView.layer.transform;
-                                          [self.layer addAnimation:[rootView.layer animationForKey:@"position"] forKey:@"position"];
-                                          [self.layer addAnimation:[rootView.layer animationForKey:@"bounds"] forKey:@"bounds"];
-                                          [self.layer addAnimation:[rootView.layer animationForKey:@"transform"] forKey:@"transform"];
-                                          */
-                                         /*
-                                         [CATransaction begin];
-                                         
-                                         [CATransaction setCompletionBlock:^(void) {
-                                             [self layoutSubviews];
-                                         }];
-                                         self.layer.transform = rootView.layer.transform;
-                                         [self.layer addAnimation:[rootView.layer animationForKey:@"position"] forKey:@"position"];
-                                         [self.layer addAnimation:[rootView.layer animationForKey:@"bounds"] forKey:@"bounds"];
-                                         [self.layer addAnimation:[rootView.layer animationForKey:@"transform"] forKey:@"transform"];
-                                         
-                                         [CATransaction commit];
-                                         */
-                                         [self setNeedsLayout];
+                                        [self setNeedsLayout];
                                      }];
         
         self.delegate = delegate;
@@ -180,13 +159,11 @@ dismissButtonTitle:(NSString *)title
 
 -(void) layoutSubviews
 {
-//  [containerView centerInView:self];
-  //  if(maskExpanded)
-  //      maskingLayer.bounds=self.bounds;
-   // containerView.center = CGPointMake(rint(CGRectGetMidX(self.bounds)),
-   //                                    rint(CGRectGetMidY(self.bounds)));
-    //[self adjustContainerViewForOrientation];
-    //[self expandMask];
+    //TODO: fix rotations re container view
+    if(maskExpanded)
+        maskingLayer.bounds=self.bounds;
+    containerView.center = CGPointMake(rint(CGRectGetMidX(self.bounds)),
+                                       rint(CGRectGetMidY(self.bounds)));
 }
 
 #pragma mark - TTPinAlertView methods
@@ -222,7 +199,6 @@ dismissButtonTitle:(NSString *)title
     dismissButton = [UIButton buttonWithType:UIButtonTypeCustom];
     dismissButton.bounds = CGRectMake(0.0,0.0,160.0,30.0);
     
-    //TODO: chg color of button and size - maybe just use tintColor
     [dismissButton TTStyleButton];
     [dismissButton addBottomToTopLinearGradientBottomColor:[UIColor colorWithRed:220/255 green:30/255 blue:0 alpha:.85] topColor:[UIColor colorWithRed:255/255 green:50/255 blue:45/255 alpha:.85]];
     [dismissButton addTopLinearSheen];
@@ -241,11 +217,6 @@ dismissButtonTitle:(NSString *)title
 {
     containerView = [[UIView alloc]initWithFrame:self.bounds];
     containerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    /*
-
-                                    UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin |
-                                    UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-     */
     CGFloat midX = CGRectGetMidX(self.bounds);
     traceView =[[TTTraceGridView alloc]
                 initWithRows:rows
@@ -295,10 +266,7 @@ dismissButtonTitle:(NSString *)title
     CGFloat windowPortraitWidth = [[UIScreen mainScreen  ]bounds].size.width;
     CGFloat windowPortraitHeight = [[UIScreen mainScreen  ]bounds].size.height;
     CGFloat statusBarHeight = windowPortraitHeight - [[UIScreen mainScreen] applicationFrame].size.height;
-    /*
-    _containerView.center = CGPointMake(CGRectGetMidX([self bounds]),
-                                        CGRectGetMidY([self bounds]));
-    */
+    
     CGFloat x,y;
     switch ([app statusBarOrientation])
     {

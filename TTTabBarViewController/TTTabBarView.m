@@ -31,7 +31,6 @@ NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification = @"TTTabBar
 -(void) sizeSelectedViewContainer;
 -(void) didSelectTabItem:(TTTabItem *)item;
 -(void) makeSubviews;
--(void) makeHighlightWithColor:(UIColor *)color alpha:(CGFloat)a size:(CGSize)size;
 
 @end
 
@@ -129,7 +128,7 @@ NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification = @"TTTabBar
     _selectedViewContainerView.backgroundColor = [UIColor clearColor];
     [self.containerView addSubview:self.tabContainerView];
     [self.containerView addSubview:self.selectedViewContainerView];
-
+    
 }
 - (void)reloadData
 {
@@ -222,52 +221,6 @@ NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification = @"TTTabBar
     return centerTabView;
 }
 
--(void) makeHighlightWithColor:(UIColor *)color alpha:(CGFloat)a size:(CGSize)size
-{
-    // If self is already highlighted were done
-    if (! [self highlight])
-    {
-        // The highlight image is taken from the current view's appearance.
-        //essentially we make a mono chromatic image photo copy
-        // As a side effect, if the view's content, size or shape changes,
-        // the highlight won't change its appearance
-        //
-        //What we need to do to make this attractive is to fillWith a pattern where pattern
-        //is mome sore of on off pixel pattern
-        //We are going to go with an underline for now since
-        //I am not sure this will ever look good
-        //
-        UIGraphicsBeginImageContext(size);
-        CGContextRef ctx = UIGraphicsGetCurrentContext();
-        UIBezierPath *path = [UIBezierPath bezierPath];
-        [color setFill];
-        
-        //CGContextSaveGState(ctx);
-        CGContextSetShadowWithColor(ctx, CGSizeMake(0, 0), 20, color.CGColor);
-        CGPoint center = CGPointMake( rint(size.width/2), rint(size.height/2) );
-        CGFloat r = size.width>size.height ? size.height/2 : size.width/2;
-        int n = 8;
-        CGFloat increment = r/n;
-        [path addArcWithCenter:center radius:r startAngle:0 endAngle:2*M_PI clockwise:YES];
-        [path fillWithBlendMode:kCGBlendModeSoftLight alpha:a/n];
-       // CGContextRestoreGState(ctx);
-        for(int i = 1; i<n; i++)
-        {
-            [path addArcWithCenter:center radius:r-(i*increment) startAngle:0 endAngle:2*M_PI clockwise:YES];
-            [path fillWithBlendMode:kCGBlendModeSoftLight alpha:a/n];
-        }
-        //now fill the path with a blend mode that only shows the fill where the there are opaque pixels in the rendered image
-        //[path fill];
-        UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-        
-        UIGraphicsEndImageContext();
-        
-        // Make the highlight view itself, and position it at the same
-        // point as self. Overlay it over self.
-        self.highlight = [[UIImageView alloc] initWithImage:img];
-       // self.highlight.opaque = YES;
-    }
-}
 
 
 -(void) didSelectTabView:(TTTabView *)tabView
@@ -280,20 +233,11 @@ NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification = @"TTTabBar
         [self.tabsScrollView setContentOffset:newOffset animated:YES];
     }
     NSUInteger tabIndexSelected = [self.tabViews indexOfObject:tabView];
-/*
-    if( ! self.highlight){
-        [self makeHighlightWithColor:[UIColor whiteColor] alpha:0.5 size:CGSizeMake(2*kMinTabWidth, 2*kMinTabHeight)];
-    }
- */   
+    //TODO: create a highlight on tab view using the highlight UIView category - only do for
+    //tabItems where tabViewStyle is custom logic similar to underline method
+
     if (tabIndexSelected != self.selectedTabIndex )
     {
-        //CGFloat x = rint((tabView.bounds.size.width - self.highlight.bounds.size.width)/2);
-        //CGFloat y = rint((tabView.bounds.size.height - self.highlight.bounds.size.height)/2);
-        //self.highlight.frame = CGRectMake(x, y,
-        //                                  self.highlight.bounds.size.width,
-       //                                   self.highlight.bounds.size.height);
-       // [tabView addSubview:self.highlight];
-        
         TTTabView *oldTabView = [self.tabViews objectAtIndex:self.selectedTabIndex];
         [oldTabView removeUnderline];
         [tabView underline];
@@ -326,7 +270,6 @@ NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification = @"TTTabBar
     //TODO: In the animation block,or before it,we should add a highlight glow like on pivotal
     //tracker start tracking button for the selected tab. We would just leaving glowing as long
     //as tab is selected tab Also we will need to change
-    //the color of the "sliding bar" to match the tab
         
     UIView __block *oldView = oldViewIndex > -1?[[self.selectedViewContainerView subviews] objectAtIndex:oldViewIndex]:nil;
     if(oldView)
@@ -393,12 +336,8 @@ NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification = @"TTTabBar
         self.tabViewScrollViewDeceleratedTo = centerTabView;
     }
 }
-/*
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    [self didSelectTabView:self.tabViewScrollViewDeceleratedTo];
-}
-*/
+
+
 #pragma mark - SITabView delegate method
 
 -(void) tabViewDidRecieveTapGesture:(TTTabView *)tabView

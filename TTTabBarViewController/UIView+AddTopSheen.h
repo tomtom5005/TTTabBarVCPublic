@@ -11,10 +11,10 @@
 @interface UIView (AddTopSheen)
 
 -(void)addTopLinearSheen;   //adds a sheen to the top half of the view's
-//above the top layer
-//this works on the entire bounds of the view
-//if you need the sheen to be clipped then
-//use the maskToBounds property of a superLayer
-//or the clipsToBounds property of the view
+                            //above the top layer
+                            //this works on the entire bounds of the view
+                            //if you need the sheen to be clipped then
+                            //use the maskToBounds property of a superLayer
+                            //or the clipsToBounds property of the view
 
 @end
