@@ -11,14 +11,34 @@
 #import "UIButton+TTButton.h"
 #import "UIView+AddBottomToTopLinearGradient.h"
 #import "UIView+AddTopSheen.h"
+#import "UIView+TopVisibleWindow.h"
 #import "TTTraceGridTile.h"
 #import "TTSelectedTiles.h"
 #import "UIView+CenterInView.h"
+#import "TTMainOperationQueue.h"
+#import "TTAppDelegate.h"
 
 @interface TTPinConfirmationAlertView()
+{
+    BOOL maskExpanded;
+    UIButton *dismissButton;
+    TTTraceGridView *traceView;
+    UIView *containerView;
+    CALayer *maskingLayer;
+    id orientationChangeObserver;
+    UIView *rootView;
+    UIWindow *alertWindow;
+   // CAKeyframeAnimation *rotateAnimation;
+}
+
+//@property (nonatomic, strong) id orientationChangeObserver;
 
 -(void) createDismissButtonWithTitle:(NSString *)title;
 -(void) createContainerView;
+-(void) adjustViewOrientation;
+-(void) expandMask;
+-(void) adjustContainerViewForOrientation;
+-(void) dismissButtonTouched:(id)sender;
 
 @end
 
@@ -41,13 +61,66 @@
     
     self = [super initWithFrame:[[UIScreen mainScreen] applicationFrame]];
     if (self) {
-        self.pin = p;
+        _pin = p;
         [self createDismissButtonWithTitle:title];
-        self.attemptsAllowed = attempts;
-        self.message = m;
+        _attemptsAllowed = attempts;
+        _message = m;
         rows=r;
         columns=cols;
         attemptsMade=0;
+        
+        self.autoresizesSubviews = YES;
+        
+        self.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth |
+        UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+        /*
+         typedef enum {
+         UIDeviceOrientationUnknown,
+         UIDeviceOrientationPortrait,
+         UIDeviceOrientationPortraitUpsideDown,
+         UIDeviceOrientationLandscapeLeft,
+         UIDeviceOrientationLandscapeRight,
+         UIDeviceOrientationFaceUp,
+         UIDeviceOrientationFaceDown
+         } UIDeviceOrientation;
+         
+         typedef enum {
+         UIInterfaceOrientationPortrait           = UIDeviceOrientationPortrait,
+         UIInterfaceOrientationPortraitUpsideDown = UIDeviceOrientationPortraitUpsideDown,
+         UIInterfaceOrientationLandscapeLeft      = UIDeviceOrientationLandscapeRight,
+         UIInterfaceOrientationLandscapeRight     = UIDeviceOrientationLandscapeLeft
+         } UIInterfaceOrientation;
+         */
+        //rotateAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+        //rotateAnimation.valueFunction = [CAValueFunction functionWithName:kCAValueFunctionRotateZ];
+
+        orientationChangeObserver = [[NSNotificationCenter defaultCenter]
+                                     addObserverForName:UIDeviceOrientationDidChangeNotification
+                                     object:nil
+                                     queue:nil
+                                     usingBlock:^(NSNotification *note){
+                                         /*
+                                          self.layer.transform = rootView.layer.transform;
+                                          [self.layer addAnimation:[rootView.layer animationForKey:@"position"] forKey:@"position"];
+                                          [self.layer addAnimation:[rootView.layer animationForKey:@"bounds"] forKey:@"bounds"];
+                                          [self.layer addAnimation:[rootView.layer animationForKey:@"transform"] forKey:@"transform"];
+                                          */
+                                         /*
+                                         [CATransaction begin];
+                                         
+                                         [CATransaction setCompletionBlock:^(void) {
+                                             [self layoutSubviews];
+                                         }];
+                                         self.layer.transform = rootView.layer.transform;
+                                         [self.layer addAnimation:[rootView.layer animationForKey:@"position"] forKey:@"position"];
+                                         [self.layer addAnimation:[rootView.layer animationForKey:@"bounds"] forKey:@"bounds"];
+                                         [self.layer addAnimation:[rootView.layer animationForKey:@"transform"] forKey:@"transform"];
+                                         
+                                         [CATransaction commit];
+                                         */
+                                         [self setNeedsLayout];
+                                     }];
+        
         self.delegate = delegate;
     }
     return self;
@@ -65,7 +138,7 @@
                       delegate:nil];
 }
 
-- (id)init
+- (id)init 
 {
     return [self initWithFrame:[[UIScreen mainScreen] applicationFrame]
                            PIN:[NSString string]
@@ -98,48 +171,99 @@ dismissButtonTitle:(NSString *)title
                       delegate:delegate];
 }
 
+-(void) dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:orientationChangeObserver];
+}
+
+-(void) layoutSubviews
+{
+//  [containerView centerInView:self];
+  //  if(maskExpanded)
+  //      maskingLayer.bounds=self.bounds;
+   // containerView.center = CGPointMake(rint(CGRectGetMidX(self.bounds)),
+   //                                    rint(CGRectGetMidY(self.bounds)));
+    //[self adjustContainerViewForOrientation];
+    //[self expandMask];
+}
+
+#pragma mark - TTPinAlertView methods
+
+-(void) adjustViewOrientation
+{    
+    CGFloat windowPortraitWidth = [[UIScreen mainScreen] bounds].size.width;
+    CGFloat windowPortraitHeight = [[UIScreen mainScreen] bounds].size.height;
+    
+    switch ([[UIApplication sharedApplication] statusBarOrientation])
+    {
+        case UIInterfaceOrientationPortrait:
+            self.frame = CGRectMake(0,0,windowPortraitWidth,windowPortraitHeight-20);
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+           self.frame = CGRectMake(0,0,windowPortraitWidth,windowPortraitHeight-20);
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+            self.frame = CGRectMake(0,0,windowPortraitHeight, windowPortraitWidth-20);
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            self.frame = CGRectMake(0,0,windowPortraitHeight, windowPortraitWidth-20);
+            break;
+
+        default:
+            break;
+    }
+}
 
 
 -(void)createDismissButtonWithTitle:(NSString *)title
 {
-    self.dismissButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _dismissButton.bounds = CGRectMake(0.0,0.0,160.0,30.0);
+    dismissButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    dismissButton.bounds = CGRectMake(0.0,0.0,160.0,30.0);
     
     //TODO: chg color of button and size - maybe just use tintColor
-    [_dismissButton TTStyleButton];
-    [_dismissButton addBottomToTopLinearGradientBottomColor:[UIColor colorWithRed:220/255 green:30/255 blue:0 alpha:.85] topColor:[UIColor colorWithRed:255/255 green:50/255 blue:45/255 alpha:.85]];
-    [_dismissButton addTopLinearSheen];
-    _dismissButton.titleLabel.text = title;
-    _dismissButton.titleLabel.font = [UIFont systemFontOfSize:17];
-    _dismissButton.titleLabel.minimumScaleFactor = 23.0/13.0;
-    _dismissButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [_dismissButton setTitle:title forState:UIControlStateNormal];
+    [dismissButton TTStyleButton];
+    [dismissButton addBottomToTopLinearGradientBottomColor:[UIColor colorWithRed:220/255 green:30/255 blue:0 alpha:.85] topColor:[UIColor colorWithRed:255/255 green:50/255 blue:45/255 alpha:.85]];
+    [dismissButton addTopLinearSheen];
+    dismissButton.titleLabel.text = title;
+    dismissButton.titleLabel.font = [UIFont systemFontOfSize:17];
+    dismissButton.titleLabel.minimumScaleFactor = 23.0/13.0;
+    dismissButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [dismissButton setTitle:title forState:UIControlStateNormal];
 
-    [_dismissButton addTarget:self
+    [dismissButton addTarget:self
                        action:@selector(dismissButtonTouched:)
             forControlEvents:UIControlEventTouchUpInside];
 }
 
 -(void) createContainerView
 {
-    self.containerView = [[UIView alloc]initWithFrame:self.bounds];
+    containerView = [[UIView alloc]initWithFrame:self.bounds];
+    containerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    /*
+
+                                    UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin |
+                                    UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+     */
     CGFloat midX = CGRectGetMidX(self.bounds);
-    self.traceView =[[TTTraceGridView alloc]
+    traceView =[[TTTraceGridView alloc]
                 initWithRows:rows
                 columns:columns
                 frame:CGRectMake((midX-160),0.0,320.0,320.0)];
-    _traceView.clipsToBounds = YES;  //eliminates shadow
-    _traceView.center = CGPointMake(midX,_containerView.bounds.size.height/2);
-    _traceView.delegate = self;
-    _containerView.alpha = 0.8;
-    _containerView.backgroundColor = [UIColor clearColor];
-    _containerView.layer.cornerRadius=25.0;
+    //traceView.clipsToBounds = YES;  //eliminates shadow
+    traceView.center = CGPointMake(midX,containerView.bounds.size.height/2);
+    traceView.delegate = self;
+    traceView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin |
+                                    UIViewAutoresizingFlexibleBottomMargin;
     
-    [_containerView addSubview:_traceView];
+    containerView.alpha = 0.8;
+    containerView.backgroundColor = [UIColor clearColor];
+    containerView.layer.cornerRadius=25.0;
+    
+    [containerView addSubview:traceView];
     
     UILabel *messageLabel = [[UILabel alloc]
-                             initWithFrame:CGRectMake(CGRectGetMidX(_containerView.bounds) - 160,
-                                                      CGRectGetMaxY(_traceView.frame)+10,
+                             initWithFrame:CGRectMake(CGRectGetMidX(containerView.bounds) - 160,
+                                                      CGRectGetMaxY(traceView.frame)+10,
                                                       320, 50)];
     messageLabel.textAlignment = NSTextAlignmentCenter;
     messageLabel.backgroundColor = [UIColor clearColor];
@@ -149,14 +273,59 @@ dismissButtonTitle:(NSString *)title
     messageLabel.minimumScaleFactor = 12.0/17.0;    //so mininum font size = 12
     messageLabel.adjustsFontSizeToFitWidth = YES;
     messageLabel.text = self.message;
-    [_containerView addSubview:messageLabel];
+    messageLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin |
+                                    UIViewAutoresizingFlexibleBottomMargin;
+    [containerView addSubview:messageLabel];
     
-    _dismissButton.frame = CGRectMake(CGRectGetMidX(_containerView.bounds) - _dismissButton.bounds.size.width/2,
+    dismissButton.frame = CGRectMake(CGRectGetMidX(containerView.bounds) - dismissButton.bounds.size.width/2,
                                      CGRectGetMaxY(messageLabel.frame)+20,
-                                     _dismissButton.bounds.size.width,
-                                     _dismissButton.bounds.size.height);
-    [_containerView addSubview:_dismissButton];
+                                     dismissButton.bounds.size.width,
+                                     dismissButton.bounds.size.height);
+    dismissButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin |
+                                        UIViewAutoresizingFlexibleBottomMargin;
+    [containerView addSubview:dismissButton];
     
+}
+
+-(void) adjustContainerViewForOrientation
+{
+    UIApplication *app = [UIApplication sharedApplication];
+    CGFloat windowPortraitWidth = [[UIScreen mainScreen  ]bounds].size.width;
+    CGFloat windowPortraitHeight = [[UIScreen mainScreen  ]bounds].size.height;
+    CGFloat statusBarHeight = windowPortraitHeight - [[UIScreen mainScreen] applicationFrame].size.height;
+    /*
+    _containerView.center = CGPointMake(CGRectGetMidX([self bounds]),
+                                        CGRectGetMidY([self bounds]));
+    */
+    CGFloat x,y;
+    switch ([app statusBarOrientation])
+    {
+        case UIInterfaceOrientationLandscapeLeft:
+            x = (windowPortraitHeight - containerView.bounds.size.width)/2.0;
+            y = (windowPortraitWidth-statusBarHeight - containerView.bounds.size.height)/2.0;
+            break;
+            
+        case UIInterfaceOrientationLandscapeRight:
+            x = (windowPortraitHeight - containerView.bounds.size.width)/2.0;
+            y = (windowPortraitWidth-statusBarHeight - containerView.bounds.size.height)/2.0;
+            break;
+            
+        case UIInterfaceOrientationPortrait:
+            x = (windowPortraitWidth - containerView.bounds.size.width)/2.0;
+            y = (windowPortraitHeight-statusBarHeight - containerView.bounds.size.height)/2.0;
+            break;
+            
+        case UIInterfaceOrientationPortraitUpsideDown:
+            x = (windowPortraitWidth - containerView.bounds.size.width)/2.0;
+            y = (windowPortraitHeight-statusBarHeight - containerView.bounds.size.height)/2.0;
+            break;
+            
+        default:
+            break;
+    }
+    containerView.frame = CGRectMake(x,y,
+                                      containerView.bounds.size.width,
+                                      containerView.bounds.size.height);
 }
 
 
@@ -167,47 +336,59 @@ dismissButtonTitle:(NSString *)title
     //with a button below it to dismiss the alert w/o
     //entering the PIN and a message of the user's chosing
     //
+    
+    TTAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    rootView = appDelegate.window.rootViewController.view;
+    UIWindow *topWindow = [[UIApplication sharedApplication] keyWindow];
+    //create a new window to hold the PIN confirmation alert view
+    alertWindow  = [[UIWindow alloc] initWithFrame:topWindow.frame];
+    [alertWindow setBackgroundColor:[UIColor clearColor]];
+    self.frame = [alertWindow bounds];
     self.backgroundColor=[UIColor clearColor];
+    [alertWindow addSubview:self];
+    [alertWindow makeKeyAndVisible];
+
     [self createContainerView];
-    _containerView.alpha = 0;
-    [self addSubview:_containerView];
-    [_containerView centerInView:self];
-   
-    self.maskingLayer = [CALayer layer];
-    _maskingLayer.bounds = CGRectMake(0.0, 0.0,
-                                     _containerView.bounds.size.width/4,
-                                     _containerView.bounds.size.height/4);
+    containerView.alpha = 0;
+    [self addSubview:containerView];
+    [containerView centerInView:self];
+    CGRect destinationFrame = containerView.frame;
+
+    maskingLayer = [CALayer layer];
+    maskingLayer.bounds = CGRectMake(0.0, 0.0,
+                                     rint(containerView.bounds.size.width/4.0),
+                                     rint(containerView.bounds.size.height/4.0));
     CGFloat midX = CGRectGetMidX(self.layer.bounds);
     CGFloat midY = CGRectGetMidY(self.layer.bounds);
-    _maskingLayer.position = CGPointMake(midX,midY);
-    _maskingLayer.backgroundColor = [UIColor blackColor].CGColor;
-    _maskingLayer.opacity = 0.0;
-    [self.layer addSublayer:_maskingLayer];
+    maskingLayer.position = CGPointMake(midX,midY);
+    maskingLayer.backgroundColor = [UIColor blackColor].CGColor;
+    maskingLayer.opacity = 0.0;
+    [self.layer addSublayer:maskingLayer];
     
-    UIWindow *topWindow = [[[UIApplication sharedApplication].windows sortedArrayUsingComparator:^NSComparisonResult(UIWindow *window1, UIWindow *window2) {
-        return window1.windowLevel - window2.windowLevel;
-    }] lastObject];
-    UIView *topView = [[topWindow subviews] lastObject];
-    CGRect destinationFrame = _containerView.frame;
-    _containerView.frame = CGRectMake(_containerView.frame.origin.x,
-                                     - _containerView.bounds.size.height,
-                                     _containerView.frame.size.width , _containerView.frame.size.height);
-    _containerView.alpha = 1.0;
-    _containerView.hidden=NO;
-    [topView addSubview:self];
-    [self bringSubviewToFront:self.containerView];
+    //move _containerView above screen
+    containerView.frame = CGRectMake(containerView.frame.origin.x,
+                                     - containerView.bounds.size.height,
+                                     containerView.frame.size.width , containerView.frame.size.height);
+    containerView.alpha = 1.0;
+    containerView.hidden=NO;
+    [self bringSubviewToFront:containerView];
+    
+    [alertWindow bringSubviewToFront:self];
+    
     [UIView animateWithDuration:0.4
                      animations:^{
-                         _containerView.frame = CGRectOffset(destinationFrame,0,30);
+                         containerView.frame = CGRectOffset(destinationFrame,0,30);
                      } completion:^(BOOL finished){
-                         _maskingLayer.opacity = 0.8;
+                         maskingLayer.opacity = 0.8;
                          [UIView animateWithDuration:0.2
                                                delay:0.0
                                              options:UIViewAnimationCurveEaseOut
                                           animations:^{
-                                              _containerView.frame = destinationFrame;
-                                              self.maskingLayer.frame = self.frame;
+                                              containerView.frame = destinationFrame;
+                                              maskingLayer.frame = self.bounds;
                                           } completion:^(BOOL finished){
+                                              maskExpanded = YES;
+                                              [self bringSubviewToFront:traceView];
                                           //[self performSelector:@selector(expandMask)withObject:nil afterDelay:0.0];
                                           }];
                      }];
@@ -215,25 +396,27 @@ dismissButtonTitle:(NSString *)title
 
 -(void) expandMask
 {
-    self.maskingLayer.frame = self.frame;
+    maskingLayer.frame = self.frame;
 }
 
 
 -(void) dismiss
 {
+    if([_delegate respondsToSelector:@selector(pinConfirmationAlertWillDismissView:)]){
+        [_delegate pinConfirmationAlertWillDismissView:self];
+    }
     [UIView animateWithDuration:0.4
                      animations:^{
-                         _maskingLayer.opacity = 0.0;
-                         _containerView.alpha = 0.0;
+                         maskingLayer.opacity = 0.0;
+                         containerView.alpha = 0.0;
                      }
                      completion:^(BOOL finished){
-                         [self removeFromSuperview];
+                        [alertWindow removeFromSuperview];
+                         alertWindow = nil;
+                         if([_delegate respondsToSelector:@selector(pinConfirmationAlertDidDismissView::)]){
+                             [_delegate pinConfirmationAlertDidDismissView:self];
+                         }
                      }];
-    if([_delegate respondsToSelector:@selector(pinConfirmationAlertDidDismissView::)])
-    {
-        [_delegate pinConfirmationAlertDidDismissView:self];
-    }
-
 }
 
 -(void) dismissButtonTouched:(id)sender
@@ -241,14 +424,10 @@ dismissButtonTitle:(NSString *)title
     //typically this is a logout button since the user did not
     //enter the pin correctly but rather hit the dismiss button
     self.dismissalReason = TTPinConfirmationAlertDismissalReasonUserDismissal;
-    if([_delegate respondsToSelector:@selector(pinConfirmationAlertWillDismissView::)])
-    {
-        [_delegate pinConfirmationAlertWillDismissView:self];
-    }
     [self dismiss];
 }
 
-#pragma mark TraceGridView delegate methods
+#pragma mark - TraceGridView delegate methods
 
 -(void)traceGridViewDidFinishTrace:(TTTraceGridView *)tView
 {
@@ -258,7 +437,7 @@ dismissButtonTitle:(NSString *)title
     if([tView.selectedTiles count] < 79)    //ascii 48 - 126
                                             //- we can have only 64 tiles 8x8
     {           
-        @synchronized(_traceView.selectedTiles.tiles)
+        @synchronized(traceView.selectedTiles.tiles)
         {
             int i = 0;
             for (TTTraceGridTile *tile in tView.selectedTiles.tiles)
@@ -278,27 +457,21 @@ dismissButtonTitle:(NSString *)title
     if(validPIN)
     {
         self.dismissalReason = TTPinConfirmationAlertDismissalReasonPinMatch;
-        if([_delegate respondsToSelector:@selector(pinConfirmationAlertWillDismissView::)]){
-            [_delegate pinConfirmationAlertWillDismissView:self];
-        }
         [self dismiss];
     }
     else
     {
         if(attemptsMade <_attemptsAllowed){
-            [_traceView shakeView];
+            [traceView shakeView];
             attemptsMade ++;
         }
         else    //too many attempts
         {
             self.dismissalReason = TTPinConfirmationAlertDismissalReasonAllowedAttempsExceeded;
-            if([_delegate respondsToSelector:@selector(pinConfirmationAlertWillDismissView::)]){
-                [_delegate pinConfirmationAlertWillDismissView:self];
-            }
             [self dismiss];
         }
     }
-    [_traceView resetTracePathWithAnimation:YES];
+    [traceView resetTracePathWithAnimation:YES];
 }
 
 @end

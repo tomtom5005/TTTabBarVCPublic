@@ -18,8 +18,8 @@
     
     self.colors = @[[UIColor redColor], [UIColor yellowColor], [UIColor greenColor], [UIColor blueColor], [UIColor brownColor], [UIColor magentaColor], [UIColor cyanColor], [UIColor orangeColor], [UIColor purpleColor], [UIColor blackColor], [UIColor grayColor], [UIColor whiteColor]];
     
-    self.viewController = [[TTLoginViewController alloc] initWithNibName:@"TTLoginViewController" bundle:nil];
-    self.window.rootViewController = self.viewController;
+    self.loginViewController = [[TTLoginViewController alloc] initWithNibName:@"TTLoginViewController" bundle:nil];
+    self.viewController = self.loginViewController;
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -50,5 +50,34 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+#pragma mark - accessor method
+
+- (void)setViewController:(UIViewController *)controller
+{
+    self.window.rootViewController = controller;
+    _viewController=controller;
+    
+    CATransition *animation = [CATransition animation];
+    [animation setDuration:0.5];
+    [animation setType:kCATransitionFade];
+    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    
+    [[self.window layer] addAnimation:animation forKey:@"RootVCTransition"];
+}
+
+
+-(void) logout:(UIViewController *)senderVC
+{
+    if([[self viewController] presentedViewController])
+    {
+        [self.viewController dismissViewControllerAnimated:NO completion:^{
+            [self setViewController:self.loginViewController];
+        }];
+    }
+    else
+        [self setViewController:self.loginViewController];
+}
+
 
 @end

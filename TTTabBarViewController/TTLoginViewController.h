@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface TTLoginViewController : UIViewController
+#define kLoginUrlString @"http://www.tsquaredapplications.com/TabBarDemo/TTTabBarDemoLogin.php"
+@interface TTLoginViewController : UIViewController <UITextFieldDelegate>
+- (IBAction)login:(id)sender;
 
 @end

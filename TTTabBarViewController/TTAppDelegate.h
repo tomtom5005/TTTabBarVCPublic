@@ -14,7 +14,9 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) NSArray *colors;
-@property (strong, nonatomic) TTLoginViewController *viewController;
+@property (strong, nonatomic) TTLoginViewController *loginViewController;
+@property (strong, nonatomic) UIViewController *viewController; //special setter
 @property (strong, nonatomic) NSString *PIN;
 
+-(void) logout:(UIViewController *)senderVC;
 @end

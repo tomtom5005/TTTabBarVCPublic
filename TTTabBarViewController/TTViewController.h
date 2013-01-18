@@ -10,11 +10,12 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "TTTabBarView.h"
+#import "TTPinConfirmationAlertView.h"
 
 #define kNumberOfDemoViewControllers 2
 #define kColorsMultiple 4
 
-@interface TTViewController : UIViewController<TTTabBarViewDataSource, TTTabBarViewDelegate>
+@interface TTViewController : UIViewController<TTTabBarViewDataSource, TTTabBarViewDelegate, TTPinConfirmationAlertDelegate>
 
 
 -(IBAction) addViewToBarButton:(id)sender;  //suck

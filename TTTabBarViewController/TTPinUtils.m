@@ -7,6 +7,7 @@
 //
 
 #import "TTPinUtils.h"
+#import "TTAppDelegate.h"
 
 static TTPinUtils *sharedPinUtils;
 

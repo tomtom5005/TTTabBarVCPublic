@@ -119,7 +119,7 @@ NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification = @"TTTabBar
                                                       kTabBarHeight+kTabSlideBarHeight)];
     [self.tabContainerView addSubview:self.tabSlideBar];
     [self.tabContainerView addSubview:self.tabsScrollView];
-    [self.tabContainerView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight |
+    [self.tabContainerView setAutoresizingMask:UIViewAutoresizingFlexibleWidth |
                             UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin];
     
     self.selectedViewContainerView.autoresizesSubviews=YES;

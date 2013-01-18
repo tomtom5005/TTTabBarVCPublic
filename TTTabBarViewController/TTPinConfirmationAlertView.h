@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 @class TTTraceGridView;
 
@@ -30,15 +31,11 @@ typedef enum{
     NSInteger rows, columns;
 }
 
-@property (nonatomic, strong) UIButton *dismissButton;
-@property (nonatomic, strong) TTTraceGridView *traceView;
-@property (nonatomic, strong) NSString *pin;
 @property (assign) NSInteger attemptsAllowed;
 @property (nonatomic, strong) NSString *message;
-@property (nonatomic, strong) UIView *containerView;
-@property (nonatomic, strong) CALayer *maskingLayer;
 @property (assign) TTPinConfirmationAlertDismissalReason dismissalReason;
-@property (nonatomic, weak) id delegate;
+@property (nonatomic, weak) id <TTPinConfirmationAlertDelegate> delegate;
+@property (nonatomic, strong) NSString *pin;
 
 -(id) initWithPIN:(NSString *)p
 dismissButtonTitle:(NSString *)title
@@ -46,15 +43,15 @@ dismissButtonTitle:(NSString *)title
           message:(NSString *)m
          gridRows:(NSInteger) r
       gridColumns:(NSInteger) cols
-         delegate:(id)delegate;
+         delegate:(id)delegate; 
 
 -(void) show;
--(IBAction)dismissButtonTouched:(id)sender;
 -(void) dismiss;
+
 @end
 
 @protocol TTPinConfirmationAlertDelegate <NSObject>
-
+@optional
 -(void)pinConfirmationAlertWillDismissView:(TTPinConfirmationAlertView *)pinAlert;
 -(void)pinConfirmationAlertDidDismissView:(TTPinConfirmationAlertView *)pinAlert;
 

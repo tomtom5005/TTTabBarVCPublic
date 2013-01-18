@@ -15,13 +15,14 @@
  NSString *const TTTabBarViewSelectedViewWillChangeToViewNotification; //declared in TTTabBarView
  NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification; //declared in TTTabBarView
 
+@protocol TTPinCreateViewControllerDelegate;
+
 @class TTTraceGridView;
 @class TTRoundedTextView;
 
 @interface TTPinCreateViewController : UIViewController
 
-@property (weak, nonatomic) TTTraceGridView *traceGrid;
-@property (weak, nonatomic) UIButton *cancelButton;
+@property (weak, nonatomic) NSObject<TTPinCreateViewControllerDelegate> *delegate;
 
 -(void) setUp;
 -(void) viewWillAppearInTabBarView:(NSNotification *)note;
@@ -31,7 +32,7 @@
 @protocol TTPinCreateViewControllerDelegate <NSObject>
 
 //optional delegate method
--(void)TTPinCreateViewControllerDidCreatePin:(TTPinCreateViewController *)controller;
--(void)TTPinCreateViewControllerFailedToCreatePin:(TTPinCreateViewController *)controller;
+-(void)TTPinCreateViewControllerDidChangePin:(TTPinCreateViewController *)controller;
+-(void)TTPinCreateViewControllerFailedToChangePin:(TTPinCreateViewController *)controller;
 
 @end

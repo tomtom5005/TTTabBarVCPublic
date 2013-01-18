@@ -33,6 +33,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *instructionsLabel;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (nonatomic, weak) UIImage *blackGradientImage; //special getter
+@property (weak, nonatomic) TTTraceGridView *traceGrid;
+@property (weak, nonatomic) UIButton *cancelButton;
+
 
 
 -(void) adjustPINViewForOrientation;
@@ -43,6 +46,7 @@
 @implementation TTPinCreateViewController
 {
     NSString *firstPIN;
+    NSString *initialPIN;
 }
 
 
@@ -75,17 +79,18 @@
 -(void) viewWillAppear:(BOOL)animated
 {
     TTPinUtils *pinUtils = [TTPinUtils sharedPinUtils];
+    initialPIN = pinUtils.PIN;
     if( ! pinUtils.PIN)
     {
         self.instructionsLabel.text = [NSString stringWithFormat: NSLocalizedString(@"Create desired pattern by tracing over the grid.\nThe Pattern must contain at least %d nodes.  ", @"Create desired pattern by tracing over the grid.\nThe Pattern must contain at least %d nodes.  "),kMinPinLength];
+        self.cancelButton.hidden=YES;
     }
     else
     {
         self.instructionsLabel.text = [NSString stringWithFormat: NSLocalizedString(@"You already have a valid PIN.\nTo change the pattern trace over the grid.\nThe Pattern must contain at least %d nodes.  ", @"You already have a valid PIN.\nTo change the pattern trace over the grid.\nThe Pattern must contain at least %d nodes.  "),kMinPinLength];
-        
+        self.cancelButton.hidden=NO;
     }
-    firstPIN = @"";
-    
+    firstPIN = @"";    
     //for reasons having to do with a static variable in the animation routine we need to instantiate
     //the grid view everytime the view is shown.  We probably could get around this if we used a global
     //variable instead but it gets a bit messy since that variable would have to be set in a few places
@@ -207,6 +212,19 @@
 
 -(void) viewDidDisappear:(BOOL)animated
 {
+    TTPinUtils *pu = [TTPinUtils sharedPinUtils];
+    if([initialPIN isEqualToString:pu.PIN]){
+        if([self.delegate respondsToSelector:@selector(TTPinCreateViewControllerFailedToChangePin:)]){
+            [self.delegate TTPinCreateViewControllerFailedToChangePin:self];
+        }
+    }
+    else
+    {
+        if([self.delegate respondsToSelector:@selector(TTPinCreateViewControllerDidChangePIN:)]){
+            [self.delegate TTPinCreateViewControllerDidChangePin:self];
+        }
+    }
+    firstPIN = @"";
     [self.traceGrid removeFromSuperview];
     self.traceGrid = nil;
 }
@@ -267,7 +285,6 @@
                     TTPinUtils *pu = [TTPinUtils sharedPinUtils];
                     pu.PIN = pin;
                     firstPIN = @"";
-                    pin = @"";
                     if(self.presentingViewController){
                         [self dismiss:self.traceGrid];
                     }
@@ -305,21 +322,25 @@
 
 -(void) dismiss:(id)sender
 {
-    if(self.presentingViewController)
+    if (![[TTPinUtils sharedPinUtils] PIN]) {
+        NSString *message = [NSString stringWithFormat: NSLocalizedString(@"You must create a PIN.\nCreate desired pattern by tracing over the grid.\nThe Pattern must contain at least %d nodes.  ", @"You must create a PIN.\nCreate desired pattern by tracing over the grid.\nThe Pattern must contain at least %d nodes.  "),kMinPinLength];
+        self.instructionsLabel.text = message;
+        [self.traceGrid shakeView];
+    }
+    else
     {
-        self.presentingViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        TTViewController *vc;
-        if([self.presentingViewController isKindOfClass:[TTViewController class]]){
-            vc = (TTViewController *)self.presentingViewController;
+        if(self.presentingViewController)
+        {
+            TTViewController *vc=nil;
+            if([self.presentingViewController isKindOfClass:[TTViewController class]])
+                vc = (TTViewController *)self.presentingViewController;
+            [self dismissViewControllerAnimated:YES completion:^{
+                if(vc)
+                    [vc lockScreen:sender];
+            }];
         }
-        [self dismissViewControllerAnimated:YES completion:^{
-            if(vc)
-                [vc lockScreen:self];
-            self.presentingViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        }];
     }
 }
-
 #pragma mark - accessors
 
 -(UIImage *) blackGradientImage

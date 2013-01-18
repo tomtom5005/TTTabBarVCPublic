@@ -17,6 +17,7 @@
 #import "TTPinConfirmationAlertView.h"
 #import "TTPinUtils.h"
 #import "Constants.h"
+#import "TTAppDelegate.h"
 
 @interface TTViewController ()
 {
@@ -177,7 +178,7 @@
     if(pu.PIN)
     {
         self.pinAlert.pin = pu.PIN;
-        [_pinAlert show];
+        [self.pinAlert show];
     }else if(tabBarView.selectedView != self.PINCreateVC.view)
     {
         [self presentViewController:self.PINCreateVC animated:YES completion:^{
@@ -271,18 +272,17 @@
 {
     switch (_pinAlert.dismissalReason) {
         case TTPinConfirmationAlertDismissalReasonPinMatch:
-        
+            
             break;
             
         case TTPinConfirmationAlertDismissalReasonAllowedAttempsExceeded:
+        case TTPinConfirmationAlertDismissalReasonUserDismissal:{
             //we should log out
+            TTAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            [appDelegate logout:self];
             break;
-            
-        case TTPinConfirmationAlertDismissalReasonUserDismissal:
-            //we should log out
-            break;
-            
-        default:
+        }
+            default:
             break;
     }
 }

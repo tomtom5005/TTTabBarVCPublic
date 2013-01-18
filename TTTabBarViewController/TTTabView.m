@@ -32,15 +32,13 @@
                   initWithFrame:labelRect];
         _label.textAlignment = NSTextAlignmentCenter;
         _label.backgroundColor = [UIColor clearColor];
-        _label.minimumFontSize = kMininumFontSize;
+        _label.minimumScaleFactor = kMininumFontSize/kFontSize;
         _label.adjustsFontSizeToFitWidth = YES;
         _label.font = [UIFont boldSystemFontOfSize:kFontSize];
         [self addSubview:_label];
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         [self addGestureRecognizer:tapGesture];
         self.clipsToBounds=NO;
-
-        //[self.layer setNeedsDisplay];
     }
     return self;
 }
@@ -96,9 +94,7 @@
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     if(self.tabItem.tabViewStyle != TTTabViewStyleCustom)
-    {
-        //CGContextSaveGState(context);
-        
+    {        
         UIBezierPath *path;
         CGFloat height;
         CGFloat width;
@@ -155,8 +151,6 @@
                 [self.tabItem.tabColor setFill];
         [path fill];
 
-
-       // CGContextRestoreGState(context);
     }
 }
 
