@@ -26,6 +26,8 @@
     UIView *containerView;
     CALayer *maskingLayer;
     id orientationChangeObserver;
+    UIInterfaceOrientation previousOrientation;
+    CGAffineTransform *transform;
     UIView *rootView;
     UIWindow *alertWindow;
    // CAKeyframeAnimation *rotateAnimation;
@@ -336,7 +338,7 @@ dismissButtonTitle:(NSString *)title
     //with a button below it to dismiss the alert w/o
     //entering the PIN and a message of the user's chosing
     //
-    
+    previousOrientation = [[UIApplication sharedApplication] statusBarOrientation];
     TTAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     rootView = appDelegate.window.rootViewController.view;
     UIWindow *topWindow = [[UIApplication sharedApplication] keyWindow];
