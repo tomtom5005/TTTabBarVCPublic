@@ -79,7 +79,7 @@
 {
     UIView *v = nil;
     if([self.dataSource respondsToSelector:@selector(foldTransitionsView:viewForIndex:)]){
-        i = i > [self numberOfViews] ?  0 : i;
+        i = i > ([self numberOfViews]-1) ?  0 : i;
         i = i <= 0 ?  0 : i;
         v = [self.dataSource foldTransitionsView:self viewForIndex:i];
     }
@@ -89,7 +89,7 @@
 -(void) swipeUp:(UISwipeGestureRecognizer *)gesture
 {
     NSUInteger index = self.displayedViewIndex + 1;
-    index = index > [self numberOfViews] ?  0 : index;
+    index = index >= [self numberOfViews] ?  0 : index;
     UIView * nextView = [self viewForIndex:index];
     [UIView foldTransitionFromView:self.displayedView
                             toView:nextView
