@@ -167,7 +167,7 @@ NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification = @"TTTabBar
 }
 
 
-#pragma mark - SITabBarViewController methods
+#pragma mark - TTTabBarViewController methods
 
 -(NSArray *) makeTabViewsForTabsView:(UIView *)tabsView
 {
@@ -338,7 +338,7 @@ NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification = @"TTTabBar
 }
 
 
-#pragma mark - SITabView delegate method
+#pragma mark - TTTabView delegate method
 
 -(void) tabViewDidRecieveTapGesture:(TTTabView *)tabView
 {

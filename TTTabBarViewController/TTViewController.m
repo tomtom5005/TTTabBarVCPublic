@@ -154,7 +154,7 @@
     {
         TTPinUtils *pu = [TTPinUtils sharedPinUtils];
         _pinAlert = [[TTPinConfirmationAlertView alloc] initWithPIN:pu.PIN
-                                                     dismissButtonTitle:NSLocalizedString(@"Dismiss",@"Dismiss" )
+                                                     dismissButtonTitle:NSLocalizedString(@"Logout",@"Logout" )
                                                         allowedAttempts:3
                                                                 message:NSLocalizedString(@"Trace your PIN pattern over the matrix to unlock the screen",@"Trace your PIN pattern over the matrix to unlock the screen")
                                                                gridRows:kPatternGridSize
