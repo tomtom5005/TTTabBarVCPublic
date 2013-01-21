@@ -12,6 +12,7 @@
 #import "TTCubeViewController.h"
 #import "TTFoldTransitionsViewController.h"
 #import "TTPinCreateViewController.h"
+#import "TTSuckAnimationViewController.h"
 #import "TTAppDelegate.h"
 #import "TTColorPatchViewController.h"
 #import "TTPinConfirmationAlertView.h"
@@ -37,11 +38,13 @@
 @property (strong, nonatomic) TTCubeViewController *cubeVC;
 @property (strong, nonatomic) TTFoldTransitionsViewController *foldTransitionsVC;
 @property (strong, nonatomic) TTPinCreateViewController *PINCreateVC;;
+@property (strong, nonatomic) TTSuckAnimationViewController *suckVC;;
 @property (strong, nonatomic) TTPinConfirmationAlertView *pinAlert; //special getter
 
 -(void) setUpCubeViewController;
 -(void) setUpFoldTransitionsViewController;
 -(void) setUpPINCreateViewController;
+-(void) setUpSuckAnimationViewController;
 -(void) addViewController:(UIViewController *)VC
               withTabText: (NSString *)tabText;
 @end
@@ -78,6 +81,8 @@
     [self setUpCubeViewController];
     [self setUpFoldTransitionsViewController];
     [self setUpPINCreateViewController];
+    [self setUpSuckAnimationViewController];
+
     
     for (int j = 0; j<kColorsMultiple; j++)
     {
@@ -245,6 +250,18 @@
     self.PINCreateVC.view = v;
     [_PINCreateVC setUp];
     [self addViewController:self.PINCreateVC
+                withTabText:title];
+}
+
+-(void) setUpSuckAnimationViewController
+{
+    self.suckVC = [[TTSuckAnimationViewController alloc] init];
+    NSString *title = NSLocalizedString(@"Suck Animation",@"Suck Animation");
+    _suckVC.view.frame = tabBarView.selectedViewContainerView.bounds;
+   // UIView *v = [[UIView alloc] initWithFrame:tabBarView.selectedViewContainerView.bounds];
+    //self.suckVC.view = v;
+    //[_suckVC setUp];
+    [self addViewController:self.suckVC
                 withTabText:title];
 }
 

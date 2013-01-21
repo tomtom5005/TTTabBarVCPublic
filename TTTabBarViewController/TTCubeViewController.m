@@ -182,21 +182,12 @@
             CGFloat totalRotation = sqrt(displacement.x * displacement.x + displacement.y * displacement.y) * M_PI / 180.0;
             CGFloat xRotationFactor = displacement.x/totalRotation;
             CGFloat yRotationFactor = displacement.y/totalRotation;
-            /*
-            if (cubeExists)
-                currentTransform = CATransform3DTranslate(currentTransform, 0, 0, kBoxSideWidth);
-            */
+            
             CATransform3D rotationalTransform =
             CATransform3DRotate(currentTransform, totalRotation,
                                 (xRotationFactor * currentTransform.m12 - yRotationFactor*currentTransform.m11),
                                 (xRotationFactor * currentTransform.m22 - yRotationFactor * currentTransform.m21),
-                                (xRotationFactor * currentTransform.m32 - yRotationFactor * currentTransform.m31));
-           /*
-            if (cubeExists)
-                rotationalTransform = CATransform3DTranslate(rotationalTransform, 0, 0, -kBoxSideWidth/2)
-            */
-            //[CATransaction setAnimationDuration:0]; //shut down implicit animations
-            
+                                (xRotationFactor * currentTransform.m32 - yRotationFactor * currentTransform.m31));            
             containerLayer.sublayerTransform = rotationalTransform;
             [gesture setTranslation:CGPointZero inView:self.containerView];
         }

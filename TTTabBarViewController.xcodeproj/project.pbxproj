@@ -50,6 +50,11 @@
 		E26E22DA1680C4D30072CAD6 /* CALayer+LayerWithImage.m in Sources */ = {isa = PBXBuildFile; fileRef = E26E22D91680C4D30072CAD6 /* CALayer+LayerWithImage.m */; };
 		E26E22DF16811ECF0072CAD6 /* TTFoldTransitionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E26E22DD16811ECE0072CAD6 /* TTFoldTransitionsViewController.m */; };
 		E26E22E016811ECF0072CAD6 /* TTFoldTransitionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E26E22DE16811ECE0072CAD6 /* TTFoldTransitionsViewController.xib */; };
+		E27B4CD916AAFBBF00AFA4DA /* TTSuckAnimationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E27B4CD716AAFBBF00AFA4DA /* TTSuckAnimationViewController.m */; };
+		E27B4CDA16AAFBBF00AFA4DA /* TTSuckAnimationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E27B4CD816AAFBBF00AFA4DA /* TTSuckAnimationViewController.xib */; };
+		E27B4CE316AB197E00AFA4DA /* TrashCanBottom.png in Resources */ = {isa = PBXBuildFile; fileRef = E27B4CE116AB197E00AFA4DA /* TrashCanBottom.png */; };
+		E27B4CE416AB197E00AFA4DA /* TrashCanLid.png in Resources */ = {isa = PBXBuildFile; fileRef = E27B4CE216AB197E00AFA4DA /* TrashCanLid.png */; };
+		E27B4CEA16AB313400AFA4DA /* UIView+SuckAninmationToPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = E27B4CE916AB313300AFA4DA /* UIView+SuckAninmationToPoint.m */; };
 		E281FA7B166FF8320021C45B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E281FA7A166FF8320021C45B /* QuartzCore.framework */; };
 		E281FA8216701B930021C45B /* UIView+Highlight.m in Sources */ = {isa = PBXBuildFile; fileRef = E281FA8116701B930021C45B /* UIView+Highlight.m */; };
 		E2B0F5021674DC47005DF920 /* TTColorPatchView.m in Sources */ = {isa = PBXBuildFile; fileRef = E2B0F5011674DC47005DF920 /* TTColorPatchView.m */; };
@@ -141,6 +146,13 @@
 		E26E22DC16811ECE0072CAD6 /* TTFoldTransitionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTFoldTransitionsViewController.h; sourceTree = "<group>"; };
 		E26E22DD16811ECE0072CAD6 /* TTFoldTransitionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTFoldTransitionsViewController.m; sourceTree = "<group>"; };
 		E26E22DE16811ECE0072CAD6 /* TTFoldTransitionsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTFoldTransitionsViewController.xib; sourceTree = "<group>"; };
+		E27B4CD616AAFBBF00AFA4DA /* TTSuckAnimationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTSuckAnimationViewController.h; sourceTree = "<group>"; };
+		E27B4CD716AAFBBF00AFA4DA /* TTSuckAnimationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTSuckAnimationViewController.m; sourceTree = "<group>"; };
+		E27B4CD816AAFBBF00AFA4DA /* TTSuckAnimationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTSuckAnimationViewController.xib; sourceTree = "<group>"; };
+		E27B4CE116AB197E00AFA4DA /* TrashCanBottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TrashCanBottom.png; sourceTree = "<group>"; };
+		E27B4CE216AB197E00AFA4DA /* TrashCanLid.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TrashCanLid.png; sourceTree = "<group>"; };
+		E27B4CE816AB313300AFA4DA /* UIView+SuckAninmationToPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SuckAninmationToPoint.h"; sourceTree = "<group>"; };
+		E27B4CE916AB313300AFA4DA /* UIView+SuckAninmationToPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SuckAninmationToPoint.m"; sourceTree = "<group>"; };
 		E281FA7A166FF8320021C45B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E281FA8016701B930021C45B /* UIView+Highlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Highlight.h"; sourceTree = "<group>"; };
 		E281FA8116701B930021C45B /* UIView+Highlight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Highlight.m"; sourceTree = "<group>"; };
@@ -213,6 +225,7 @@
 				E20C601F1695149D00118EA0 /* TTRoundedTextView.h */,
 				E20C60201695149D00118EA0 /* TTRoundedTextView.m */,
 				E20C60291695F6F700118EA0 /* Categories */,
+				E26E22DB1680D9B10072CAD6 /* FoldTransitionFromViewToViewCategories */,
 				E2031050166ABB0B004D313F /* TTAppDelegate.h */,
 				E2031051166ABB0B004D313F /* TTAppDelegate.m */,
 				E2EA5A91169C7D620012B493 /* TTPinUtils.h */,
@@ -221,7 +234,6 @@
 				E21FA84F16A372CD00BE96A1 /* TTMainOperationQueue.m */,
 				E281FA83167140130021C45B /* CoreGraphicsFunctions.h */,
 				E281FA84167140130021C45B /* CoreGraphicsFunctions.m */,
-				E26E22DB1680D9B10072CAD6 /* FoldTransitionFromViewToViewCategories */,
 				E2031059166ABB0B004D313F /* TTViewController.h */,
 				E203105A166ABB0B004D313F /* TTViewController.m */,
 				E203105C166ABB0B004D313F /* TTViewController.xib */,
@@ -234,6 +246,9 @@
 				E26E22DC16811ECE0072CAD6 /* TTFoldTransitionsViewController.h */,
 				E26E22DD16811ECE0072CAD6 /* TTFoldTransitionsViewController.m */,
 				E26E22DE16811ECE0072CAD6 /* TTFoldTransitionsViewController.xib */,
+				E27B4CD616AAFBBF00AFA4DA /* TTSuckAnimationViewController.h */,
+				E27B4CD716AAFBBF00AFA4DA /* TTSuckAnimationViewController.m */,
+				E27B4CD816AAFBBF00AFA4DA /* TTSuckAnimationViewController.xib */,
 				E20C60221695C60C00118EA0 /* TraceGrid */,
 				E2E9651116A075A200465763 /* TTLoginViewController.h */,
 				E2E9651216A075A200465763 /* TTLoginViewController.m */,
@@ -257,6 +272,8 @@
 				E2031055166ABB0B004D313F /* Default@2x.png */,
 				E2031057166ABB0B004D313F /* Default-568h@2x.png */,
 				E203108D166C0CBF004D313F /* lock.png */,
+				E27B4CE116AB197E00AFA4DA /* TrashCanBottom.png */,
+				E27B4CE216AB197E00AFA4DA /* TrashCanLid.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -314,6 +331,8 @@
 				E20C60311695FD6C00118EA0 /* UIButton+TTButton.m */,
 				E2E03D4F16A59AAE00F865FF /* UIView+TopVisibleWindow.h */,
 				E2E03D5016A59AAE00F865FF /* UIView+TopVisibleWindow.m */,
+				E27B4CE816AB313300AFA4DA /* UIView+SuckAninmationToPoint.h */,
+				E27B4CE916AB313300AFA4DA /* UIView+SuckAninmationToPoint.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -407,6 +426,9 @@
 				E26E22E016811ECF0072CAD6 /* TTFoldTransitionsViewController.xib in Resources */,
 				E20C60181695138200118EA0 /* TTPinCreateViewController.xib in Resources */,
 				E2E9651516A075A200465763 /* TTLoginViewController.xib in Resources */,
+				E27B4CDA16AAFBBF00AFA4DA /* TTSuckAnimationViewController.xib in Resources */,
+				E27B4CE316AB197E00AFA4DA /* TrashCanBottom.png in Resources */,
+				E27B4CE416AB197E00AFA4DA /* TrashCanLid.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,6 +479,8 @@
 				E2E9651416A075A200465763 /* TTLoginViewController.m in Sources */,
 				E21FA85016A372CE00BE96A1 /* TTMainOperationQueue.m in Sources */,
 				E2E03D5116A59AAE00F865FF /* UIView+TopVisibleWindow.m in Sources */,
+				E27B4CD916AAFBBF00AFA4DA /* TTSuckAnimationViewController.m in Sources */,
+				E27B4CEA16AB313400AFA4DA /* UIView+SuckAninmationToPoint.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -126,6 +126,7 @@ NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification = @"TTTabBar
                                                                               self.bounds.size.width,
                                                                               self.bounds.size.height-kTabBarHeight-kTabSlideBarHeight)];
     _selectedViewContainerView.backgroundColor = [UIColor clearColor];
+    _selectedViewContainerView.clipsToBounds = YES;
     [self.containerView addSubview:self.tabContainerView];
     [self.containerView addSubview:self.selectedViewContainerView];
     
