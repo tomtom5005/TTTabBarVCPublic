@@ -101,6 +101,11 @@
 {
     
 }
+- (void) viewDidLayoutSubviews
+{
+    _suckedView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:_suckedView.bounds
+                                                              cornerRadius:8].CGPath;
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -365,7 +370,6 @@
             _suckedView.layer.shadowColor = [UIColor blackColor].CGColor;
             _suckedView.layer.shadowOpacity =  0.4f;
             _suckedView.layer.shadowOffset = CGSizeMake(6.0f,6.0f);
-            _suckedView.layer.delegate = self;
             
             gradientLayer = [CAGradientLayer layer];
             gradientLayer.frame = self.view.bounds;
