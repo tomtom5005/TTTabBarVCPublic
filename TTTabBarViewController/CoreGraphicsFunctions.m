@@ -10,19 +10,19 @@
 
 CGMutablePathRef roundCornersOfRect(CGRect rect, CGFloat radius) {
     
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathMoveToPoint(path, NULL, CGRectGetMidX(rect), CGRectGetMinY(rect));
-    CGPathAddArcToPoint(path, NULL, CGRectGetMaxX(rect), CGRectGetMinY(rect),
+    CGMutablePathRef newPath = CGPathCreateMutable();
+    CGPathMoveToPoint(newPath, NULL, CGRectGetMidX(rect), CGRectGetMinY(rect));
+    CGPathAddArcToPoint(newPath, NULL, CGRectGetMaxX(rect), CGRectGetMinY(rect),
                         CGRectGetMaxX(rect), CGRectGetMaxY(rect), radius);
-    CGPathAddArcToPoint(path, NULL, CGRectGetMaxX(rect), CGRectGetMaxY(rect),
+    CGPathAddArcToPoint(newPath, NULL, CGRectGetMaxX(rect), CGRectGetMaxY(rect),
                         CGRectGetMinX(rect), CGRectGetMaxY(rect), radius);
-    CGPathAddArcToPoint(path, NULL, CGRectGetMinX(rect), CGRectGetMaxY(rect),
+    CGPathAddArcToPoint(newPath, NULL, CGRectGetMinX(rect), CGRectGetMaxY(rect),
                         CGRectGetMinX(rect), CGRectGetMinY(rect), radius);
-    CGPathAddArcToPoint(path, NULL, CGRectGetMinX(rect), CGRectGetMinY(rect),
+    CGPathAddArcToPoint(newPath, NULL, CGRectGetMinX(rect), CGRectGetMinY(rect),
                         CGRectGetMaxX(rect), CGRectGetMinY(rect), radius);
-    CGPathCloseSubpath(path);
-    
-    return path;
+    CGPathCloseSubpath(newPath);
+
+    return newPath;
 }
 
 void fillRectWithGradient(CGContextRef context, CGRect rect, CGColorRef startColor, CGColorRef  endColor, TTGradientDirection gradientDirection)

@@ -75,7 +75,7 @@
         
         
         flipLayer.transform = CATransform3DMakeRotation(M_PI, 1.0f, 0.0f, 0.0f);
-        foldAnimation.values = @[@0,[NSNumber numberWithFloat:M_PI]];
+        foldAnimation.values = @[@0.0,[NSNumber numberWithFloat:M_PI]];
     }
     else    //TTFoldTransitionDirectionDown
     {
@@ -96,7 +96,7 @@
         [transformLayer addSublayer:flipLayer];
         
         flipLayer.transform = CATransform3DMakeRotation(-M_PI, 1.0f, 0.0f, 0.0f);
-        foldAnimation.values = @[@0, [NSNumber numberWithFloat:-M_PI]];
+        foldAnimation.values = @[@0.0, [NSNumber numberWithFloat:-M_PI]];
     }
     [fromView removeFromSuperview];
 

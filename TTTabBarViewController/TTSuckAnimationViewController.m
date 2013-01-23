@@ -17,8 +17,9 @@
     CALayer *trashCanLidLayer;
     CALayer *trashCanBaseLayer;
     CALayer *noteLayer;
-    CGPoint trashPoint;
     BOOL viewSetupCompleted;
+    BOOL sucking;
+    CGPoint trashCanDestination;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *suckedView;
@@ -30,8 +31,9 @@
 -(void) resizeNote:(UIPinchGestureRecognizer *)pinch;
 -(void) suck:(UITapGestureRecognizer *)doubleTap;
 -(void) newNote:(UITapGestureRecognizer *)doubleTap;
--(void) openTrashCanCompletionBlock:(void(^)(void))completion;
--(void) closeTrashCan;
+-(void) openTrashCanThenPerformCompletionBlock:(void(^)(void))completion;
+-(void) closeTrashCanThenPerformCompletionBlock:(void(^)(void))completionHandler;
+
 @end
 
 @implementation TTSuckAnimationViewController
@@ -106,19 +108,22 @@
 }
 
 
-#pragma mark - TTSuckAnimationViewController
+#pragma mark - TTSuckAnimationViewController gesture recognizer methods
 
 -(void) dragTrashCan:(UIPanGestureRecognizer *)pan
 {
     static CGPoint originalCenter;
-    if(pan.state == UIGestureRecognizerStateBegan){
-        originalCenter = self.trashCanView.center;
-    }
-    if (pan.state == UIGestureRecognizerStateChanged)
-	{
-		CGPoint delta = [pan translationInView:self.view];
-		self.trashCanView.center = CGPointMake(delta.x + originalCenter.x,
-                                             delta.y + originalCenter.y);
+    if( ! sucking)
+    {
+        if(pan.state == UIGestureRecognizerStateBegan){
+            originalCenter = self.trashCanView.center;
+        }
+        if (pan.state == UIGestureRecognizerStateChanged)
+        {
+            CGPoint delta = [pan translationInView:self.view];
+            self.trashCanView.center = CGPointMake(delta.x + originalCenter.x,
+                                                   delta.y + originalCenter.y);
+        }
     }
 }
 
@@ -126,14 +131,17 @@
 -(void) dragNote:(UIPanGestureRecognizer *)pan
 {
     static CGPoint originalCenter;
-    if(pan.state == UIGestureRecognizerStateBegan){
-        originalCenter = self.suckedView.center;
-    }
-    if (pan.state == UIGestureRecognizerStateChanged)
-	{
-		CGPoint delta = [pan translationInView:self.view];
-		self.suckedView.center = CGPointMake(delta.x + originalCenter.x,
-                                             delta.y + originalCenter.y);
+    if( ! sucking)
+    {
+        if(pan.state == UIGestureRecognizerStateBegan){
+            originalCenter = self.suckedView.center;
+        }
+        if (pan.state == UIGestureRecognizerStateChanged)
+        {
+            CGPoint delta = [pan translationInView:self.view];
+            self.suckedView.center = CGPointMake(delta.x + originalCenter.x,
+                                                 delta.y + originalCenter.y);
+        }
     }
 }
 
@@ -141,62 +149,81 @@
 -(void) resizeNote:(UIPinchGestureRecognizer *)pinch
 {
     static CGRect originalFrame;
-    
-    if (pinch.state == UIGestureRecognizerStateBegan){
-        originalFrame = self.suckedView.frame;
-	}
-    else if (pinch.state == UIGestureRecognizerStateChanged)
-	{
-        CGFloat w = originalFrame.size.width*pinch.scale;
-        CGFloat h = originalFrame.size.height*pinch.scale;
-        CGFloat x = (self.view.bounds.size.width - w)/2;
-        CGFloat y = (self.view.bounds.size.height - w)/2;
-        self.suckedView.frame=CGRectMake(x, y, w, h);
-	}
-    else if (pinch.state == UIGestureRecognizerStateEnded)
+    if( ! sucking)
     {
-        CGFloat fontSize = pinch.scale * self.noteLabel.font.pointSize;
-        //self.noteLabel.font = [UIFont systemFontOfSize:fontSize];
+        if (pinch.state == UIGestureRecognizerStateBegan){
+            originalFrame = self.suckedView.frame;
+        }
+        else if (pinch.state == UIGestureRecognizerStateChanged)
+        {
+            CGFloat w = originalFrame.size.width*pinch.scale;
+            CGFloat h = originalFrame.size.height*pinch.scale;
+            CGFloat x = (self.view.bounds.size.width - w)/2;
+            CGFloat y = (self.view.bounds.size.height - w)/2;
+            self.suckedView.frame=CGRectMake(x, y, w, h);
+        }
+        else if (pinch.state == UIGestureRecognizerStateEnded)
+        {
+            //CGFloat fontSize = pinch.scale * self.noteLabel.font.pointSize;
+            //self.noteLabel.font = [UIFont systemFontOfSize:fontSize];
+        }
+        else{};
     }
-    else{};
 }
 
-
--(void) suck:(UITapGestureRecognizer *)doubleTap
-{
-    self.suckedView.hidden=NO;
-    [self.view bringSubviewToFront:self.trashCanView];
-    [self openTrashCanCompletionBlock:^{
-        [self.suckedView suckAnimationToPoint:trashPoint
-                                       inView:self.view
-                                     hideView:YES
-                              completionBlock:^{
-                                  [self closeTrashCan];
-                              }];
-    }];
-}
 
 
 -(void) newNote:(UITapGestureRecognizer *)doubleTap
 {
-    if(self.suckedView.hidden)
+    if(self.suckedView.hidden && ! sucking)
     {
         self.suckedView.center = self.view.center;
         self.suckedView.hidden=NO;
     }
 }
 
--(void) openTrashCanCompletionBlock:(void(^)(void))completion
+
+
+-(void) suck:(UITapGestureRecognizer *)doubleTap
+{
+    if( ! sucking)
+    {
+        self.suckedView.hidden=NO;
+        sucking = YES;
+        CGFloat x;
+        if(_trashCanView.center.x > _suckedView.center.x){
+            x = _trashCanView.center.x + 0.25*_trashCanView.bounds.size.width;
+        }else{
+            x = _trashCanView.frame.origin.x + 0.25*_trashCanView.bounds.size.width;
+        }
+        CGPoint trashPoint = CGPointMake(x,_trashCanView.frame.origin.y);
+        [self.view bringSubviewToFront:self.trashCanView];
+        [self openTrashCanThenPerformCompletionBlock:^{
+            [self.suckedView suckAnimationToPoint:trashPoint
+                                           inView:self.view
+                                    fromDirection:TTSuckFromDirectionAbove
+                                         hideView:YES
+                                  completionBlock:^{
+                                      [self closeTrashCanThenPerformCompletionBlock:^{
+                                          sucking = NO;
+                                      }];
+                                  }];
+        }];
+    }
+}
+
+#pragma mark - TTSuckAnimationViewController Trash Can Animation
+
+-(void) openTrashCanThenPerformCompletionBlock:(void(^)(void))completion
 {
     [CATransaction setCompletionBlock:^{
         completion();
     }];
     
-    trashCanLidLayer.transform = CATransform3DMakeRotation(-M_PI, 0.0f, 0.0f, 1.0f);
-    trashCanBaseLayer.transform = CATransform3DMakeRotation(M_PI_4/4.0, 0.0f, 0.0f, 1.0f);
-    CGPoint trashCanDestination = CGPointMake(_trashCanView.layer.position.x - kTrashCanBaseDeltaX ,
+    CFTimeInterval now = [trashCanLidLayer convertTime:CACurrentMediaTime() fromLayer:nil];
+    
+    trashCanDestination = CGPointMake(_trashCanView.layer.position.x - kTrashCanBaseDeltaX ,
                                               _trashCanView.layer.position.y - kTrashCanBaseDeltaY);
-    _trashCanView.layer.position = trashCanDestination;
     
     CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
     CGPoint controlPoint1 = CGPointMake(_trashCanView.layer.position.x,
@@ -210,72 +237,97 @@
             controlPoint1:controlPoint1
             controlPoint2:controlPoint2];
     pathAnimation.path = path.CGPath;
-    pathAnimation.duration = .4;
-    pathAnimation.beginTime = 0.0;
+    pathAnimation.duration = 0.2;
+    pathAnimation.beginTime = now;
+    pathAnimation.fillMode = kCAFillModeForwards;
+    pathAnimation.removedOnCompletion = NO;
     pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-    
-    CAKeyframeAnimation *lidTransformAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
-    lidTransformAnimation.valueFunction = [CAValueFunction functionWithName:kCAValueFunctionRotateX];
-    lidTransformAnimation.values = @[@0,[NSNumber numberWithFloat:-M_PI]];
-    lidTransformAnimation.duration = 0.4;
-    lidTransformAnimation.beginTime = 0.6;
-    
-    CAKeyframeAnimation *trashCanAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
-    trashCanAnimation.valueFunction = [CAValueFunction functionWithName:kCAValueFunctionRotateX];
-    trashCanAnimation.values = @[@0,[NSNumber numberWithFloat:M_PI_4/4.0]];
-    trashCanAnimation.duration = 0.4;
-    trashCanAnimation.beginTime = 0.2;
-    
-    [CATransaction begin];
     [_trashCanView.layer addAnimation:pathAnimation forKey:@"position"];
-    [trashCanLidLayer addAnimation:lidTransformAnimation forKey:@"transform"];
-    [_trashCanView.layer addAnimation:trashCanAnimation forKey:@"transform"];
-    [CATransaction commit];
+    
+    CAKeyframeAnimation* lidAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+    [lidAnimation setValueFunction:[CAValueFunction functionWithName: kCAValueFunctionRotateZ]];
+    [lidAnimation setDuration:.4];
+    lidAnimation.fillMode = kCAFillModeBoth;
+    lidAnimation.beginTime = now+pathAnimation.duration;
+    lidAnimation.removedOnCompletion =NO;
+    
+    CAKeyframeAnimation *baseAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+    baseAnimation.valueFunction = [CAValueFunction functionWithName:kCAValueFunctionRotateZ];
+    baseAnimation.duration = .2;
+    baseAnimation.beginTime = lidAnimation.beginTime;
+    baseAnimation.fillMode = kCAFillModeBoth;
+    baseAnimation.removedOnCompletion = NO;
+
+    if(_trashCanView.center.x > _suckedView.center.x)
+    {
+        trashCanLidLayer.anchorPoint = CGPointMake(1,1);
+        trashCanLidLayer.position = CGPointMake( (_trashCanView.bounds.size.width/2 + trashCanLidLayer.bounds.size.width/2),
+                                                trashCanLidLayer.bounds.size.height);
+
+        [lidAnimation setValues:@[@0.0,[NSNumber numberWithFloat:M_PI_2],[NSNumber numberWithFloat:3*M_PI_4]]];
+        baseAnimation.values = @[@0.0,[NSNumber numberWithFloat:M_PI_4/4.0]];
+    }
+    else//_trashCanView.center.x < _suckedView.center.x i.e. trash can to the left of sucked view
+    {
+        trashCanLidLayer.anchorPoint = CGPointMake(0,1);
+        trashCanLidLayer.position = CGPointMake( (_trashCanView.bounds.size.width/2 - trashCanLidLayer.bounds.size.width/2),
+                                                trashCanLidLayer.bounds.size.height);
+        [lidAnimation setValues:@[@0.0,[NSNumber numberWithFloat:(-M_PI_2) ],[NSNumber numberWithFloat:(-3*M_PI_4) ]]];
+        baseAnimation.values = @[@0.0,[NSNumber numberWithFloat:(-M_PI_4/4.0) ]];
+    }
+    [trashCanLidLayer addAnimation:lidAnimation forKey:@"transform"];
+    [trashCanBaseLayer addAnimation:baseAnimation forKey:@"transform"];
+
 }
 
 
--(void) closeTrashCan
+-(void) closeTrashCanThenPerformCompletionBlock:(void(^)(void))completionHandler
 {
-    trashCanLidLayer.transform = CATransform3DMakeRotation(15*M_PI/16, 0.0f, 0.0f, 1.0f);
-    trashCanBaseLayer.transform = CATransform3DMakeRotation(-M_PI_4/4, 0.0f, 0.0f, 1.0f);
-    CGPoint trashCanDestination = CGPointMake(_trashCanView.layer.position.x + kTrashCanBaseDeltaX ,
-                                              _trashCanView.layer.position.y + kTrashCanBaseDeltaY);
-    _trashCanView.layer.position = trashCanDestination;
+    [CATransaction setCompletionBlock:^{
+        completionHandler();
+    }];
 
+    CFTimeInterval now = [trashCanLidLayer convertTime:CACurrentMediaTime() fromLayer:nil];
     
+    CAKeyframeAnimation *baseAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+    baseAnimation.valueFunction = [CAValueFunction functionWithName:kCAValueFunctionRotateZ];
+    baseAnimation.duration = .2;
+    baseAnimation.beginTime = now;
+    baseAnimation.removedOnCompletion = NO;
+    
+    CAKeyframeAnimation* lidAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+    [lidAnimation setValueFunction:[CAValueFunction functionWithName: kCAValueFunctionRotateZ]];
+    [lidAnimation setDuration:0.4];
+    lidAnimation.beginTime = now;
+    
+    if(_trashCanView.center.x > _suckedView.center.x)
+    {
+        baseAnimation.values = @[[NSNumber numberWithFloat:M_PI_4/4.0],@0.0f];
+        [lidAnimation setValues:@[[NSNumber numberWithFloat:3*M_PI_4],[NSNumber numberWithFloat:M_PI_2],@0.0]];
+    }
+    else
+    {
+        baseAnimation.values = @[[NSNumber numberWithFloat:-M_PI_4/4.0],@0.0f];
+        [lidAnimation setValues:@[[NSNumber numberWithFloat:-3*M_PI_4],[NSNumber numberWithFloat:-M_PI_2],@0.0]];
+    }
+    [trashCanBaseLayer addAnimation:baseAnimation forKey:@"transform"];
+    [trashCanLidLayer addAnimation:lidAnimation forKey:@"transform"];
+
     CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
-    CGPoint controlPoint1 = CGPointMake(trashCanBaseLayer.position.x + 0.5*kTrashCanBaseDeltaX,
-                                        trashCanBaseLayer.position.y);
-    CGPoint controlPoint2 = CGPointMake(trashCanDestination.x,
-                                        trashCanDestination.y - 0.5*kTrashCanBaseDeltaY);
+    CGPoint controlPoint2 = CGPointMake(_trashCanView.layer.position.x,
+                                        _trashCanView.layer.position.y- 0.5*kTrashCanBaseDeltaY);
+    CGPoint controlPoint1 = CGPointMake(trashCanDestination.x + 0.5*kTrashCanBaseDeltaX,
+                                        trashCanDestination.y);
     UIBezierPath *path = [UIBezierPath bezierPath];
-    [path moveToPoint:_trashCanView.layer.position];
-    [path addCurveToPoint:trashCanDestination
+    [path moveToPoint:trashCanDestination];
+    [path addCurveToPoint:_trashCanView.layer.position
             controlPoint1:controlPoint1
             controlPoint2:controlPoint2];
     pathAnimation.path = path.CGPath;
-    pathAnimation.duration = .4;
-    pathAnimation.beginTime = 0.8;
+    pathAnimation.duration = 0.2f;
+    pathAnimation.beginTime = baseAnimation.beginTime + baseAnimation.duration;
     pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-    
-    CAKeyframeAnimation *lidTransformAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
-    lidTransformAnimation.valueFunction = [CAValueFunction functionWithName:kCAValueFunctionRotateX];
-    lidTransformAnimation.values = @[@0,[NSNumber numberWithFloat:M_PI]];
-    lidTransformAnimation.duration = 0.4;
-    lidTransformAnimation.beginTime = 0.0;
-    
-    CAKeyframeAnimation *trashCanAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
-    trashCanAnimation.valueFunction = [CAValueFunction functionWithName:kCAValueFunctionRotateX];
-    trashCanAnimation.values = @[@0,[NSNumber numberWithFloat:-M_PI_4/4.0]];
-    trashCanAnimation.duration = 0.4;
-    trashCanAnimation.beginTime = 0.4;
-    
-    [CATransaction begin];
     [_trashCanView.layer addAnimation:pathAnimation forKey:@"position"];
-    [trashCanLidLayer addAnimation:lidTransformAnimation forKey:@"transform"];
-    [_trashCanView.layer addAnimation:trashCanAnimation forKey:@"transform"];
-    [CATransaction commit];
-
 }
 
 #pragma mark - TTTabBarView Notification Methods
@@ -303,6 +355,18 @@
             //position views
             
             _suckedView.center = self.view.center;
+            _suckedView.layer.backgroundColor = [UIColor colorWithRed:249.0/255
+                                                                green:246.0/255.0
+                                                                 blue:144.0/255.0
+                                                                alpha:1].CGColor;
+            _suckedView.layer.cornerRadius = 8;
+            _suckedView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:_suckedView.bounds
+                                                                      cornerRadius:8].CGPath;
+            _suckedView.layer.shadowColor = [UIColor blackColor].CGColor;
+            _suckedView.layer.shadowOpacity =  0.4f;
+            _suckedView.layer.shadowOffset = CGSizeMake(6.0f,6.0f);
+            _suckedView.layer.delegate = self;
+            
             gradientLayer = [CAGradientLayer layer];
             gradientLayer.frame = self.view.bounds;
             gradientLayer.colors = @[(id)[UIColor colorWithRed:150.0/255.0 green:210/255.0 blue:150.0/255.0 alpha:1.0].CGColor,
@@ -330,18 +394,14 @@
             _trashCanView.frame = CGRectMake (self.view.bounds.size.width - 40 - W,
                                               self.view.bounds.size.height - 20 - H,
                                               W,H);
-            trashCanLidLayer.anchorPoint=CGPointMake(1,1);
+            trashCanLidLayer.anchorPoint = CGPointMake(1,1);
             trashCanLidLayer.position = CGPointMake( (_trashCanView.bounds.size.width/2 + trashCanLidLayer.bounds.size.width/2),
                                                     trashCanLidLayer.bounds.size.height);
             [_trashCanView.layer addSublayer:trashCanLidLayer];
-            
-            //trashCanBaseLayer.anchorPoint=CGPointMake(0,1);
             trashCanBaseLayer.position = CGPointMake(_trashCanView.bounds.size.width/2,
                                                      _trashCanView.bounds.size.height - trashCanBaseLayer.bounds.size.height/2);
             [_trashCanView.layer addSublayer:trashCanBaseLayer];
             
-            trashPoint = CGPointMake(_trashCanView.center.x,
-                                     _trashCanView.frame.origin.y + trashCanLidLayer.bounds.size.height +5);
             viewSetupCompleted = YES;
         }
         [self.view setNeedsLayout];
