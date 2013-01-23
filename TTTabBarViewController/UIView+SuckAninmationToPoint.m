@@ -58,8 +58,10 @@
     {
         CGFloat deltaX = (p.x-trashLayer.position.x)/2;
         deltaX = deltaX > kControlPointDeltaX ? kControlPointDeltaX : deltaX;
-        CGFloat controlPointX = p.x - deltaX;
-        CGFloat controlPointY = p.y - 2*(fabsf(deltaX) * tan(M_PI_4)) - .6 *self.bounds.size.height;
+        //CGFloat controlPointX = p.x - deltaX;
+        //CGFloat controlPointY = p.y - 2*(fabsf(deltaX) * tan(M_PI_4)) - .6 *self.bounds.size.height;
+        CGFloat controlPointX = p.x;
+        CGFloat controlPointY = p.y - .6 *self.bounds.size.height;
         CGPoint controlPoint = CGPointMake(controlPointX, controlPointY);
         path = [UIBezierPath bezierPath];
         [path moveToPoint:trashLayer.position];
