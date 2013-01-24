@@ -129,8 +129,10 @@
         }
         if(pan.state == UIGestureRecognizerStateEnded)
         {
-            if([self.suckedView pointInside:[[self.trashCanView superview] convertPoint:self.trashCanView.center toView:self.suckedView] withEvent:nil])
-                self.trashCanView.center = originalCenter;
+            if( ! self.suckedView.hidden){
+                if([self.suckedView pointInside:[[self.trashCanView superview] convertPoint:self.trashCanView.center toView:self.suckedView] withEvent:nil])
+                    self.trashCanView.center = originalCenter;
+            }
         }
     }
 }

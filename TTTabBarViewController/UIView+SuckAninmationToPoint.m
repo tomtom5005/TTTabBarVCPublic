@@ -73,40 +73,40 @@
                 CGFloat dist = sqrt( (deltaX*deltaX) +(deltaY*deltaY) );
                 CGFloat X = fabs(deltaX/2) > kControlPointDeltaX ? kControlPointDeltaX : deltaX/2;
                 X = deltaX<0? -X : X;
-                // CGFloat deltaY = trashLayer.position.y - p.y;
                 CGFloat Y = (fabsf(X) * tan(M_PI_4));
                 CGPoint pointAbove = CGPointMake( (p.x - X), (p.y - Y) );
-                
+                CGFloat controlPoint1x;
+                CGFloat controlPoint2x;
+                CGFloat controlPoint1y;
+                CGFloat controlPoint2y;
+                CGPoint controlPoint1;
+                CGPoint controlPoint2;
                 
                 if(p.y > self.center.y) //point below self
                 {
-                    CGFloat controlPoint1x = trashLayer.position.x + fabs(deltaX/dist)*deltaX;
-                    CGFloat controlPoint1y;
-                    if(trashLayer.position.y>pointAbove.y){
-                        controlPoint1y = pointAbove.y ;//- (trashLayer.position.y - pointAbove.y);
-                    }else{
+                    if(trashLayer.position.y + trashLayer.bounds.size.width/2 >pointAbove.y){
+                        controlPoint1x = trashLayer.position.x + deltaX/(trashLayer.bounds.size.height/2);
                         controlPoint1y = trashLayer.position.y;
+                        controlPoint2x =p.x;
+                        controlPoint2y = p.y - deltaY/2 - trashLayer.bounds.size.height/2;
+                    }else{
+                        controlPoint1x = trashLayer.position.x;// + fabs(deltaX/dist)*deltaX;
+                        controlPoint1y = trashLayer.position.y;
+                        controlPoint2x = p.x;;
+                        controlPoint2y = p.y - fabs(deltaY/dist)*deltaY;
                     }
-                    CGFloat controlPoint2x = p.x;
-                    CGFloat controlPoint2y = p.y - fabs(deltaY/dist)*deltaY;
-                    CGPoint controlPoint1 = CGPointMake(controlPoint1x, controlPoint1y);
-                    CGPoint controlPoint2 = CGPointMake(controlPoint2x, controlPoint2y);
-                    [path addCurveToPoint:p controlPoint1:controlPoint1 controlPoint2:controlPoint2];
                 }
                 else    //point above self
                 {
-                    CGFloat controlPt1x = trashLayer.position.x;
-                    //CGFloat controlPt1y = trashLayer.position.y - (trashLayer.position.y - topPoint.y)/2 ;
-                    CGFloat controlPt1y = pointAbove.y;
-                    CGPoint controlPt1 = CGPointMake(controlPt1x, controlPt1y);
-                    
-                    CGFloat controlPt2x = p.x;
-                    //CGFloat controlPt2y = p.y - (p.y - topPoint.y)/2 ;
-                    CGFloat controlPt2y = pointAbove.y - trashLayer.bounds.size.height/2 ;
-                    CGPoint controlPt2 = CGPointMake(controlPt2x, controlPt2y);
-                    
-                    [path addCurveToPoint:p controlPoint1:controlPt1 controlPoint2:controlPt2];
+                    controlPoint1x = trashLayer.position.x;
+                    controlPoint1y = pointAbove.y;
+                    controlPoint2x = p.x;
+                    controlPoint2y = pointAbove.y - trashLayer.bounds.size.height/2 ;
                 }
+                controlPoint1 = CGPointMake(controlPoint1x, controlPoint1y);
+                controlPoint2 = CGPointMake(controlPoint2x, controlPoint2y);
+                [path addCurveToPoint:p controlPoint1:controlPoint1 controlPoint2:controlPoint2];
+
                 break;
             }
             case TTSuckFromDirectionBelow:
