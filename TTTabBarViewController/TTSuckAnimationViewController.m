@@ -13,10 +13,11 @@
 
 @interface TTSuckAnimationViewController ()
 {
-    CAGradientLayer *gradientLayer;
     CALayer *trashCanLidLayer;
     CALayer *trashCanBaseLayer;
     CALayer *noteLayer;
+    CAGradientLayer *landscapeGradient;
+    CAGradientLayer *portraitGradient;
     BOOL viewSetupCompleted;
     BOOL sucking;
     CGPoint trashCanDestination;
@@ -25,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIView *suckedView;
 @property (weak, nonatomic) IBOutlet UILabel *noteLabel;
 @property (weak, nonatomic) IBOutlet UIView *trashCanView;
+@property (weak, nonatomic) CAGradientLayer *gradientLayer; //special getter
 
 -(void) dragTrashCan:(UIPanGestureRecognizer *)pan;
 -(void) dragNote:(UIPanGestureRecognizer *)pan;
@@ -89,13 +91,15 @@
     [nc addObserver:self selector:@selector(viewWillAppearInTabBarView:)
                name:TTTabBarViewSelectedViewWillChangeToViewNotification
              object:nil];
-     
+    landscapeGradient = nil;
+    portraitGradient = nil;
 }
 
 
 -(void) viewWillLayoutSubviews
 {
-    
+    [_gradientLayer removeFromSuperlayer];
+    [self.view.layer insertSublayer:self.gradientLayer atIndex:0];
 }
 
 
@@ -110,6 +114,55 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - TTSuckAnimationViewController accessors
+
+-(CAGradientLayer *) gradientLayer
+{
+    BOOL gradientExists = NO;
+    switch (self.interfaceOrientation)
+    {
+        case UIInterfaceOrientationLandscapeLeft:
+        case UIInterfaceOrientationLandscapeRight:
+            if (landscapeGradient) {
+                 gradientExists = YES;
+                _gradientLayer = landscapeGradient;
+            }
+            break;
+        case UIInterfaceOrientationPortrait:
+        case UIInterfaceOrientationPortraitUpsideDown:
+            if (portraitGradient) {
+                gradientExists = YES;
+                _gradientLayer = portraitGradient;
+            }
+            break;
+        default:
+            break;
+    }
+    if( ! gradientExists)
+    {
+        CAGradientLayer *gLayer = [CAGradientLayer layer];
+        gLayer.frame = self.view.bounds;
+        gLayer.colors = @[(id)[UIColor colorWithRed:150.0/255.0 green:210/255.0 blue:150.0/255.0 alpha:1.0].CGColor,
+        (id)[UIColor colorWithRed:35.0/255.0 green:140  /255.0 blue:70.0/255.0 alpha:1.0].CGColor,
+        (id)[UIColor colorWithRed:25.0/255.0 green:100/255.0 blue:50.0/255.0 alpha:1.0].CGColor,];
+        gLayer.locations = @[@0.0, @0.3, @1.0];
+        _gradientLayer = gLayer;
+        switch (self.interfaceOrientation)
+        {
+            case UIInterfaceOrientationLandscapeLeft:
+            case UIInterfaceOrientationLandscapeRight:
+                landscapeGradient = gLayer;
+                break;
+            case UIInterfaceOrientationPortrait:
+            case UIInterfaceOrientationPortraitUpsideDown:
+                portraitGradient = gLayer;
+                break;
+            default:
+                break;
+        }
+    }
+    return _gradientLayer;
+}
 
 #pragma mark - TTSuckAnimationViewController gesture recognizer methods
 
@@ -385,13 +438,7 @@
             _suckedView.layer.shadowOpacity =  0.4f;
             _suckedView.layer.shadowOffset = CGSizeMake(6.0f,6.0f);
             
-            gradientLayer = [CAGradientLayer layer];
-            gradientLayer.frame = self.view.bounds;
-            gradientLayer.colors = @[(id)[UIColor colorWithRed:150.0/255.0 green:210/255.0 blue:150.0/255.0 alpha:1.0].CGColor,
-            (id)[UIColor colorWithRed:35.0/255.0 green:140  /255.0 blue:70.0/255.0 alpha:1.0].CGColor,
-            (id)[UIColor colorWithRed:25.0/255.0 green:100/255.0 blue:50.0/255.0 alpha:1.0].CGColor,];
-            gradientLayer.locations = @[@0.0, @0.3, @1.0];
-            [self.view.layer insertSublayer:gradientLayer atIndex:0];
+            [self.view.layer insertSublayer:self.gradientLayer atIndex:0];
             
             trashCanBaseLayer = [CALayer layer];
             UIImage *canBaseImg = [UIImage imageNamed:@"TrashCanBottom.png"];
