@@ -127,6 +127,11 @@
             self.trashCanView.center = CGPointMake(delta.x + originalCenter.x,
                                                    delta.y + originalCenter.y);
         }
+        if(pan.state == UIGestureRecognizerStateEnded)
+        {
+            if([self.suckedView pointInside:[[self.trashCanView superview] convertPoint:self.trashCanView.center toView:self.suckedView] withEvent:nil])
+                self.trashCanView.center = originalCenter;
+        }
     }
 }
 
@@ -144,6 +149,11 @@
             CGPoint delta = [pan translationInView:self.view];
             self.suckedView.center = CGPointMake(delta.x + originalCenter.x,
                                                  delta.y + originalCenter.y);
+        }
+        if(pan.state == UIGestureRecognizerStateEnded)
+        {
+            if([self.suckedView pointInside:[[self.trashCanView superview] convertPoint:self.trashCanView.center toView:self.suckedView] withEvent:nil])
+                self.suckedView.center = originalCenter;
         }
     }
 }
@@ -182,6 +192,10 @@
     {
         self.suckedView.center = self.view.center;
         self.suckedView.hidden=NO;
+        if([self.suckedView pointInside:[[self.trashCanView superview] convertPoint:self.trashCanView.center toView:self.suckedView] withEvent:nil]){
+        _trashCanView.center = CGPointMake(self.view.bounds.size.width - 40 - self.trashCanView.bounds.size.width/2,
+                                           self.view.bounds.size.height - 20 - self.trashCanView.bounds.size.height/2);
+        }
     }
 }
 
