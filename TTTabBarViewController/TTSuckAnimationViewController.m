@@ -92,15 +92,13 @@
      
 }
 
--(void) viewWillAppear:(BOOL)animated
-{
-
-}
 
 -(void) viewWillLayoutSubviews
 {
     
 }
+
+
 - (void) viewDidLayoutSubviews
 {
     _suckedView.layer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:_suckedView.bounds
@@ -199,7 +197,7 @@
         if(_trashCanView.center.x > _suckedView.center.x){
             x = _trashCanView.center.x + 0.25*_trashCanView.bounds.size.width;
         }else{
-            x = _trashCanView.frame.origin.x + 0.25*_trashCanView.bounds.size.width;
+            x = _trashCanView.center.x - 0.25*_trashCanView.bounds.size.width;
         }
         CGPoint trashPoint = CGPointMake(x,_trashCanView.frame.origin.y);
         [self.view bringSubviewToFront:self.trashCanView];
