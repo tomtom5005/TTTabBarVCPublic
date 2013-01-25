@@ -83,9 +83,10 @@
                 CGPoint controlPoint1;
                 CGPoint controlPoint2;
                 
-                if(p.y > self.center.y) //point below self center
+                if(pointAbove.y > self.center.y) //point below self center
                 {
-                    if(trashLayer.position.y + trashLayer.bounds.size.height/2 >p.y)
+                    CGFloat selfBottom = trashLayer.position.y + trashLayer.bounds.size.height/2;
+                    if(selfBottom >p.y)
                     {
                         //then self is roughly parallel to point
                         if(p.x>trashLayer.position.x)//point is right of self
@@ -100,8 +101,12 @@
                             controlPoint1x = trashLayer.position.x - trashLayer.bounds.size.width/2;
                             controlPoint1y = trashLayer.position.y - trashLayer.bounds.size.height/2;
                         }
-                            controlPoint2x =p.x;
-                            controlPoint2y = p.y - deltaY/2;
+                        //adjust control point 1 y for the height of self
+                        CGFloat distanceAboveBottom = selfBottom - p.y;
+                        controlPoint1y -= distanceAboveBottom;
+                        
+                        controlPoint2x =p.x;
+                        controlPoint2y = p.y - deltaY/4;
                     }
                     else
                     {
