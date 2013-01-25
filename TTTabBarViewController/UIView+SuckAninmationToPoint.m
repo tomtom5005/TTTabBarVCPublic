@@ -52,7 +52,6 @@
     }
     else
     {
-        
         //TODO: directions below, left and right
         switch (direction) {
             case TTSuckFromDirectionAbove:

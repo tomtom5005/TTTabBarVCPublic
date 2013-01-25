@@ -79,31 +79,17 @@
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
     
-    CGContextSaveGState(context);
+    //CGContextSaveGState(context);
     
     dispatch_async(self.drawTilesQ,^{
-        UIGraphicsBeginImageContext(_gridView.bounds.size);
         @synchronized(_gridView.selectedTiles.tiles)
         {
             for(TTTraceGridTile *tile in _gridView.selectedTiles.tiles)
             {
-                fillCircleWithRadialGradient (UIGraphicsGetCurrentContext(),
-                                              [tile tileCenter],
-                                              _radius,
-                                              _outerColor,
-                                              _pointColor,
-                                              TTRadialGradientFocalPointUpperLeft);
+                [self colorCenterDotOfTile:tile inLayer:layer];
             }
         }
-        UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-        dispatch_async(dispatch_get_main_queue(),^{
-            [self displayImage:img inLayer:layer];      //displays the image
-        });
-        
-        UIGraphicsEndImageContext();
     });
-    CGContextRestoreGState(context);
-    
     [CATransaction commit];
 }
 
