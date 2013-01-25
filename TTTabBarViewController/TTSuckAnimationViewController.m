@@ -10,6 +10,7 @@
 #import "UIView+CreateLayerImage.h"
 #import "TTTabBarView.h"
 #import "UIView+SuckAninmationToPoint.h"
+#import "Constants.h"
 
 @interface TTSuckAnimationViewController ()
 {
@@ -100,6 +101,7 @@
 {
     [_gradientLayer removeFromSuperlayer];
     [self.view.layer insertSublayer:self.gradientLayer atIndex:0];
+ 
 }
 
 
@@ -186,6 +188,7 @@
                 if([self.suckedView pointInside:[[self.trashCanView superview] convertPoint:self.trashCanView.center toView:self.suckedView] withEvent:nil])
                     self.trashCanView.center = originalCenter;
             }
+            
         }
     }
 }

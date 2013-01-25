@@ -24,6 +24,8 @@
 typedef enum{TTSuckFromDirectionAbove, TTSuckFromDirectionBelow,
     TTSuckFromDirectionRight, TTSuckFromDirectionLeft,TTSuckFromDirectionAll }TTSuckFromDirection;
 
+typedef enum {TTCurveTypeBezier, TTCurveTypeQuad} TTCurveType;
+
 #define kControlPointDeltaX 36
 
 @interface UIView (SuckAninmationToPoint)

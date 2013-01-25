@@ -45,6 +45,7 @@
     //create path from trashLayer.position to p
     UIBezierPath *path = [UIBezierPath bezierPath];
     [path moveToPoint:trashLayer.position];
+    TTCurveType curveType = TTCurveTypeBezier;
     BOOL viewContainsPoint = [self pointInside:[self convertPoint:point fromView:toView] withEvent:nil];
     if(viewContainsPoint){
         [path addLineToPoint:p];
@@ -64,13 +65,13 @@
                     p = CGPointMake(p.x+.001, p.y);
                     deltaX = .001;
                 }
-                CGFloat deltaY = p.y-trashLayer.position.x;
+                CGFloat deltaY = p.y-trashLayer.position.y;
                 if(deltaY == 0.0)
                 {
                     p = CGPointMake(p.x, p.y +.001);
                     deltaY = .001;
                 }
-                CGFloat dist = sqrt( (deltaX*deltaX) +(deltaY*deltaY) );
+               // CGFloat dist = sqrt( (deltaX*deltaX) +(deltaY*deltaY) );
                 CGFloat X = fabs(deltaX/2) > kControlPointDeltaX ? kControlPointDeltaX : deltaX/2;
                 X = deltaX<0? -X : X;
                 CGFloat Y = (fabsf(X) * tan(M_PI_4));
@@ -82,18 +83,31 @@
                 CGPoint controlPoint1;
                 CGPoint controlPoint2;
                 
-                if(p.y > self.center.y) //point below self
+                if(p.y > self.center.y) //point below self center
                 {
-                    if(trashLayer.position.y + trashLayer.bounds.size.width/2 >pointAbove.y){
-                        controlPoint1x = trashLayer.position.x + deltaX/(trashLayer.bounds.size.height/2);
+                    if(trashLayer.position.y + trashLayer.bounds.size.height/2 >p.y)
+                    {
+                        //then self is roughly parallel to point
+                        if(p.x>trashLayer.position.x)//point is right of self
+                        {
+                            //make control point 1 upper right corner of self frame
+                            controlPoint1x = trashLayer.position.x + trashLayer.bounds.size.width/2;
+                            controlPoint1y = trashLayer.position.y - trashLayer.bounds.size.height/2;
+                        }
+                        else
+                        {
+                            //make control point 1 upper left corner of self frame
+                            controlPoint1x = trashLayer.position.x - trashLayer.bounds.size.width/2;
+                            controlPoint1y = trashLayer.position.y - trashLayer.bounds.size.height/2;
+                        }
+                            controlPoint2x =p.x;
+                            controlPoint2y = p.y - deltaY/2;
+                    }
+                    else
+                    {
+                        curveType = TTCurveTypeQuad;
+                        controlPoint1x = trashLayer.position.x + deltaX/2;
                         controlPoint1y = trashLayer.position.y;
-                        controlPoint2x =p.x;
-                        controlPoint2y = p.y - deltaY/2 - trashLayer.bounds.size.height/2;
-                    }else{
-                        controlPoint1x = trashLayer.position.x;// + fabs(deltaX/dist)*deltaX;
-                        controlPoint1y = trashLayer.position.y;
-                        controlPoint2x = p.x;;
-                        controlPoint2y = p.y - fabs(deltaY/dist)*deltaY;
                     }
                 }
                 else    //point above self
@@ -104,8 +118,16 @@
                     controlPoint2y = pointAbove.y - trashLayer.bounds.size.height/2 ;
                 }
                 controlPoint1 = CGPointMake(controlPoint1x, controlPoint1y);
-                controlPoint2 = CGPointMake(controlPoint2x, controlPoint2y);
-                [path addCurveToPoint:p controlPoint1:controlPoint1 controlPoint2:controlPoint2];
+                if(curveType == TTCurveTypeBezier)
+                {
+                    controlPoint2 = CGPointMake(controlPoint2x, controlPoint2y);
+                    [path addCurveToPoint:p
+                            controlPoint1:controlPoint1
+                            controlPoint2:controlPoint2];
+                }
+                else{
+                    [path addQuadCurveToPoint:p controlPoint:controlPoint1];
+                }
 
                 break;
             }
