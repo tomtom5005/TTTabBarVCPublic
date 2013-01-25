@@ -45,8 +45,12 @@
 -(void) setUpFoldTransitionsViewController;
 -(void) setUpPINCreateViewController;
 -(void) setUpSuckAnimationViewController;
+-(void) setUpTestImageTabVC;
 -(void) addViewController:(UIViewController *)VC
               withTabText: (NSString *)tabText;
+-(void) addViewController:(UIViewController *)VC
+              withTabText: (NSString *)tabText
+            tabImageNamed:(NSString* )imgName;
 @end
 
 @implementation TTViewController
@@ -82,6 +86,7 @@
     [self setUpFoldTransitionsViewController];
     [self setUpPINCreateViewController];
     [self setUpSuckAnimationViewController];
+    [self setUpTestImageTabVC];
 
     
     for (int j = 0; j<kColorsMultiple; j++)
@@ -91,7 +96,6 @@
             NSInteger viewNumber = i+(j*[colors count]);
             TTColorPatchViewController *vc = [[TTColorPatchViewController alloc] initWithColor:colors[i]];
             UIView *v = [[UIView alloc] initWithFrame:tabBarView.selectedViewContainerView.bounds];
-            v.backgroundColor = [UIColor purpleColor];
             vc.view = v;
             [vc setUp];
             vc.label.text = [NSString stringWithFormat:@"%@ %d",NSLocalizedString(@"View #",@"View #"),viewNumber];
@@ -201,12 +205,29 @@
     
     [viewControllers addObject:VC];
     TTTabViewOrientation orientation = tabBarView.tabBarPosition == TTTabBarPositionBottom ? TTTabViewOrientationDown : TTTabViewOrientationUp;
-
+    
     TTTabItem *VCTab = [[TTTabItem alloc] initWithTitle:tabText
                                                tabColor:defaultTabColor
                                               textColor:nil
                                            tabViewStyle:TTTabViewStyleLargeTab
                                          tabOrientation:orientation];
+    [tabItems addObject:VCTab];
+}
+
+
+-(void) addViewController:(UIViewController *)VC
+              withTabText: (NSString *)tabText
+            tabImageNamed:(NSString* )imgName
+{
+    
+    [viewControllers addObject:VC];
+    TTTabViewOrientation orientation = tabBarView.tabBarPosition == TTTabBarPositionBottom ? TTTabViewOrientationDown : TTTabViewOrientationUp;
+    
+    TTTabItem *VCTab = [[TTTabItem alloc]
+                        initWithImage:[UIImage imageNamed:imgName]
+                        title:tabText
+                        tabOrientation:orientation];
+
     [tabItems addObject:VCTab];
 }
 
@@ -265,6 +286,32 @@
                 withTabText:title];
 }
 
+-(void) setUpTestImageTabVC
+{
+    UIViewController *vc = [[UIViewController alloc] init];
+    UIView *v = [[UIView alloc] initWithFrame:tabBarView.selectedViewContainerView.bounds];
+    v.backgroundColor = [UIColor lightGrayColor];
+    UILabel *label = [[UILabel alloc]
+                      initWithFrame:CGRectInset(v.bounds, 0.25*v.bounds.size.width, 0.4*v.bounds.size.height)];
+    label.text = @"Tab Image Test";
+    label.textColor = [UIColor blackColor];
+    label.backgroundColor = [UIColor lightGrayColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.font = [UIFont boldSystemFontOfSize:30];
+    label.center = CGPointMake(CGRectGetMidX(v.bounds), CGRectGetMidX(v.bounds));
+    [v addSubview:label];
+
+    UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"HomeImprovement.png"]];
+    imgView.center = CGPointMake(label.center.x, (label.center.y + label.bounds.size.height/2 + imgView.bounds.size.height/2) );
+    [v addSubview:imgView];
+    
+    vc.view = v;
+    [self addViewController:vc
+                withTabText: @"TabImageTest"
+              tabImageNamed:@"MyRewardsIconTab.png"];
+;
+
+}
 #pragma mark - TTTabBarView data source methods
 
 

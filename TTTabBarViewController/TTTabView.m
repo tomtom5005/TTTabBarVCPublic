@@ -8,6 +8,7 @@
 
 #import "TTTabView.h"
 #import "TTTabItem.h"
+#import "UIView+Highlight.h"
 
 @interface TTTabView()
 {
@@ -173,6 +174,15 @@
     [underlineLayer removeFromSuperlayer];
 }
 
+-(void) highlight
+{
+    [self showHighlightWithRadius:self.bounds.size.width/4];
+}
+
+-(void) unhighlight
+{
+    [self hideHighlight];
+}
 
 -(void) handleTap:(UITapGestureRecognizer *)sender
 {

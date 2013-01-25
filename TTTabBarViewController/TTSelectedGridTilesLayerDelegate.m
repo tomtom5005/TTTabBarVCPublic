@@ -14,7 +14,6 @@
 
 @interface TTSelectedGridTilesLayerDelegate()
 {
-    dispatch_queue_t drawTilesQ;       //serial queue for drawing selected tiles
     UIImage *dotImage;
 }
 -(void) displayImage:(UIImage*) image inLayer:(CALayer *)layer;
@@ -44,22 +43,6 @@
 }
 
 
-#pragma mark - accessors
-
--(dispatch_queue_t) drawTilesQ
-{
-    if(! drawTilesQ)
-    {
-        drawTilesQ = dispatch_queue_create("com.tsquaredapps.drawTilesDelegateQueue", DISPATCH_QUEUE_SERIAL);
-    }
-    return drawTilesQ;
-}
-
--(void) setDrawTilesQ:(dispatch_queue_t) queue
-{
-        drawTilesQ = queue;
-}
-
 -(UIImage *) makeDotImage
 {
     UIGraphicsBeginImageContext(CGSizeMake(2*_radius, 2*_radius));
@@ -77,19 +60,10 @@
 - (void)drawLayer:(CALayer*)layer inContext:(CGContextRef)context
 {
     [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    
-    //CGContextSaveGState(context);
-    
-    dispatch_async(self.drawTilesQ,^{
-        @synchronized(_gridView.selectedTiles.tiles)
-        {
-            for(TTTraceGridTile *tile in _gridView.selectedTiles.tiles)
-            {
-                [self colorCenterDotOfTile:tile inLayer:layer];
-            }
-        }
-    });
+    [CATransaction setDisableActions:YES];    
+    for(TTTraceGridTile *tile in _gridView.selectedTiles.tiles){
+        [self colorCenterDotOfTile:tile inLayer:layer];
+    }
     [CATransaction commit];
 }
 

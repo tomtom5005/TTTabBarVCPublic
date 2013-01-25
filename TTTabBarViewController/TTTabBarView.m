@@ -234,14 +234,20 @@ NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification = @"TTTabBar
         [self.tabsScrollView setContentOffset:newOffset animated:YES];
     }
     NSUInteger tabIndexSelected = [self.tabViews indexOfObject:tabView];
-    //TODO: create a highlight on tab view using the highlight UIView category - only do for
-    //tabItems where tabViewStyle is custom logic similar to underline method
-
+    
     if (tabIndexSelected != self.selectedTabIndex )
     {
         TTTabView *oldTabView = [self.tabViews objectAtIndex:self.selectedTabIndex];
-        [oldTabView removeUnderline];
-        [tabView underline];
+        if (oldTabView.tabItem.tabViewStyle != TTTabViewStyleCustom){
+            [oldTabView removeUnderline];
+        }else{
+            [oldTabView unhighlight];
+        }
+        if(tabView.tabItem.tabViewStyle != TTTabViewStyleCustom){
+            [tabView underline];
+        }else{
+            [tabView highlight];
+        }
         self.selectedTabIndex = tabIndexSelected;
         [self didSelectTabItem:tabView.tabItem];
     }

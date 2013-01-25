@@ -27,6 +27,9 @@
 
 -(void)underline;
 -(void)removeUnderline;
+-(void)highlight;
+-(void)unhighlight;
+
 @end
 
 @protocol TTTabViewDelegate <NSObject>

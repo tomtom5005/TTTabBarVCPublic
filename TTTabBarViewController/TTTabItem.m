@@ -98,11 +98,12 @@ tabOrientation:(TTTabViewOrientation)orientation
 }
 
 
--(id) initWithImage:(UIImage *)img title:(NSString *)title
+-(id) initWithImage:(UIImage *)img title:(NSString *)title tabOrientation:(TTTabViewOrientation)orientation
 {
     if(self=[super init])
     {
         _tabViewStyle = TTTabViewStyleCustom;
+        _tabOrientation = orientation;
         _tabSize = img.size;
         _tabImage = img;
         _tabColor=[UIColor clearColor];
@@ -115,5 +116,10 @@ tabOrientation:(TTTabViewOrientation)orientation
     return self;
 }
 
+
+-(id) initWithImage:(UIImage *)img title:(NSString *)title
+{
+    return [self initWithImage:img title:title tabOrientation:TTTabViewOrientationDown];
+}
 
 @end

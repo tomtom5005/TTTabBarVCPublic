@@ -28,20 +28,21 @@ static char *kHighlightKey = "HighlightLayer";
 }
 
 
--(void) showHighlightWithColor:(UIColor *)color alpha:(CGFloat)a radius:(CGFloat)radius
+-(void) showHighlightWithRadius:(CGFloat)radius
 {
     // If self is already highlighted were done
-    if (! [self highlightLayer])
+    if ([self highlightLayer] == nil)// [self highlightLayer] == nil works but  ! [self highlightLayer] does not!!!
     {
         //create glow image
         CALayer *glowLayer = [self createHighlightLayerWithRadius:radius];
-        [self.layer insertSublayer:glowLayer atIndex:0];
+        //[self.layer insertSublayer:glowLayer atIndex:0];
+        [self.layer addSublayer:glowLayer];
         [self setHighlightLayer:glowLayer];
     }
     self.highlightLayer.hidden=NO;
 }
 
--(void) hideHighlightWithColor:(UIColor *)color alpha:(CGFloat)a radius:(CGFloat)radius
+-(void) hideHighlight
 {
     if ([self highlightLayer])
         self.highlightLayer.hidden=YES;
@@ -52,37 +53,38 @@ static char *kHighlightKey = "HighlightLayer";
     //create glow image
     CALayer *glowLayer = [CALayer layer];
     glowLayer.backgroundColor = [UIColor clearColor].CGColor;
-    glowLayer.frame = self.frame;
+    glowLayer.frame = self.bounds;
     CGFloat w = self.bounds.size.width;
-    CGFloat h = self.bounds.size.width;
+    CGFloat h = self.bounds.size.height;
     CGFloat maxRadius = w > h ? w : h;
     r = maxRadius < r ? maxRadius : r;
-    UIGraphicsBeginImageContext(self.bounds.size);
+    
+    UIGraphicsBeginImageContext(glowLayer.bounds.size);
     CGContextRef ctx = UIGraphicsGetCurrentContext();
-    UIBezierPath *oval = [UIBezierPath bezierPathWithOvalInRect:self.bounds];
-    CGContextAddPath(ctx,oval.CGPath);
-    CGContextClip(ctx);
-    CGPoint center = CGPointMake( rint(CGRectGetMidX(self.bounds)), rint(CGRectGetMidX(self.bounds)) );
+    
     NSInteger numLocs = 2;
     CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
     CGFloat locations[2] = {0.0,1.0};
-    CGFloat components[] = {1.0, 1.0, 1.0, 0.2,
+    CGFloat components[] = {1.0, 1.0, 1.0, 0.50,
         1.0, 1.0, 1.0, 0.0};
     CGGradientRef gradient = CGGradientCreateWithColorComponents(space,components,locations,numLocs);
     CGColorSpaceRelease(space);
     CGContextDrawRadialGradient(ctx,
                                 gradient,
-                                center,
+                                glowLayer.position,
                                 1.0,
-                                center,
+                                glowLayer.position,
                                 r,
                                 kCGGradientDrawsBeforeStartLocation);
     CGGradientRelease(gradient);
+      
+    UIBezierPath *oval = [UIBezierPath bezierPathWithOvalInRect:self.bounds];
+    CGContextAddPath(ctx,oval.CGPath);
+    CGContextClip(ctx);
     UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
     glowLayer.contents = (__bridge id)[img CGImage];
+    UIGraphicsEndImageContext();
+
     return glowLayer;
 }
 

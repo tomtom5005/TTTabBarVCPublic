@@ -14,7 +14,8 @@
 
 @property (nonatomic, readonly) CALayer* highlightLayer;
 
--(void) showHighlightWithColor:(UIColor *)color alpha:(CGFloat)a radius:(CGFloat)radius;
+-(void) showHighlightWithRadius:(CGFloat)radius;
 -(CALayer *)createHighlightLayerWithRadius:(CGFloat)r;
+-(void) hideHighlight;
 
 @end

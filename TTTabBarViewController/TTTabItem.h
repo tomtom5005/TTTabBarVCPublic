@@ -60,6 +60,11 @@ typedef enum{TTTabViewOrientationUp, TTTabViewOrientationDown}TTTabViewOrientati
            tabColor:(UIColor*)color
           textColor:(UIColor *)txtColor;
 
--(id) initWithImage:(UIImage *)img title:(NSString *)title;
+-(id) initWithImage:(UIImage *)img
+              title:(NSString *)title;
+
+-(id) initWithImage:(UIImage *)img
+              title:(NSString *)title
+     tabOrientation:(TTTabViewOrientation)orientation;
 
 @end

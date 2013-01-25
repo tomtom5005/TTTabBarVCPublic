@@ -22,6 +22,9 @@
 		E2031069166ABB3B004D313F /* TTTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = E2031068166ABB3B004D313F /* TTTabView.m */; };
 		E203106C166ABB53004D313F /* TTTabItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E203106B166ABB53004D313F /* TTTabItem.m */; };
 		E203108E166C0CBF004D313F /* lock.png in Resources */ = {isa = PBXBuildFile; fileRef = E203108D166C0CBF004D313F /* lock.png */; };
+		E205C6B016B321D600A8A9AA /* TabImageTest.png in Resources */ = {isa = PBXBuildFile; fileRef = E205C6AF16B321D600A8A9AA /* TabImageTest.png */; };
+		E205C6B316B3245300A8A9AA /* HomeImprovement.png in Resources */ = {isa = PBXBuildFile; fileRef = E205C6B216B3245300A8A9AA /* HomeImprovement.png */; };
+		E205C6B516B328D700A8A9AA /* MyRewardsIconTab.png in Resources */ = {isa = PBXBuildFile; fileRef = E205C6B416B328D700A8A9AA /* MyRewardsIconTab.png */; };
 		E20C60171695138200118EA0 /* TTPinCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C60151695138200118EA0 /* TTPinCreateViewController.m */; };
 		E20C60181695138200118EA0 /* TTPinCreateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E20C60161695138200118EA0 /* TTPinCreateViewController.xib */; };
 		E20C601B169513CB00118EA0 /* TTTraceGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = E20C601A169513CB00118EA0 /* TTTraceGridView.m */; };
@@ -92,6 +95,9 @@
 		E203106B166ABB53004D313F /* TTTabItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTabItem.m; sourceTree = "<group>"; };
 		E203108D166C0CBF004D313F /* lock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lock.png; sourceTree = "<group>"; };
 		E20338BF1683D0D6007FB036 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		E205C6AF16B321D600A8A9AA /* TabImageTest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TabImageTest.png; sourceTree = "<group>"; };
+		E205C6B216B3245300A8A9AA /* HomeImprovement.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HomeImprovement.png; sourceTree = "<group>"; };
+		E205C6B416B328D700A8A9AA /* MyRewardsIconTab.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MyRewardsIconTab.png; sourceTree = "<group>"; };
 		E20C60141695138200118EA0 /* TTPinCreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTPinCreateViewController.h; sourceTree = "<group>"; };
 		E20C60151695138200118EA0 /* TTPinCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTPinCreateViewController.m; sourceTree = "<group>"; };
 		E20C60161695138200118EA0 /* TTPinCreateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TTPinCreateViewController.xib; sourceTree = "<group>"; };
@@ -274,6 +280,9 @@
 				E203108D166C0CBF004D313F /* lock.png */,
 				E27B4CE116AB197E00AFA4DA /* TrashCanBottom.png */,
 				E27B4CE216AB197E00AFA4DA /* TrashCanLid.png */,
+				E205C6B416B328D700A8A9AA /* MyRewardsIconTab.png */,
+				E205C6B216B3245300A8A9AA /* HomeImprovement.png */,
+				E205C6AF16B321D600A8A9AA /* TabImageTest.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -429,6 +438,9 @@
 				E27B4CE316AB197E00AFA4DA /* TrashCanBottom.png in Resources */,
 				E27B4CE416AB197E00AFA4DA /* TrashCanLid.png in Resources */,
 				E26F59C516B20125000A3C8E /* TTSuckAnimationViewController.xib in Resources */,
+				E205C6B016B321D600A8A9AA /* TabImageTest.png in Resources */,
+				E205C6B316B3245300A8A9AA /* HomeImprovement.png in Resources */,
+				E205C6B516B328D700A8A9AA /* MyRewardsIconTab.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
