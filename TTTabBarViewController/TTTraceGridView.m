@@ -535,7 +535,7 @@
 
 -(void)tileEnteredWithTouch:(UITouch *)touch useHotSpot:(BOOL)useHotSpot
 {
-    //we should only use hot spots on tile other than the first on
+    //we should only use hot spots on tiles other than the first one
     //this enables diagonal swipes to work without picking up adjacent tiles
     //
     CGPoint point = [touch locationInView:self];

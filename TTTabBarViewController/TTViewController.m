@@ -293,11 +293,12 @@
     v.backgroundColor = [UIColor lightGrayColor];
     UILabel *label = [[UILabel alloc]
                       initWithFrame:CGRectInset(v.bounds, 0.25*v.bounds.size.width, 0.4*v.bounds.size.height)];
-    label.text = @"Tab Image Test";
+    label.numberOfLines = 6;
+    label.text = @"Tab Image Test\nThe purpose of this view is show a custom tab.  The tab is any image the developer choses.  If the tab is selected then a highlight is added to the tab.";
     label.textColor = [UIColor blackColor];
     label.backgroundColor = [UIColor lightGrayColor];
     label.textAlignment = NSTextAlignmentCenter;
-    label.font = [UIFont boldSystemFontOfSize:30];
+    label.font = [UIFont boldSystemFontOfSize:21];
     label.center = CGPointMake(CGRectGetMidX(v.bounds), CGRectGetMidX(v.bounds));
     [v addSubview:label];
 
