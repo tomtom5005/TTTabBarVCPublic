@@ -348,9 +348,6 @@
 
 -(void) animateRandomTracePatternsOfLength:(NSNumber *)length
 {
-    //TODO: replace the timer animation system with a CAGroupAnimation
-    //with beginTimes - the current system can crash if the animations run a bit long
-    //the remove path method can be called prematurely 
     NSInteger len = [length integerValue];
     NSInteger numOfNodes = len>6 ? len : 6;
     int r = arc4random() % [tiles count];
@@ -377,10 +374,6 @@
 {
     static int tileIndex = 0;
     NSArray *patternTiles = (NSArray *)[timer userInfo];
-    TTTraceGridTile * tile = [patternTiles objectAtIndex:tileIndex];
-    [self animateTraceToTile:tile];
-    
-    tileIndex++;
     if (tileIndex==[patternTiles count])
     {
         [animationTimer invalidate];
@@ -391,6 +384,12 @@
         [self performSelector:@selector(resetTracePathWithAnimation:)
                    withObject:[NSNumber numberWithBool:YES]
                    afterDelay:0.5];
+    }
+    else
+    {
+        TTTraceGridTile * tile = [patternTiles objectAtIndex:tileIndex];
+        [self animateTraceToTile:tile];
+        tileIndex++;
     }
 }
 
@@ -405,6 +404,8 @@
     _circleLayer.opacity = 1;
     [_traceLayer setNeedsDisplay];
     [_selectedTilesLayer setNeedsDisplay];
+    [_traceLayer displayIfNeeded];
+    [_selectedTilesLayer displayIfNeeded];
 }
 
 
