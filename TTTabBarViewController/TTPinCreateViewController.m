@@ -109,7 +109,7 @@
     self.traceGrid.delegate = self;
     [self.containerView addSubview:self.traceGrid];
 
-    if(self.presentingViewController)
+    if(self.presentingViewController && [initialPIN length])
     {
         self.cancelButton.hidden=NO;
     }
