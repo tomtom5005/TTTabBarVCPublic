@@ -201,25 +201,9 @@ NSString *const TTInvalidData = @"Invalid Data";
 -(void) adjustContainerViewForOrientation
 {
     CGFloat usableHeight;
-    switch (self.interfaceOrientation)
-    {
-        case UIInterfaceOrientationLandscapeLeft:
-        case UIInterfaceOrientationLandscapeRight:
-            usableHeight = self.view.bounds.size.height - kLandscapeKeyboardHeight;
-            _containerView.center = CGPointMake(rint(CGRectGetMidX(self.view.bounds)),
-                                     rint(usableHeight/2.0));
-            break;
-            
-        case UIInterfaceOrientationPortrait:
-        case UIInterfaceOrientationPortraitUpsideDown:
-            usableHeight = self.view.bounds.size.height - kPortraitKeyboardHeight;
-            _containerView.center = CGPointMake(rint(CGRectGetMidX(self.view.bounds)),
-                                                rint(usableHeight/2.0));
-            break;
-            
-        default:
-            break;
-    }
+    usableHeight = self.view.bounds.size.height - kLandscapeKeyboardHeight;
+    _containerView.center = CGPointMake(rint(CGRectGetMidX(self.view.bounds)),
+                                        rint(usableHeight/2.0));
 }
 
 
