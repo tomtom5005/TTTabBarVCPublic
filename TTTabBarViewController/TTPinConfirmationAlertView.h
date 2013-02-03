@@ -15,6 +15,7 @@
 #define kDefaultRows 3
 #define kDefaultCols 3
 #define kMaxGridDimension 8
+#define kBounce 30.0f
 
 typedef enum{
     TTPinConfirmationAlertDismissalReasonPinMatch,

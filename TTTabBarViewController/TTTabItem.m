@@ -98,7 +98,9 @@ tabOrientation:(TTTabViewOrientation)orientation
 }
 
 
--(id) initWithImage:(UIImage *)img title:(NSString *)title tabOrientation:(TTTabViewOrientation)orientation
+-(id) initWithImage:(UIImage *)img
+              title:(NSString *)title
+     tabOrientation:(TTTabViewOrientation)orientation
 {
     if(self=[super init])
     {

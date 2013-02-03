@@ -29,7 +29,6 @@
     UIView *rootView;
     id orientationChangeObserver;
     UIInterfaceOrientation priorOrientation;
-    BOOL shown;
     CGPoint destinationCenter;
 }
 
@@ -40,7 +39,7 @@
 -(void) expandMask;
 -(void) adjustContainerViewForOrientation;
 -(void) dismissButtonTouched:(id)sender;
-
+-(CGPoint) adjustContainerViewCenterPointAboveScreenAndReturnBouncePointForOrientation:(UIInterfaceOrientation)orientation;
 @end
 
 @implementation TTPinConfirmationAlertView
@@ -335,16 +334,51 @@ dismissButtonTitle:(NSString *)title
         CGAffineTransform rTransform = CGAffineTransformMakeRotation(radians);
         [containerView setTransform :rTransform];
         priorOrientation = current;
-    }
-    if( ! shown)    //then this the first time alert shown - not a rotation
-    {
-        destinationCenter = CGPointMake (CGRectGetMidX(self.bounds),
-                                         CGRectGetMidY(self.bounds));
-        containerView.center = CGPointMake(destinationCenter.x,-destinationCenter.y);
-        shown = YES;
+
     }
 }
 
+-(CGPoint) adjustContainerViewCenterPointAboveScreenAndReturnBouncePointForOrientation:(UIInterfaceOrientation)orientation
+{
+    CGPoint bouncePt;
+    switch (orientation) {
+        case UIInterfaceOrientationPortrait:
+            bouncePt = CGPointMake(containerView.center.x,
+                                   containerView.center.y + kBounce);
+            containerView.center = CGPointMake(containerView.center.x,
+                                               - containerView.center.y);
+            break;
+            
+        case UIInterfaceOrientationLandscapeRight:
+            bouncePt = CGPointMake(containerView.center.x - kBounce,
+                                   containerView.center.y);
+            containerView.center = CGPointMake(self.bounds.size.width + containerView.center.x,
+                                               containerView.center.y);
+            break;
+            
+        case UIInterfaceOrientationLandscapeLeft:
+            bouncePt = CGPointMake(containerView.center.x + kBounce,
+                                   containerView.center.y);
+            containerView.center = CGPointMake(-containerView.center.x,
+                                               containerView.center.y);
+            break;
+            
+        case UIInterfaceOrientationPortraitUpsideDown:
+            bouncePt = CGPointMake(containerView.center.x,
+                                   containerView.center.y - kBounce);
+            containerView.center = CGPointMake(containerView.center.x,
+                                               self.bounds.size.height + containerView.center.y);
+            break;
+            
+        default:    //portrait
+            bouncePt = CGPointMake(containerView.center.x,
+                                   containerView.center.y + kBounce);
+            containerView.center = CGPointMake(containerView.center.x,
+                                   - containerView.center.y);
+            break;
+    }
+    return bouncePt;
+}
 
 -(void) show
 {
@@ -359,7 +393,6 @@ dismissButtonTitle:(NSString *)title
     self.frame = [keyWindow bounds];
     self.backgroundColor=[UIColor clearColor];
     self.autoresizesSubviews = NO;
-    shown = NO;
     //self.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin ;
     
     priorOrientation = UIInterfaceOrientationPortrait;
@@ -394,8 +427,7 @@ dismissButtonTitle:(NSString *)title
     maskingLayer.opacity = 0.0;
         
     //move _containerView above screen
-    containerView.center = CGPointMake(containerView.center.x,
-                                       - containerView.center.y);
+    CGPoint bouncePoint = [self adjustContainerViewCenterPointAboveScreenAndReturnBouncePointForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
     containerView.alpha = 1.0;
     containerView.hidden=NO;
     [self bringSubviewToFront:containerView];
@@ -403,7 +435,7 @@ dismissButtonTitle:(NSString *)title
     [self adjustContainerViewForOrientation];
     [UIView animateWithDuration:0.4
                      animations:^{
-                         containerView.center = CGPointMake(destinationCenter.x, destinationCenter.y + 30.0f);
+                         containerView.center = bouncePoint;
                      } completion:^(BOOL finished){
                          maskingLayer.opacity = 0.8f;
                          [UIView animateWithDuration:0.2f

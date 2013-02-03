@@ -45,7 +45,7 @@
 -(void) setUpFoldTransitionsViewController;
 -(void) setUpPINCreateViewController;
 -(void) setUpSuckAnimationViewController;
--(void) setUpTestImageTabVC;
+-(UIViewController *) makeTestImageTabVC;
 -(void) addViewController:(UIViewController *)VC
               withTabText: (NSString *)tabText;
 -(void) addViewController:(UIViewController *)VC
@@ -86,9 +86,14 @@
     [self setUpFoldTransitionsViewController];
     [self setUpPINCreateViewController];
     [self setUpSuckAnimationViewController];
-    [self setUpTestImageTabVC];
+    for (NSString *tabTitle in @[@"MyRewards", @"Home",@"ShopSearch",@"SearchIcon",@"Chair"])
+    {
+        [self addViewController:[self makeTestImageTabVC]
+                    withTabText: tabTitle
+                  tabImageNamed:[NSString stringWithFormat:@"%@.png",tabTitle]];
+        
+    }
 
-    
     for (int j = 0; j<kColorsMultiple; j++)
     {
         for (int i = 0; i<[colors count]; i++)
@@ -286,7 +291,7 @@
                 withTabText:title];
 }
 
--(void) setUpTestImageTabVC
+-(UIViewController *) makeTestImageTabVC
 {
     UIViewController *vc = [[UIViewController alloc] init];
     UIView *v = [[UIView alloc] initWithFrame:tabBarView.selectedViewContainerView.bounds];
@@ -307,12 +312,10 @@
     [v addSubview:imgView];
     
     vc.view = v;
-    [self addViewController:vc
-                withTabText: @"TabImageTest"
-              tabImageNamed:@"MyRewardsIconTab.png"];
-;
-
+    return vc;
 }
+
+
 #pragma mark - TTTabBarView data source methods
 
 

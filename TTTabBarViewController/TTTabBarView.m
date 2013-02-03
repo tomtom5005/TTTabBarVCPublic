@@ -274,10 +274,6 @@ NSString *const TTTabBarViewSelectedViewDidChangeToViewNotification = @"TTTabBar
                   object:self
                 userInfo:@{@"View" : newView}];
 
-    //TODO: In the animation block,or before it,we should add a highlight glow like on pivotal
-    //tracker start tracking button for the selected tab. We would just leaving glowing as long
-    //as tab is selected tab Also we will need to change
-        
     UIView __block *oldView = oldViewIndex > -1?[[self.selectedViewContainerView subviews] objectAtIndex:oldViewIndex]:nil;
     if(oldView)
     {
