@@ -52,7 +52,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">This is the view that will be sucked into the trash.  You may resize it with a pinch gesture and move it  by dragging it around the screen.  You can also move the trash can around the screen.  Double tap the trash can to suck in this view.  Double tap the screen to recreate this note.</string>
+								<string key="IBUIText">This is the view that will be sucked into the trash.  You may resize it with a pinch gesture and move it  by dragging it around the screen.  You can also move the trash can around the screen.  Double tap this note to suck it into the trash can.  Double tap the screen to recreate this note.</string>
 								<object class="NSColor" key="IBUITextColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MCAwIDAAA</bytes>
@@ -88,6 +88,7 @@
 						<string key="NSFrame">{{680, 900}, {60, 100}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
