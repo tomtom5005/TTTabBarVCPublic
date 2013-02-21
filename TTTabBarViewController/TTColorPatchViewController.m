@@ -63,7 +63,7 @@
     UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
     [self.view addSubview:imgView];
     
-    //create a label and a view with rounded croners and a shadow
+    //create a label and a view with rounded corners and a shadow
     //the most efficient way is to draw a path and a shadow
     colorPatch = [[TTColorPatchView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width/3,
                                                                     self.view.bounds.size.height/4,
