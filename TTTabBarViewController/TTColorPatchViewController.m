@@ -74,17 +74,18 @@
     [self.view addSubview:colorPatch];
     CGFloat x = self.view.frame.origin.x;
     CGFloat y = colorPatch.frame.origin.y + colorPatch.bounds.size.height + 60;
-    self.label = [[UILabel alloc] initWithFrame:CGRectMake(x,y,
-                                                               self.view.bounds.size.width,
-                                                               30)];
-    _label.backgroundColor = [UIColor clearColor];
-    _label.font = [UIFont systemFontOfSize:21];
-    _label.textColor = [UIColor blackColor];
-    _label.textAlignment = NSTextAlignmentCenter;
-    _label.shadowOffset = CGSizeMake(1,1);
-    _label.shadowColor = [UIColor colorWithWhite:1 alpha:.5];
-    [self.view addSubview:self.label];
-    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(x,y,
+                                                           self.view.bounds.size.width,
+                                                           30)];
+   
+    label.backgroundColor = [UIColor clearColor];
+    label.font = [UIFont boldSystemFontOfSize:21];
+    label.textColor = [UIColor blackColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.shadowOffset = CGSizeMake(1,1);
+    label.shadowColor = [UIColor colorWithWhite:1 alpha:.5];
+    [self.view addSubview:label];
+     self.label = label;
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(viewWillAppearInTabBarView:)
                name:TTTabBarViewSelectedViewWillChangeToViewNotification
@@ -106,11 +107,10 @@
     gradientLayer.contents = (__bridge id) self.grayGradientImage.CGImage;
     
     colorPatch.center = CGPointMake(x,y-45);
-    self.label = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.origin.x,
-                                                           y,
-                                                           colorPatch.frame.origin.y + colorPatch.bounds.size.height + 60,
-                                                           30)];
-}
+    self.label.frame = CGRectMake(self.view.frame.origin.x,colorPatch.frame.origin.y + colorPatch.bounds.size.height + 60,
+                                                           self.view.bounds.size.width,
+                                                           30);
+    }
 
 
 
